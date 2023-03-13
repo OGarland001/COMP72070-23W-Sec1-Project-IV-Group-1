@@ -1,4 +1,4 @@
-namespace ClientTestSuite
+namespace Client_Test_Suite
 {
     [TestClass]
     public class ClientUnitTests
@@ -6,9 +6,6 @@ namespace ClientTestSuite
         [TestMethod]
         public void TestMethod1()
         {
-            //Arrange
-            //Act
-            //Assert
         }
     }
 }
