@@ -1,11 +1,16 @@
 namespace Server_Test_Suite
 {
     [TestClass]
-    public class UnitTest1
+    public class ServerUnitTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestName_Inputs_ExpectedOutputs()
         {
+            //Arrange
+
+            //Act
+
+            //Assert
         }
     }
 }
