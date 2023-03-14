@@ -8,7 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="InterfaceFiles\Screenshot 2022-01-24 143617.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ApplicationDefinition Include="InterfaceFiles/App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="InterfaceFiles\Screenshot 2022-01-24 143617.png" />
   </ItemGroup>
 
 
