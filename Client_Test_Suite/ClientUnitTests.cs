@@ -15,7 +15,6 @@ namespace Client_Test_Suite
 
 
         }
-
         [TestMethod]
         public void CLT_UNIT_TEST_002_Client_Recieved_Through_Para_Constructor_ExpectedOutput_FullyCreatedPacket()
         {
@@ -62,6 +61,7 @@ namespace Client_Test_Suite
 
 
         }
+        [TestMethod]
         public void CLT_UNIT_TEST_007__Client_requests_for_logs_of_client__ExpctedOuput_Client_recieves_the_client_logs()
         {
             /* 
@@ -75,6 +75,7 @@ namespace Client_Test_Suite
             
             */
         }
+        [TestMethod]
         public void CLT_UNIT_TEST_008__Client_accepts_image_from_user__ExpctedOuput_Client_sends_accepted_image_to_server()
         {
             /* 
@@ -88,6 +89,7 @@ namespace Client_Test_Suite
             
             */
         }
+        [TestMethod]
         public void CLT_UNIT_TEST_009__Client_creates_account_for_new_user_login__ExpctedOuput_Account_structure_updated_adding_new_created_user()
         {
             /* 
@@ -101,6 +103,7 @@ namespace Client_Test_Suite
             
             */
         }
+        [TestMethod]
         public void CLT_UNIT_TEST_010__GUI_Shows_Client_Features__FeaturesAllShown()
         {
             /* system level test
