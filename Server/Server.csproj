@@ -6,5 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+	<ItemGroup>
+		<ApplicationDefinition Include="InterfaceFiles/App.xaml" />
+	</ItemGroup>
 
 </Project>
