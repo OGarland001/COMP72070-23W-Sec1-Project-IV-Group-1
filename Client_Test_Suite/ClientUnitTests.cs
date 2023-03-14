@@ -20,8 +20,19 @@ namespace Client_Test_Suite
         {
 
             //Arrange
+
+
+            //create a data buffer -- being able to create a data buffer method
+
+
             //Act
+
+            //serialize the data -- seralize data method
+            //create a packet structure with the serialized data Act like -- para constructor for packet
+
             //Assert
+
+            //Check each of the data parameters and ensure that they are all not null and have proper data. --assert each getter for the data
 
 
         }
@@ -29,6 +40,9 @@ namespace Client_Test_Suite
         public void CLT_UNIT_TEST_003_Client_Can_Update_The_HeaderLength_When_Added_ExpectedOutput_Length()
         {
             //Arrange
+
+            //setup packet structure
+
             //Act
             //Assert
 
