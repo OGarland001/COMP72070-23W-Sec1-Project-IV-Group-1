@@ -66,10 +66,13 @@ namespace Client_Test_Suite
         {
             /* 
             //Arrang
-            
+            - create a log packet
+            - send the packet to server from the packet class
+            - client will wait for a packet from the server for its log
+            - print out the recieved packet in client
 
             //Act
-
+            - 
 
             //Assert
             
@@ -80,10 +83,12 @@ namespace Client_Test_Suite
         {
             /* 
             //Arrang
-            
+            - create a image packet from the packet class
+            - take incoming image packet and store it in client
+            - client will then send the image packet to server 
 
             //Act
-
+            - 
 
             //Assert
             
@@ -94,7 +99,9 @@ namespace Client_Test_Suite
         {
             /* 
             //Arrang
-            
+            - create user login data
+            - send data to client
+            - get client to accept the login and authenticate its legit
 
             //Act
 
