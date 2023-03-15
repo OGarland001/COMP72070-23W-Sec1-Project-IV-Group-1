@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    internal class Server
+    class ProgramServer
     {
     }
 }
