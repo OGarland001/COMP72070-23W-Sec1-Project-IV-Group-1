@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{E2BF74AF-9CA7-4E43-BFFE-5A6FA1825946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{E2BF74AF-9CA7-4E43-BFFE-5A6FA1825946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server_Test_Suite", "Server_Test_Suite\Server_Test_Suite.csproj", "{E3FCB37B-B0C3-4CF4-83CA-4640A362F6C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server_Test_Suite", "Server_Test_Suite\Server_Test_Suite.csproj", "{E3FCB37B-B0C3-4CF4-83CA-4640A362F6C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectDetection", "..\..\..\Desktop\Object Recognition\sample (1)-20230315T191746Z-001\sample (1)\ObjectDetectionConsoleApp\ObjectDetection.csproj", "{AE96052E-50AE-4B42-A48C-612F57E2F7CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E3FCB37B-B0C3-4CF4-83CA-4640A362F6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3FCB37B-B0C3-4CF4-83CA-4640A362F6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3FCB37B-B0C3-4CF4-83CA-4640A362F6C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE96052E-50AE-4B42-A48C-612F57E2F7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE96052E-50AE-4B42-A48C-612F57E2F7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE96052E-50AE-4B42-A48C-612F57E2F7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE96052E-50AE-4B42-A48C-612F57E2F7CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
