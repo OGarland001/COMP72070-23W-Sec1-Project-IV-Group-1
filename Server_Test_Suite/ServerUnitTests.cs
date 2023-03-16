@@ -1,3 +1,6 @@
+
+using Server;
+
 namespace Server_Test_Suite
 {
     [TestClass]
@@ -7,7 +10,8 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData()
         {
             //Arrange
-            //Create Packet 
+            
+            
 
 
             //Act
@@ -25,6 +29,9 @@ namespace Server_Test_Suite
         {
             //Arrange
             //Create Packet -- Packet Structure
+            Packet packet = new Packet();
+
+            packet.
             //Data Buffer For Serialized Data
 
             //Act
@@ -93,8 +100,13 @@ namespace Server_Test_Suite
 
         {
             //Arrange
+            //Create Packet
+
+            ProgramServer program = new ProgramServer();
+
             //Create Packet 
 
+            program.RunRecognition();
 
             //Act
             // Generate Image method -- needs to inputs

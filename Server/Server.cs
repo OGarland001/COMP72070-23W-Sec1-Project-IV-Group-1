@@ -13,9 +13,9 @@ using Server.ML.NET;
 
 namespace Server
 {
-    class ProgramServer
+    public class ProgramServer
     {
-        static void RunRecognition()
+        public void RunRecognition()
         {
             var assetsRelativePath = @"../../../ML.NET/assets";
             string assetsPath = GetAbsolutePath(assetsRelativePath);
