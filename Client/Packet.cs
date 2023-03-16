@@ -91,7 +91,7 @@ namespace Client
 
 
     //Class Defination
-    class Packet
+    public class Packet
     {
         private Head head;
         private Body body;
@@ -138,6 +138,12 @@ namespace Client
             this.body = recvPacket.body;
             this.tail = recvPacket.tail;
         }
+
+        public Head GetHead() { return head; }
+
+        public Body GetBody() { return body; }
+
+        public Tail GetTail() { return tail;}
 
 
 
