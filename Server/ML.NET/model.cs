@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using ObjectDetection.DataStructures;
 using Microsoft.ML;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Server.ML.NET.YoloParser;
 using Server.ML.NET;
 
-namespace Server
+namespace Server.ML.NET
 {
-    public class ProgramServer
+    internal class model
     {
-        public void RunRecognition()
+
+       public void runModel()
         {
-            var assetsRelativePath = @"../../../ML.NET/assets";
+
+            var assetsRelativePath = @"../../../assets";
             string assetsPath = GetAbsolutePath(assetsRelativePath);
             var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
             var imagesFolder = Path.Combine(assetsPath, "images");
@@ -115,9 +115,9 @@ namespace Server
                         SolidBrush colorBrush = new SolidBrush(box.BoxColor);
 
                         // Draw text on image 
-                        #pragma warning disable CA1416 // Validate platform compatibility
+#pragma warning disable CA1416 // Validate platform compatibility
                         thumbnailGraphic.FillRectangle(colorBrush, (int)x, (int)(y - size.Height - 1), (int)size.Width, (int)size.Height);
-                        #pragma warning restore CA1416 // Validate platform compatibility
+#pragma warning restore CA1416 // Validate platform compatibility
                         thumbnailGraphic.DrawString(text, drawFont, fontBrush, atPoint);
 
                         // Draw bounding box on image
@@ -144,6 +144,11 @@ namespace Server
 
                 Console.WriteLine("");
             }
+
+
         }
+
+
+
     }
 }
