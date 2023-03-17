@@ -16,28 +16,32 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CreateAccountWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CreateAccountWindow : Window
     {
-        public MainWindow()
+        public CreateAccountWindow()
         {
             InitializeComponent();
         }
-
+             
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //username textbox
+            
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            //login
+            var accountsWindow = new HomeWindow();
+
+            accountsWindow.Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Log_In_Click(object sender, RoutedEventArgs e)
         {
-            //create account
+            var accountsWindow = new MainWindow();
+
+            accountsWindow.Show();
         }
     }
 }

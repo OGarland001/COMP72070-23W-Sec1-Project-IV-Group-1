@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="InterfaceFiles\2191156-200.png" />
+    <None Remove="InterfaceFiles\free-arrow-next-icon-2825-thumb.png" />
+    <None Remove="InterfaceFiles\LockIcon.png" />
+    <None Remove="InterfaceFiles\pngtree-vector-lock-icon-png-image_318067.jpg" />
     <None Remove="InterfaceFiles\Screenshot 2022-01-24 143617.png" />
   </ItemGroup>
 
@@ -16,7 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="InterfaceFiles\Screenshot 2022-01-24 143617.png" />
+    <Resource Include="InterfaceFiles\2191156-200.png" />
+    <Resource Include="InterfaceFiles\free-arrow-next-icon-2825-thumb.png" />
+    <Resource Include="InterfaceFiles\LockIcon.png" />
+    <Resource Include="InterfaceFiles\pngtree-vector-lock-icon-png-image_318067.jpg" />
   </ItemGroup>
 
 

@@ -1,14 +1,13 @@
-﻿<Window x:Class="Client.MainWindow"
+﻿<Window x:Class="Client.CreateAccountWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="CreateAccountWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-
         </Grid.ColumnDefinitions>
         <TextBox x:Name="UsernameLoginTextBox" HorizontalAlignment="Left" Margin="329,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" BorderBrush="#FF00CAFF" Height="22" OpacityMask="Black" TextChanged="UsernameLoginTextBox_TextChanged"/>
         <TextBlock x:Name="Product_name" HorizontalAlignment="Left" Margin="296,44,0,0" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="85" Width="200" FontSize="36" FontFamily="Cascadia Mono SemiBold">
@@ -19,13 +18,13 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="295,199,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/2191156-200.png" OpacityMask="Black"/>
-        <Image x:Name="Password_Icon" HorizontalAlignment="Left" Height="30" Margin="294,244,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/LockIcon.png" OpacityMask="Black"/>
+        <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="295,199,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/2191156-200.png" OpacityMask="#FF00CAFF"/>
+        <Image x:Name="Password_Icon" HorizontalAlignment="Left" Height="30" Margin="295,244,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/LockIcon.png" OpacityMask="Black"/>
         <Label x:Name="UsernameLabel" Content="Username" HorizontalAlignment="Left" Margin="324,172,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="76" OpacityMask="Black"/>
         <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="324,225,0,0" VerticalAlignment="Top" Opacity="0.5" Foreground="#FF00CAFF" Height="31" Width="71" OpacityMask="Black"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="296,294,0,0" VerticalAlignment="Top" Background="#FFDDDDDD" Height="37" Width="195" Click="Button_Click" Opacity="0.66" BorderBrush="#FF00CAFF" FontWeight="Bold"/>
-        <Button Content="Create an Account" HorizontalAlignment="Left" Margin="345,373,0,0" VerticalAlignment="Top" Opacity="0.66" BorderBrush="#FF00CAFF" Click="Button_Click_1"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="161" BorderBrush="#FF00CAFF" Height="22"/>
+        <PasswordBox HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="162" Height="22" BorderBrush="#FF00CAFF"/>
+        <Button x:Name="CreateAccountButton" Content="Create Account" HorizontalAlignment="Left" Margin="300,294,0,0" VerticalAlignment="Top" Width="192" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>
+        <Button x:Name="Log_In" Content="Login" HorizontalAlignment="Left" Margin="370,373,0,0" VerticalAlignment="Top" Height="20" Width="52" Opacity="0.66" Click="Log_In_Click" BorderBrush="#FF00CAFF"/>
 
     </Grid>
 </Window>
