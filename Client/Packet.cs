@@ -145,6 +145,21 @@ namespace Client
 
         public Tail GetTail() { return tail;}
 
+        public void setData(int length, byte[] data)
+        {
+            this.head.setLength(length);
+            this.body.data = new byte[length];
+            this.body.data = data;
+        }
+
+        public void setHead(char sID, char rID, states state)
+        {
+            this.head.setSenderID(sID);
+            this.head.setReciverID(rID);
+            this.head.setState(state);
+        
+
+    }
 
 
 
