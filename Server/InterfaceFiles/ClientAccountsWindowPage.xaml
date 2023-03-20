@@ -24,6 +24,10 @@
         </TextBlock>
         <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" TextChanged="TextBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBox HorizontalAlignment="Left" Margin="390,22,0,0" TextWrapping="Wrap" Text="Client Accounts" VerticalAlignment="Top" Width="152" TextChanged="TextBox_TextChanged_1" FontSize="20" BorderBrush="White"/>
+        <Button Content="Create Account" HorizontalAlignment="Left" Margin="229,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_4"/>
+        <Button Content="Delete Account" HorizontalAlignment="Left" Margin="342,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_5"/>
+        <Button Content="Find Account" HorizontalAlignment="Left" Margin="458,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_6"/>
+        <Button Content="View Accounts" HorizontalAlignment="Left" Margin="572,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_7"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>

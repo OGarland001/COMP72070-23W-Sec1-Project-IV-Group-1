@@ -24,6 +24,7 @@
         </TextBlock>
         <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" TextChanged="TextBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBox HorizontalAlignment="Left" Margin="400,22,0,0" TextWrapping="Wrap" Text="Console Logs" VerticalAlignment="Top" Width="142" TextChanged="TextBox_TextChanged_1" FontSize="20" BorderBrush="White"/>
-        <Frame x:Name="Main" Margin="0,-1,0,1" />
+        <DocumentViewer Margin="192,68,22,100"/>
+        <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>
