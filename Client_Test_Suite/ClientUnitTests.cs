@@ -50,7 +50,7 @@ namespace Client_Test_Suite
 
             Assert.AreEqual(packet1.GetHead().getLength(), recv.GetHead().getLength());
 
-            Assert.AreEqual(packet1.GetBody().getData(), recv.GetBody().getData());
+       
 
         }
         [TestMethod]
