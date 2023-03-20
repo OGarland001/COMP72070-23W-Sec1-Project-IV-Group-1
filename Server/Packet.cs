@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.ML.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Server
     {
         Idle, Auth, Recv, Analyze
     }
+    [Serializable]
     public struct Head
     {
         //ID from sender
@@ -66,6 +68,7 @@ namespace Server
             State = state;
         }
     };
+    [Serializable]
     public struct Body
     {
         //byte array for data
@@ -77,7 +80,7 @@ namespace Server
         }
         public byte[] getData() { return data; }
     };
-
+    [Serializable]
     public struct Tail
     {
         //byte array for the send buffer
@@ -91,6 +94,7 @@ namespace Server
 
 
     //Class Defination
+    [Serializable]
     public class Packet
     {
         private Head head;
@@ -114,7 +118,8 @@ namespace Server
                 IFormatter br = new BinaryFormatter();
                 //weird warning but not sure if it works yet microsoft says its good
                 Packet recvPacket = new Packet((Packet)br.Deserialize(ms));
-
+                this.setHead(recvPacket.GetHead().getSenderID(), recvPacket.GetHead().getReciverID(), recvPacket.GetHead().getState());
+                this.setData(recvPacket.GetHead().getLength(),recvPacket.GetBody().getData());
             }
 
         }
@@ -122,10 +127,11 @@ namespace Server
         public void SerializeData()
         {
             //serialize the data attribute to the Txbuffer inside tail.
-            IFormatter formatter = new BinaryFormatter();
 
+            IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
+               
                 //weird warning but not sure if it works yet microsoft says its good
                 formatter.Serialize(stream, this);
                 this.tail.setTxBuffer(stream.ToArray());
@@ -140,6 +146,31 @@ namespace Server
             this.tail = recvPacket.tail;
         }
 
+        public Head GetHead() { return head; }
+
+        public Body GetBody() { return body; }
+
+        public Tail GetTail() { return tail; }
+
+        public void setData(int length, byte[] data)
+        {
+            this.head.setLength(length);
+            this.body.data = new byte[length];
+            this.body.data = data;
+        }
+
+        public void setHead(char sID, char rID, states state)
+        {
+            this.head.setSenderID(sID);
+            this.head.setReciverID(rID);
+            this.head.setState(state);
+        }
+
+        public byte[] getTailBuffer()
+        {
+            return this.tail.getTxBuffer();
+
+        }
 
 
 

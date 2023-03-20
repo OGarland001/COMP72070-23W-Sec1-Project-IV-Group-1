@@ -1,5 +1,5 @@
-
 using Server;
+using System.Text;
 
 namespace Server_Test_Suite
 {
@@ -10,8 +10,8 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData()
         {
             //Arrange
-            
-            
+
+
 
 
             //Act
@@ -30,15 +30,23 @@ namespace Server_Test_Suite
             //Arrange
             //Create Packet -- Packet Structure
             Packet packet = new Packet();
+            byte[] buffer = Encoding.ASCII.GetBytes("Hello!");
+            //byte[] Sendbuffer = { };
+            packet.setData(6, buffer);
+            packet.setHead((char)1, (char)2, states.Analyze);
+           
 
-            packet.
-            //Data Buffer For Serialized Data
+            //packet.GetTail().setTxBuffer(Sendbuffer);
+
 
             //Act
             // Seriailze Packet -- seriailize Data Method
             // Packet Paramterized Constructor -- Pass Buffer into Constructor
+            packet.SerializeData();
+            Packet RecievePacket = new Packet(packet.getTailBuffer());
 
             //Assert
+            Assert.AreEqual(packet.GetHead().getLength(), RecievePacket.GetHead().getLength());
             // Assert each element is correct for both packets or create a compare method for Packtets
         }
 
@@ -93,7 +101,7 @@ namespace Server_Test_Suite
             // Assert Default state is true and rest are false
         }
 
-       
+
 
         [TestMethod]
         public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()
@@ -280,7 +288,7 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_019_SaveStateChanges_StateChange_ChangeShownInFile()
         {
             //Arrange
-            
+
             //Inititate and state change
 
             //Act
