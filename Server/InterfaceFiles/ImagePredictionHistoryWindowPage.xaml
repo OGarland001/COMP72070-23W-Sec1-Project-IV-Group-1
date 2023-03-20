@@ -22,8 +22,8 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" TextChanged="TextBox_TextChanged" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
-        <TextBox HorizontalAlignment="Left" Margin="386,22,0,0" TextWrapping="Wrap" Text="Image Prediction" VerticalAlignment="Top" Width="156" TextChanged="TextBox_TextChanged_1" FontSize="20" BorderBrush="White"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="386,22,0,0" TextWrapping="Wrap" Text="Image Prediction" VerticalAlignment="Top" Width="156" FontSize="20"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>

@@ -45,10 +45,5 @@ namespace Server
         {
             Main.Content = new ImagePredictionHistoryWindowPage();
         }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Console.WriteLine("Do Nothin");
-        }
     }
 }

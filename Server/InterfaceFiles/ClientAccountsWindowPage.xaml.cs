@@ -44,16 +44,6 @@ namespace Server.InterfaceFiles
             Main.Content = new ImagePredictionHistoryWindowPage();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
 
