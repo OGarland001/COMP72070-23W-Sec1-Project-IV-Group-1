@@ -13,39 +13,43 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Server
+namespace Server.InterfaceFiles
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ClientAccountsWindowPage.xaml
     /// </summary>
-    public partial class ImagePredictionHistoryWindow : Window
+    public partial class ClientAccountsWindowPage : Page
     {
-        public ImagePredictionHistoryWindow()
+        public ClientAccountsWindowPage()
         {
             InitializeComponent();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ClientAccountsWindowPage();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new AccountLogsWindowPage();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ClientListWindowPage();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ImagePredictionHistoryWindowPage();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
 
         }

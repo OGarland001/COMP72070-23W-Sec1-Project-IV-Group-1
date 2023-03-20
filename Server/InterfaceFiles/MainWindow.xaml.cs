@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server.InterfaceFiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,30 +28,22 @@ namespace Server
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var accountsWindow = new ClientAccountsWindow();
-
-            accountsWindow.Show();
+            Main.Content = new ClientAccountsWindowPage();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var accountsLogWindow = new AccountLogsWindow();
-
-            accountsLogWindow.Show();
+            Main.Content = new AccountLogsWindowPage();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var clientsWindow = new ClientListWindow();
-
-            clientsWindow.Show();
+            Main.Content = new ClientListWindowPage();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            var predictionWindow = new ImagePredictionHistoryWindow();
-
-            predictionWindow.Show();
+            Main.Content = new ImagePredictionHistoryWindowPage();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
