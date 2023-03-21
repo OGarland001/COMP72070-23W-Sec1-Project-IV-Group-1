@@ -13,35 +13,33 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.InterfaceFiles
 {
     /// <summary>
-    /// Interaction logic for CreateAccountWindow.xaml
+    /// Interaction logic for CreateAccountPage.xaml
     /// </summary>
-    public partial class CreateAccountWindow : Window
+    public partial class CreateAccountPage : Page
     {
-        public CreateAccountWindow()
+        public CreateAccountPage()
         {
             InitializeComponent();
         }
-             
+
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            var accountsWindow = new HomeWindow();
-
-            accountsWindow.Show();
+            Main.Content = new HomePage();
         }
 
         private void Log_In_Click(object sender, RoutedEventArgs e)
         {
-            var accountsWindow = new MainWindow();
+            Main.Content = new MainPage();
 
-            accountsWindow.Show();
+       
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿<Window x:Class="Client.InterfaceFiles.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client.InterfaceFiles"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
-    <Grid>
+﻿<Page x:Class="Client.InterfaceFiles.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Client.InterfaceFiles"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainPage">
+
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
 
         </Grid.ColumnDefinitions>
@@ -28,4 +30,4 @@
         <PasswordBox HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="161" BorderBrush="#FF00CAFF" Height="22"/>
         <Frame x:Name="Main" Margin="0,0,0,0"/>
     </Grid>
-</Window>
+</Page>

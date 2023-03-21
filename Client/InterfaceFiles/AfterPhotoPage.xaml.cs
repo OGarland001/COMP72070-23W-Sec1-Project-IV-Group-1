@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.InterfaceFiles
 {
     /// <summary>
-    /// Interaction logic for HomeWindow.xaml
+    /// Interaction logic for AfterPhotoPage.xaml
     /// </summary>
-    public partial class HomeWindow : Window
+    public partial class AfterPhotoPage : Page
     {
-        public HomeWindow()
+        public AfterPhotoPage()
         {
             InitializeComponent();
+        }
+
+        private void logout_Click(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new MainPage();
         }
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)
@@ -33,19 +38,7 @@ namespace Client
             //accountsWindow.Show();
         }
 
-        private void logout_Click(object sender, RoutedEventArgs e)
-        {
-            var accountsWindow = new MainWindow();
-
-            accountsWindow.Show();
-        }
-
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
@@ -55,9 +48,14 @@ namespace Client
 
         }
 
-        //private void Analyze_Click(object sender, RoutedEventArgs e)
-        //{
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //this button is analyze side / just for show
+        }
 
-        //}
-    } 
+        private void Button_Click1(object sender, RoutedEventArgs e)
+        {
+            //this button upload side / just for show
+        }
+    }
 }
