@@ -87,8 +87,29 @@ namespace Client_Test_Suite
         public void CLT_UNIT_TEST_005_Client_Can_Login_To_The_Server_ExpectedOutput_Sucessful_Login()
         {
             //Arrange
+            ServerStub server = new ServerStub();
+            string username = "user123";
+            string password = "Password123";
+            Packet sendPacket= new Packet();
+            userLoginData loginData;
             //Act
+            loginData.setUserName(username);
+            loginData.setPassword(password);
+
+            byte[] data = new byte[username.Length + password.Length];
+
+            data = loginData.serializeData();
+
+            sendPacket.setHead((char)05,(char)2, states.Auth);
+            sendPacket.setData(data.Length, data);
+
+            //stub acting like its the server
+            bool result = server.authenicateLoginPacket(sendPacket);
+
             //Assert
+
+            Assert.IsTrue(result);
+
 
         }
         [TestMethod]
