@@ -40,5 +40,10 @@ namespace Client.InterfaceFiles
         {
             Main.Content = new CreateAccountPage();
         }
+
+        private void Main_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+
+        }
     }
 }

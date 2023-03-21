@@ -41,7 +41,7 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Image HorizontalAlignment="Center" Height="56" Margin="0,218,0,0" VerticalAlignment="Top" Width="56" Source="/InterfaceFiles/free-arrow-next-icon-2825-thumb.png">
+        <Image HorizontalAlignment="Center" Height="56" Margin="0,218,0,0" VerticalAlignment="Top" Width="56" Source="/InterfaceFiles/Images/arrowForImage.png">
             <Image.OpacityMask>
                 <SolidColorBrush Color="#FF099EC5"/>
             </Image.OpacityMask>

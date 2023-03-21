@@ -42,7 +42,7 @@ namespace Client.InterfaceFiles
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
         {
-
+            //create access to users 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

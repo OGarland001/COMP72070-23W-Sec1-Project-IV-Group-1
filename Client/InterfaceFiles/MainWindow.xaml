@@ -19,13 +19,13 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="295,199,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/2191156-200.png" OpacityMask="Black"/>
-        <Image x:Name="Password_Icon" HorizontalAlignment="Left" Height="30" Margin="294,244,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/LockIcon.png" OpacityMask="Black"/>
+        <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="295,199,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/Images/usernamePhoto.png" OpacityMask="Black"/>
+        <Image x:Name="Password_Icon" HorizontalAlignment="Left" Height="30" Margin="294,244,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/Images/LockIcon.png" OpacityMask="Black"/>
         <Label x:Name="UsernameLabel" Content="Username" HorizontalAlignment="Left" Margin="324,172,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="76" OpacityMask="Black"/>
         <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="324,225,0,0" VerticalAlignment="Top" Opacity="0.5" Foreground="#FF00CAFF" Height="31" Width="71" OpacityMask="Black"/>
         <Button Content="Login" HorizontalAlignment="Left" Margin="296,294,0,0" VerticalAlignment="Top" Background="#FFDDDDDD" Height="37" Width="195" Click="Login_Click" Opacity="0.66" BorderBrush="#FF00CAFF" FontWeight="Bold"/>
         <Button Content="Create an Account" HorizontalAlignment="Left" Margin="345,373,0,0" VerticalAlignment="Top" Opacity="0.66" BorderBrush="#FF00CAFF" Click="CreateAccount_Click"/>
         <PasswordBox HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="161" BorderBrush="#FF00CAFF" Height="22"/>
-        <Frame x:Name="Main" Margin="0,0,0,0"/>
+        <Frame x:Name="Main" Margin="0,0,0,0" Navigated="Main_Navigated"/>
     </Grid>
 </Window>
