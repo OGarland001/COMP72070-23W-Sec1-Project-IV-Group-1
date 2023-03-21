@@ -1,4 +1,7 @@
 
+using Client;
+using System.Text;
+
 namespace Client_Test_Suite
 {
     [TestClass]
@@ -20,31 +23,55 @@ namespace Client_Test_Suite
         {
 
             //Arrange
+            Packet packet1 = new Packet();
+            
+           
 
-
-            //create a data buffer -- being able to create a data buffer method
-
+            string letters = "data";
+            int length = letters.Length;
+            byte[] data = new byte[length];
+            data = Encoding.ASCII.GetBytes(letters);
 
             //Act
 
             //serialize the data -- seralize data method
             //create a packet structure with the serialized data Act like -- para constructor for packet
+            packet1.setHead('1', '2', states.Idle);
+            packet1.setData(length, data);
 
+            packet1.SerializeData();
+
+            Packet recv = new Packet(packet1.getTailBuffer());
             //Assert
 
-            //Check each of the data parameters and ensure that they are all not null and have proper data. --assert each getter for the data
+            Assert.AreEqual(packet1.GetHead().getSenderID(), recv.GetHead().getSenderID());
 
+            Assert.AreEqual(packet1.GetHead().getReciverID(), recv.GetHead().getReciverID());
+
+            Assert.AreEqual(packet1.GetHead().getLength(), recv.GetHead().getLength());
+
+            Assert.AreEqual(packet1.GetBody().getData().ToString(), recv.GetBody().getData().ToString());
+
+       
 
         }
+
+
         [TestMethod]
         public void CLT_UNIT_TEST_003_Client_Can_Update_The_HeaderLength_When_Added_ExpectedOutput_Length()
         {
             //Arrange
+            Packet packet = new Packet();
+            byte[] data= new byte[5];
+            int length = 5;
 
-            //setup packet structure
 
             //Act
+            packet.GetHead().setReciverID('1');
+            packet.GetHead().setSenderID('2');
+            packet.setData(length, data);
             //Assert
+            Assert.AreEqual(5, packet.GetHead().getLength());
 
         }
 
@@ -60,8 +87,29 @@ namespace Client_Test_Suite
         public void CLT_UNIT_TEST_005_Client_Can_Login_To_The_Server_ExpectedOutput_Sucessful_Login()
         {
             //Arrange
+            ServerStub server = new ServerStub();
+            string username = "user123";
+            string password = "Password123";
+            Packet sendPacket= new Packet();
+            userLoginData loginData;
             //Act
+            loginData.setUserName(username);
+            loginData.setPassword(password);
+
+            byte[] data = new byte[username.Length + password.Length];
+
+            data = loginData.serializeData();
+
+            sendPacket.setHead((char)05,(char)2, states.Auth);
+            sendPacket.setData(data.Length, data);
+
+            //stub acting like its the server
+            bool result = server.authenicateLoginPacket(sendPacket);
+
             //Assert
+
+            Assert.IsTrue(result);
+
 
         }
         [TestMethod]
@@ -142,5 +190,44 @@ namespace Client_Test_Suite
             //Assert
 
         }
+
+        [TestMethod]
+        public void CLT_UNIT_TEST_011_Client_Can_Seralize_Deserialize_EmptyPacket_ExpectedOutput_FullyCreatedPacketWithZeroData()
+        {
+
+            //Arrange
+            Packet packet1 = new Packet();
+
+
+
+            int length = 0;
+            byte[] data = new byte[length];
+            
+
+            //Act
+
+            //serialize the data -- seralize data method
+            //create a packet structure with the serialized data Act like -- para constructor for packet
+            packet1.setHead('1', '2', states.Idle);
+            packet1.setData(length, data);
+
+            packet1.SerializeData();
+
+            Packet recv = new Packet(packet1.getTailBuffer());
+            //Assert
+
+            Assert.AreEqual(packet1.GetHead().getSenderID(), recv.GetHead().getSenderID());
+
+            Assert.AreEqual(packet1.GetHead().getReciverID(), recv.GetHead().getReciverID());
+
+            Assert.AreEqual(packet1.GetHead().getLength(), recv.GetHead().getLength());
+
+            Assert.AreEqual(packet1.GetBody().getData().ToString(), recv.GetBody().getData().ToString());
+
+
+
+        }
+
+
     }
 }
