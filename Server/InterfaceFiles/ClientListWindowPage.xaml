@@ -24,6 +24,12 @@
         </TextBlock>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="400,22,0,0" TextWrapping="Wrap" Text="Client List" VerticalAlignment="Top" Width="142"  FontSize="20"/>
+        <Rectangle HorizontalAlignment="Left" Height="127" Margin="242,136,0,0" VerticalAlignment="Top" Width="195" Fill="SteelBlue"/>
+        <TextBlock HorizontalAlignment="Left" Margin="242,91,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="SteelBlue" FontSize="14" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="389,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF10AB3D" FontSize="10"><Run Language="en-ca" Text="Connected"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="242,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF6A6868" FontSize="10"><Run Text="Recently Sent "/><Run Language="en-ca" Text="C"/><Run Text="omm"/><Run Text="an"/><Run Text="d"/><Run Text="s"/></TextBlock>
+        <Ellipse HorizontalAlignment="Left" Height="9" Margin="375,98,0,0" VerticalAlignment="Top" Width="9" Fill="#FF10AB3D"/>
+        <Button Content="Manually Disconnect" HorizontalAlignment="Left" Margin="273,280,0,0" VerticalAlignment="Top" Click="Button_Click_4" BorderBrush="{x:Null}" Background="Red" Height="23" Width="133" Foreground="White"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>

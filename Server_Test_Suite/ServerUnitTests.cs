@@ -1,5 +1,7 @@
 using Server;
+using System.Drawing;
 using System.Text;
+
 
 namespace Server_Test_Suite
 {
@@ -57,13 +59,20 @@ namespace Server_Test_Suite
             // Create Packet -- Packet Structure
             // Data Buffer for seriailized Data
             // int Length of data
+            int length = 10;
+            Packet packet = new Packet();
+            byte[] buffer = Encoding.ASCII.GetBytes("PacketBody");
+
 
             //Act
             // Seriailze Packet -- seriailize Data Method
             // Packet Paramterized Constructor -- Pass Buffer into Constructor
+            packet.setData(buffer.Length, buffer);
+            packet.setHead((char)1, (char)2, states.Analyze);
 
             //Assert
             // Asset that Packet header length is equal to length 
+            Assert.AreEqual(length, packet.GetHead().getLength());
         }
 
         [TestMethod]
@@ -77,7 +86,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrues_AllStatesPresent()
+        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()
         {
             //Arrange
             //Create Packet
@@ -109,18 +118,23 @@ namespace Server_Test_Suite
         {
             //Arrange
             //Create Packet
-
+            string imageName = "../../../ML.NET/assets\\images";
             ProgramServer program = new ProgramServer();
+            int length = 0;
+
 
             //Create Packet 
-
-            program.RunRecognition();
-
+            
             //Act
             // Generate Image method -- needs to inputs
+            program.RunRecognition();
+            //Image createdImage = Image.FromFile(imageName);
+            //length = createdImage.Size.Width;
+
 
             //Assert
             // Assert image is present in the file explorer
+            Assert.IsTrue(length > 0);
         }
 
         [TestMethod]

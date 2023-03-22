@@ -43,5 +43,10 @@ namespace Server.InterfaceFiles
         {
             Main.Content = new ImagePredictionHistoryWindowPage();
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
