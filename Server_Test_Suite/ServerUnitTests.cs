@@ -179,7 +179,7 @@ namespace Server_Test_Suite
             Packet RecievePacket = new Packet(packet.getTailBuffer());
 
             login userlogin = new login(RecievePacket);
-            bool error = userlogin.SaveuserData("users.txt");
+            
             bool Correct = userlogin.LoaduserData("users.txt");
 
             //Assert
