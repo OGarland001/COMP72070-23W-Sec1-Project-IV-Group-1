@@ -57,7 +57,7 @@ namespace Server
     //Enum States
     public enum states
     {
-        Idle, Auth, Recv, Analyze
+        Idle, Auth, Recv, Analyze, Saving, Sending
     }
     [Serializable]
     public struct Head

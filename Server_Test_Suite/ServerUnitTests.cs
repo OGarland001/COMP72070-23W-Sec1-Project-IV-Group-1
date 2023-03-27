@@ -76,7 +76,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()
+        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
 
@@ -86,7 +86,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()
+        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
             //Create Packet
@@ -98,7 +98,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()
+        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
             // Create Packet
@@ -113,7 +113,7 @@ namespace Server_Test_Suite
 
 
         [TestMethod]
-        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()
+        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()//----------------------------------------------------------HERE BRODIN
 
         {
             //Arrange
