@@ -10,11 +10,15 @@ using Microsoft.ML;
 using System.IO;
 using Server.ML.NET.YoloParser;
 using Server.ML.NET;
+using System.Configuration;
 
 namespace Server
 {
     public class ProgramServer
     {
+        //Store the current state of the server - by default it should be idle
+        Server.states currentState = states.Idle;
+
         public void RunRecognition()
         {
             var assetsRelativePath = @"../../../ML.NET/assets";
