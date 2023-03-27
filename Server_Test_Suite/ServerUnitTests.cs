@@ -234,22 +234,6 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_011_DownloadImage_DownloadRequest_ImageDownloaded()
-        {
-            //Arrange
-
-            //server generated image - can the image be downloaded
-
-            //Act
-
-            //download the image
-
-            //Assert
-
-            //Can the user open the image from the specified directory
-        }
-
-        [TestMethod]
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
