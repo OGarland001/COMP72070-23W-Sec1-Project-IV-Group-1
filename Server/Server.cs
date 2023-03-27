@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using ObjectDetection.DataStructures;
@@ -10,11 +8,9 @@ using Microsoft.ML;
 using System.IO;
 using Server.ML.NET.YoloParser;
 using Server.ML.NET;
-using System.Configuration;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Automation;
-using System.Windows.Data;
-using System.Windows;
+using Image = System.Drawing.Image;
+using Point = System.Drawing.Point;
+using FontStyle = System.Drawing.FontStyle;
 
 namespace Server
 {
