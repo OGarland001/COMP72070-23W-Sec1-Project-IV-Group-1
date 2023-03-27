@@ -232,16 +232,100 @@ namespace Server
 
 
     }
+
     public class login
     {
         private userLoginData userData;
+
+        public login()
+        {
+            userData = new userLoginData();
+        }
+
+        public login(Packet packet)
+        {
+            userLoginData temp = packet.deserializeUserLoginData();
+            userData.setUserName(temp.getUserName());
+            userData.setPassword(temp.getPassword());
+        }
 
         public userLoginData GetuserData() {
             return userData;
         }
 
-      
+        public void SetuserData(string username, string password)
+        {
+            userData.setUserName(username);
+            userData.setPassword(password);
+        }
+
+        public bool SaveuserData()
+        {
+            var filePath = "users.txt";
+            bool error = false;
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    writer.WriteLine(userData.getUserName());
+                    writer.WriteLine(userData.getPassword());
+                    writer.Close();
+                }
+                
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+                error = true;
+            }
+
+            
+
+            return error;
+        }
+
+        public bool LoaduserData()
+        {
+            var filePath = "users.txt";
+            bool found = false;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+                    string line2 = reader.ReadLine();
+
+                    while ((line1 != null) && (line2 != null))
+                    {
+                        if ((line1 == userData.getUserName()) && (line2 == userData.getPassword()))
+                        {
+                            found = true;
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                        line2 = reader.ReadLine();
+                    }
+                   
+
+
+                    reader.Close();
+                }
+            }
+            catch(IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+            }
+            
+            return found;
+        }
+
     }
+
+      
+    
 
 
 
