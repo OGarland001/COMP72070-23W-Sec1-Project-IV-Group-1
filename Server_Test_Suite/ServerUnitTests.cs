@@ -90,12 +90,29 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
-            //Create Packet
+            ProgramServer serverIDlE = new ProgramServer();
+            ProgramServer serverAUTHENTICATE = new ProgramServer();
+            ProgramServer serverRecieve = new ProgramServer();
+            ProgramServer serverAnalyze = new ProgramServer();
+            ProgramServer serverSending = new ProgramServer();
+            ProgramServer serverSave = new ProgramServer();
             //Act
             // Set all states to true
+            serverAUTHENTICATE.setAutenticatingState();
+            serverRecieve.setReceivingPacketsState();
+            serverAnalyze.setAnalyzingImagesState();
+            serverSending.setSendingAnalyzedImagesState();
+            serverSave.setSavingImagesState();
 
             //Assert
             // Verify all states are set to true
+            Assert.AreEqual(serverIDlE.getCurrentState(), states.Idle);
+            Assert.AreEqual(serverAUTHENTICATE.getCurrentState(), states.Auth);
+            Assert.AreEqual(serverRecieve.getCurrentState(), states.Recv);
+            Assert.AreEqual(serverAnalyze.getCurrentState(), states.Analyze);
+            Assert.AreEqual(serverSending.getCurrentState(), states.Sending);
+            Assert.AreEqual(serverSave.getCurrentState(), states.Saving);
+
         }
 
         [TestMethod]
@@ -103,12 +120,15 @@ namespace Server_Test_Suite
         {
             //Arrange
             // Create Packet
+            ProgramServer server = new ProgramServer();
 
             //Act
             // Check packet is in state by default or run Recogniation method to check for recogniation state is true
+            server.RunRecognition();
 
             //Assert
-            // Assert Default state is true and rest are false
+            // Assert Analyzing State is set to current state not the default
+            Assert.AreNotEqual(server.getCurrentState(), states.Idle);
         }
 
 
