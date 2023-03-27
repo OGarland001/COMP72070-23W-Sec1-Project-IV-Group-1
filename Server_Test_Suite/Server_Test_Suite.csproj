@@ -45,4 +45,8 @@
     <ProjectReference Include="..\Server\Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ML.NET\assets\images\output\" />
+  </ItemGroup>
+
 </Project>

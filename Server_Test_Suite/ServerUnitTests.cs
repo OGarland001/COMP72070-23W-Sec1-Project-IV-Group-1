@@ -1,4 +1,5 @@
 using Server;
+using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
 
@@ -118,23 +119,24 @@ namespace Server_Test_Suite
         {
             //Arrange
             //Create Packet
-            string imageName = "../../../ML.NET/assets\\images";
-            ProgramServer program = new ProgramServer();
-            int length = 0;
-
-
-            //Create Packet 
             
+            ProgramServer program = new ProgramServer();
+            int width = 0;
+            int height = 0;
+
             //Act
             // Generate Image method -- needs to inputs
             program.RunRecognition();
-            //Image createdImage = Image.FromFile(imageName);
-            //length = createdImage.Size.Width;
+            
+            string imageName = @"../../../ML.NET/assets\images\output\Bicycle.jpg";
+            Image createdImage = Image.FromFile(imageName);
+            width = createdImage.Size.Width;
+            height = createdImage.Size.Height;
 
 
             //Assert
             // Assert image is present in the file explorer
-            //Assert.IsTrue(length > 0);
+            Assert.IsTrue(width > 0 && height > 0);
         }
 
         [TestMethod]
@@ -143,12 +145,37 @@ namespace Server_Test_Suite
             //Arrange
             //Data buffer for username and password
             //Create login Packet for new user
+            string username = "NewUser1222";
+            string password = "User444$$";
+
+            Packet packet = new Packet();
+            userLoginData loginData;
+
 
             //Act
-            //Call Database access method to save new client's credentials
+            // Check login packet with database/file is there
+            loginData.setUserName(username);
+            loginData.setPassword(password);
+
+            byte[] body = new byte[username.Length + password.Length];
+
+            body = loginData.serializeData();
+
+            packet.setHead((char)3, (char)4, states.Sending);
+            packet.setData(body.Length, body);
+            packet.SerializeData();
+            Packet RecievePacket = new Packet(packet.getTailBuffer());
+
+            login userlogin = new login(RecievePacket);
+
+            bool Error = userlogin.SaveuserData("users.txt");
+
+            bool Correct = userlogin.LoaduserData("users.txt");
 
             //Assert
-            // Read Database method to ensure client is actually saved
+            
+            Assert.IsTrue(Correct);
+            Assert.IsFalse(Error);
         }
 
         [TestMethod]
