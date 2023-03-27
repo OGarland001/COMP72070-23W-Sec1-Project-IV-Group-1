@@ -250,14 +250,14 @@ namespace Server
             userData.setPassword(password);
         }
 
-        public bool SaveuserData()
+        public bool SaveuserData(string filePath)
         {
-            var filePath = "users.txt";
+            
             bool error = false;
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (StreamWriter writer = new StreamWriter(filePath, append: true))
                 {
                     writer.WriteLine(userData.getUserName());
                     writer.WriteLine(userData.getPassword());
@@ -276,9 +276,9 @@ namespace Server
             return error;
         }
 
-        public bool LoaduserData()
+        public bool LoaduserData(string filePath)
         {
-            var filePath = "users.txt";
+            
             bool found = false;
 
             try

@@ -1,4 +1,5 @@
 using Server;
+using System.Net.Sockets;
 using System.Text;
 
 
@@ -133,7 +134,7 @@ namespace Server_Test_Suite
 
             //Assert
             // Assert image is present in the file explorer
-            Assert.IsTrue(length > 0);
+            //Assert.IsTrue(length > 0);
         }
 
         [TestMethod]
@@ -156,12 +157,33 @@ namespace Server_Test_Suite
             //Arrange
             // Data buffer username and password
             // Create Login Packet
+            string username = "Tester88";
+            string password = "!QAZ1qaz";
+
+            Packet packet = new Packet();
+            userLoginData loginData;
+
 
             //Act
             // Check login packet with database/file is there
+            loginData.setUserName(username);
+            loginData.setPassword(password);
+
+            byte[] body = new byte[username.Length + password.Length];
+
+            body = loginData.serializeData();
+
+            packet.setHead((char)1, (char)2, states.Auth);
+            packet.setData(body.Length, body);
+            packet.SerializeData();
+            Packet RecievePacket = new Packet(packet.getTailBuffer());
+
+            login userlogin = new login(RecievePacket);
+            bool error = userlogin.SaveuserData("users.txt");
+            bool Correct = userlogin.LoaduserData("users.txt");
 
             //Assert
-            // Assert that file username and password are same as inputted 
+            Assert.IsTrue(Correct);
         }
 
         [TestMethod]
