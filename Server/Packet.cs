@@ -1,8 +1,9 @@
-﻿using Microsoft.ML.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Printing.IndexedProperties;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -11,8 +12,48 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
+#pragma warning disable SYSLIB0011
+
 namespace Server
 {
+    //loginDataStruct
+    [Serializable]
+    public struct userLoginData
+    {
+        private string UserName;
+        private string Password;
+
+        public string getUserName()
+        {
+            return this.UserName;
+        }
+        public string getPassword()
+        {
+            return this.Password;
+        }
+        public void setUserName(string userName) { this.UserName = userName; }
+        public void setPassword(string password) { this.Password = password; }
+
+        public byte[] serializeData()
+        {
+            //serialize the data attribute to the Txbuffer inside tail.
+
+            IFormatter formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream())
+            {
+
+                //weird warning but not sure if it works yet microsoft says its good
+                formatter.Serialize(stream, this);
+                byte[] data = new byte[stream.Length];
+                data = stream.ToArray();
+                stream.Close();
+
+                return data;
+            }
+
+        }
+    }
+
     //Enum States
     public enum states
     {
@@ -119,7 +160,7 @@ namespace Server
                 //weird warning but not sure if it works yet microsoft says its good
                 Packet recvPacket = new Packet((Packet)br.Deserialize(ms));
                 this.setHead(recvPacket.GetHead().getSenderID(), recvPacket.GetHead().getReciverID(), recvPacket.GetHead().getState());
-                this.setData(recvPacket.GetHead().getLength(),recvPacket.GetBody().getData());
+                this.setData(recvPacket.GetHead().getLength(), recvPacket.GetBody().getData());
             }
 
         }
@@ -131,7 +172,7 @@ namespace Server
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
-               
+
                 //weird warning but not sure if it works yet microsoft says its good
                 formatter.Serialize(stream, this);
                 this.tail.setTxBuffer(stream.ToArray());
@@ -172,7 +213,37 @@ namespace Server
 
         }
 
+        public userLoginData deserializeUserLoginData()
+        {
+            //ParaConstructor of the data buffer.
+            using (MemoryStream ms = new MemoryStream(this.body.getData()))
+            {
+
+                IFormatter br = new BinaryFormatter();
+
+                userLoginData loginData = (userLoginData)br.Deserialize(ms);
+
+                return loginData;
+            }
+
+
+        }
+
 
 
     }
+    public class login
+    {
+        private userLoginData userData;
+
+        public userLoginData GetuserData() {
+            return userData;
+        }
+
+      
+    }
+
+
+
+
 }

@@ -138,7 +138,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_009_SaveClientPasswordUsernameToDatabase_CredentialsSaved()
+        public void SVR_UNIT_TEST_009_SaveClientPasswordUsernameToFile_CredentialsSaved()
         {
             //Arrange
             //Data buffer for username and password
