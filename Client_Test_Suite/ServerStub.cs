@@ -28,5 +28,21 @@ namespace Client_Test_Suite
             }
             return false;
         }
+        public bool CreateUserCreds(Packet packet)
+        {
+            if (packet.GetHead().getState() == states.NewAuth)
+            {
+                userLoginData recvLoginData = packet.deserializeUserLoginData();
+
+                using (StreamWriter writer = new StreamWriter("userDataTest.txt"))
+                {
+                    string line = "" + recvLoginData.getUserName() + ','+ recvLoginData.getPassword() + "\n";
+                    writer.WriteLine(line);
+                }
+                return true;
+
+            }
+            return false;
+        }
     }
 }

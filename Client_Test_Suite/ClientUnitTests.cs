@@ -159,18 +159,30 @@ namespace Client_Test_Suite
         [TestMethod]
         public void CLT_UNIT_TEST_009__Client_creates_account_for_new_user_login__ExpctedOuput_Account_structure_updated_adding_new_created_user()
         {
-            /* 
-            //Arrang
-            - create user login data
-            - send data to client
-            - get client to accept the login and authenticate its legit
-
+            //Arrange
+            ServerStub server = new ServerStub();
+            string username = "user123";
+            string password = "Password123";
+            Packet sendPacket = new Packet();
+            userLoginData loginData;
             //Act
+            loginData.setUserName(username);
+            loginData.setPassword(password);
 
+            byte[] data = new byte[username.Length + password.Length];
+
+            data = loginData.serializeData();
+
+            sendPacket.setHead((char)05, (char)2, states.NewAuth);
+            sendPacket.setData(data.Length, data);
+
+            //stub acting like its the server
+            bool result = server.CreateUserCreds(sendPacket);
 
             //Assert
-            
-            */
+
+            Assert.IsTrue(result);
+
         }
         [TestMethod]
         public void CLT_UNIT_TEST_010__GUI_Shows_Client_Features__FeaturesAllShown()

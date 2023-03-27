@@ -57,7 +57,7 @@ namespace Client
     //Enum States
     public enum states
     {
-        Idle, Auth, Recv, Analyze
+        Idle, Auth, NewAuth, Recv, Analyze
     }
     [Serializable]
     public struct Head
