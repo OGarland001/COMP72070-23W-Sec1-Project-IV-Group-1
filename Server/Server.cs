@@ -11,6 +11,7 @@ using Server.ML.NET;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
+using System.CodeDom;
 
 namespace Server
 {
@@ -19,7 +20,7 @@ namespace Server
         //Store the current state of the server - by default it should be idle
         Server.states currentState = states.Idle;
 
-        public void RunRecognition()
+        public string[,] RunRecognition()
         {
             setAnalyzingImagesState();
 
@@ -52,6 +53,8 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
+                string[,] results = new string[images.Count(), 2];
+               
                 // Draw bounding boxes for detected objects in each of the images
                 for (var i = 0; i < images.Count(); i++)
                 {
@@ -59,16 +62,33 @@ namespace Server
                     IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
 
                     DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
+                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
 
                     LogDetectedObjects(imageFileName, detectedObjects);
+
+                    for (int j = 0; j < objects.Length; j++)
+                    {
+                        results[i, j] = objects[j];
+                        results[i, j + 1] = confidence[j];
+                    }
                 }
+
+                
+
+                Console.WriteLine("========= End of Process..Hit any Key ========");
+                return results;
+
+               
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+
+                return null;
             }
 
-            Console.WriteLine("========= End of Process..Hit any Key ========");
+            
 
             string GetAbsolutePath(string relativePath)
             {

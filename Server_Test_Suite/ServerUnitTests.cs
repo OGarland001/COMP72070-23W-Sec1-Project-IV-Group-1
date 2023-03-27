@@ -1,7 +1,10 @@
+using Google.Protobuf.WellKnownTypes;
 using Server;
+using Server.ML.NET.YoloParser;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
+using static SkiaSharp.SKPath;
 
 
 namespace Server_Test_Suite
@@ -36,7 +39,7 @@ namespace Server_Test_Suite
             byte[] buffer = Encoding.ASCII.GetBytes("Hello!");
             //byte[] Sendbuffer = { };
             packet.setData(6, buffer);
-            packet.setHead((char)1, (char)2, states.Analyze);
+            packet.setHead((char)1, (char)2, states.Recv);
            
 
             //packet.GetTail().setTxBuffer(Sendbuffer);
@@ -77,7 +80,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()
+        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
 
@@ -87,7 +90,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()
+        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
             ProgramServer serverIDlE = new ProgramServer();
@@ -116,7 +119,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()
+        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
         {
             //Arrange
             // Create Packet
@@ -134,7 +137,7 @@ namespace Server_Test_Suite
 
 
         [TestMethod]
-        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()
+        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()//----------------------------------------------------------HERE BRODIN
 
         {
             //Arrange
@@ -234,6 +237,22 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
+        public void SVR_UNIT_TEST_011_DownloadImage_DownloadRequest_ImageDownloaded()
+        {
+            //Arrange
+
+            //server generated image - can the image be downloaded
+
+            //Act
+
+            //download the image
+
+            //Assert
+
+            //Can the user open the image from the specified directory
+        }
+
+        [TestMethod]
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
@@ -256,17 +275,21 @@ namespace Server_Test_Suite
 
             //Server integrated with the API image detection
             //Send the image to the api
+            ProgramServer server = new ProgramServer();
 
-            //Act
 
-            //collect the response from the api
+            // Collect the response from the API
+            string[,] objects = server.RunRecognition();
 
-            //Assert
-
-            //does the API response match the expectation
+            if (objects != null)
+            {
+                Assert.AreEqual("dog", objects[1, 0]);
+            }
         }
 
-        [TestMethod]
+
+
+            [TestMethod]
         public void SVR_UNIT_TEST_014_SaveUserCredentials_NewClient_CredentialsSaved()
         {
             //Arrange
