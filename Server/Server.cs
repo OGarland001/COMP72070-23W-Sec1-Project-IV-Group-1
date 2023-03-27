@@ -11,6 +11,10 @@ using System.IO;
 using Server.ML.NET.YoloParser;
 using Server.ML.NET;
 using System.Configuration;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Automation;
+using System.Windows.Data;
+using System.Windows;
 
 namespace Server
 {
@@ -148,6 +152,51 @@ namespace Server
 
                 Console.WriteLine("");
             }
+        }
+
+
+        //NOTE: For the following states, if a state has a automatic trigger the state can be trigged by the server reaching a certain point in the code. Otherwise the state can only be triggered from the received client packet
+
+        //State Command: 1 – Idle (Automatic Trigger)​​
+        void setIdleState()
+        {
+            //Server is waiting for next state​​
+            currentState = states.Idle;
+        }
+
+        //State Command: 2 - Authenticating(Client Header Trigger)​​
+        void setAutenticatingState()
+        {
+            //Server is determining if the client can be accepted​​
+            currentState = states.Auth;
+        }
+
+        //State Command: 3 - Receiving Packets(Client Header Trigger)​​
+        void setReceivingPacketsState()
+        {
+            //Server is getting packets​​
+            currentState = states.Recv;
+        }
+
+        //State Command: 4 - Analyzing Images(Automatic Trigger)​​
+        void setAnalyzingImagesState()
+        {
+            //Server is classifying the given image​​
+            currentState = states.Analyze;
+        }
+
+        //State Command: 5 - Saving Images(Automatic Trigger)​​
+        void setSavingImagesState()
+        {
+            //Server is internally saving the image and preparing to send the image​​
+            currentState = states.Saving;
+        }
+
+        //State Command: 6 - Sending Analyzed Images(Client Header Trigger)​
+        void setSendingAnalyzedImagesState()
+        {
+            //Server is sending the image packet​
+            currentState = states.Sending;
         }
     }
 }
