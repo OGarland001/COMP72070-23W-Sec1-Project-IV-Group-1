@@ -229,8 +229,8 @@ namespace Server_Test_Suite
             Packet RecievePacket = new Packet(packet.getTailBuffer());
 
             login userlogin = new login(RecievePacket);
-            
-            string Correct = userlogin.SignInUser("users.txt");
+            ///userlogin.SaveuserData("users.txt");
+            string Correct = userlogin.SignInUser("TestingUsers.txt");
 
             //Assert
             Assert.AreEqual("User signed in",Correct);
@@ -256,9 +256,12 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
+            login existinglogin = new login();
             login login = new login();
             string username = "Tester88";
             string password = "Yellow$E2";
+            string existingUsername = username;
+            string existingPassword = "RandomPassword21!";
 
             //Client server connection established
             //Client requests authentication - invalid authentication
@@ -266,6 +269,8 @@ namespace Server_Test_Suite
             //Act
 
             login.SetuserData(username, password);
+            existinglogin.SetuserData(existingUsername, existingPassword);
+            existinglogin.SaveuserData("users.txt");
             string result = login.RegisterUser("users.txt");
             //Attempt to perform authentication in server
 
@@ -302,12 +307,21 @@ namespace Server_Test_Suite
             //Client server connection established
             //Client requests authentication - valid authentication
 
-            //Act
+            login login = new login();
+            string username = "RandomUser1";
+            string password = "Password990$";
 
+
+            //Act
             //Perform authentication in server
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
 
             //Assert
+            Assert.AreEqual("User registered", result);
 
+            //clear contents of file so username is unique everytime
+            System.IO.File.WriteAllText("users.txt", string.Empty);
             //Did the users credentials get saved to the file?
         }
 
