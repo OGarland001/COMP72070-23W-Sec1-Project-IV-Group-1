@@ -1,5 +1,4 @@
-﻿using NetworkCommsDotNet;
-using NetworkCommsDotNet.Connections.TCP;
+﻿
 using System;
 using System.Net.NetworkInformation;
 
@@ -21,7 +20,7 @@ namespace Client
 
         bool authenticateUser(Packet sendPacket)
         {
-            TCPConnection.GetConnection(new ConnectionInfo("127.0.0.1", 10000)).SendObject("PacketObj" , sendPacket);
+           
             Console.WriteLine("Send completed");
 
 

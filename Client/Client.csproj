@@ -19,12 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetworkCommsDotNet" Version="3.0.3" />
-    <PackageReference Include="NetworkCommsDotNetStandard" Version="3.0.4.1" />
-    <PackageReference Include="protobuf-net" Version="3.2.16" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="InterfaceFiles\Images\usernamePhoto.png" />
     <Resource Include="InterfaceFiles\Images\arrowForImage.png" />
     <Resource Include="InterfaceFiles\Images\LockIcon.png" />
