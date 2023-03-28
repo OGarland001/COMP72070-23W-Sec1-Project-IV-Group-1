@@ -4,13 +4,13 @@ using System.Net.NetworkInformation;
 
 namespace Client
 {
-    public class Client
+    public class ProgramClient
     {
         string clientUserName { get; set; }
         DateTime loginDate;
         bool authentcated { get; set; }
 
-        public Client() {
+        public ProgramClient() {
         
            clientUserName= string.Empty;
            loginDate = DateTime.Now; 
