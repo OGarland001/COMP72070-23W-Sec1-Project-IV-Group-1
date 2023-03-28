@@ -270,6 +270,7 @@ namespace Server_Test_Suite
             Assert.AreEqual("Username must be unique", result);
             //Did a response get generated that the user was not unique
         }
+        
         [TestMethod]
         public void SVR_UNIT_TEST_013_ImageDetections_DogImage_DogClassifciation()
         {
@@ -289,9 +290,7 @@ namespace Server_Test_Suite
             }
         }
 
-
-
-            [TestMethod]
+        [TestMethod]
         public void SVR_UNIT_TEST_014_SaveUserCredentials_NewClient_CredentialsSaved()
         {
             //Arrange
@@ -312,17 +311,19 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_015_AuthenticateClient_NewClient_ClientAuthenticated()
         {
             //Arrange
-
-            //Client server connection established
             //Client requests authentication - valid authentication
+            login login = new login();
+            string username = "Tester9six1";
+            string password = "123456";
 
             //Act
-
             //Perform authentication in server
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
 
             //Assert
-
             //Did the user get authorized?
+            Assert.AreEqual("User Registered", result);
         }
 
         [TestMethod]
