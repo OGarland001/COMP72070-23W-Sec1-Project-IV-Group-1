@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -269,11 +270,11 @@ namespace Server
             return error;
         }
 
-        public bool LoaduserData(string filePath)
+        public string SignInUser(string filePath)
         {
             
-            bool found = false;
-
+            
+            string message = "Username or password is incorrect";
             try
             {
                 using (StreamReader reader = new StreamReader(filePath))
@@ -285,14 +286,15 @@ namespace Server
                     {
                         if ((line1 == userData.getUserName()) && (line2 == userData.getPassword()))
                         {
-                            found = true;
+                            
+                            message = "User signed in";
                             break;
                         }
 
                         line1 = reader.ReadLine();
                         line2 = reader.ReadLine();
                     }
-                   
+                 
 
 
                     reader.Close();
@@ -300,10 +302,63 @@ namespace Server
             }
             catch(IOException e)
             {
-                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+                message = "Error Signing in user";
             }
             
-            return found;
+            return message;
+        }
+
+
+        public bool checkUsername(string filePath)
+        {
+            bool unique = true;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+
+                    while ((line1 != null))
+                    {
+                        if ((line1 == userData.getUserName()))
+                        {
+                            unique = false;
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                    }
+
+
+
+                    reader.Close();
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+            }
+
+            return unique;
+        }
+
+
+        public string RegisterUser(string filePath)
+        {
+            string message;
+            if (checkUsername(filePath) == false)
+            {
+                //Non unique Username Entered
+                message = "Username must be unique";
+            }
+            else
+            {
+                message = "User Registered";
+                SaveuserData(filePath);
+            }
+
+            return message;
         }
     }
 }

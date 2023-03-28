@@ -16,21 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ML.NET\assets\images\image1.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="ML.NET\assets\images\image2.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="ML.NET\assets\images\image3.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="ML.NET\assets\images\image4.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.ML" Version="3.0.0-preview.22621.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0-preview-20230223-05" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />

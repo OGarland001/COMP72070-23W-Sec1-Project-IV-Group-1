@@ -1,7 +1,10 @@
+using Google.Protobuf.WellKnownTypes;
 using Server;
+using Server.ML.NET.YoloParser;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
+using static SkiaSharp.SKPath;
 
 
 namespace Server_Test_Suite
@@ -33,7 +36,7 @@ namespace Server_Test_Suite
             byte[] buffer = Encoding.ASCII.GetBytes("Hello!");
             //byte[] Sendbuffer = { };
             packet.setData(6, buffer);
-            packet.setHead((char)1, (char)2, states.Analyze);
+            packet.setHead((char)1, (char)2, states.Recv);
            
 
             //packet.GetTail().setTxBuffer(Sendbuffer);
@@ -187,11 +190,11 @@ namespace Server_Test_Suite
 
             bool Error = userlogin.SaveuserData("users.txt");
 
-            bool Correct = userlogin.LoaduserData("users.txt");
+            string Correct = userlogin.SignInUser("users.txt");
 
             //Assert
             
-            Assert.IsTrue(Correct);
+            Assert.AreEqual("User signed in", Correct);
             Assert.IsFalse(Error);
         }
 
@@ -224,26 +227,47 @@ namespace Server_Test_Suite
 
             login userlogin = new login(RecievePacket);
             
-            bool Correct = userlogin.LoaduserData("users.txt");
+            string Correct = userlogin.SignInUser("users.txt");
 
             //Assert
-            Assert.IsTrue(Correct);
+            Assert.AreEqual("User signed in",Correct);
+        }
+
+        [TestMethod]
+        public void SVR_UNIT_TEST_011_DownloadImage_DownloadRequest_ImageDownloaded()
+        {
+            //Arrange
+
+            //server generated image - can the image be downloaded
+
+            //Act
+
+            //download the image
+
+            //Assert
+
+            //Can the user open the image from the specified directory
         }
 
         [TestMethod]
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
+            login login = new login();
+            string username = "Tester88";
+            string password = "Yellow$E2";
 
             //Client server connection established
             //Client requests authentication - invalid authentication
 
             //Act
 
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
             //Attempt to perform authentication in server
 
             //Assert
-
+            Assert.AreEqual("Username must be unique", result);
             //Did a response get generated that the user was not unique
         }
         [TestMethod]
@@ -253,17 +277,21 @@ namespace Server_Test_Suite
 
             //Server integrated with the API image detection
             //Send the image to the api
+            ProgramServer server = new ProgramServer();
 
-            //Act
 
-            //collect the response from the api
+            // Collect the response from the API
+            string[,] objects = server.RunRecognition();
 
-            //Assert
-
-            //does the API response match the expectation
+            if (objects != null)
+            {
+                Assert.AreEqual("dog", objects[1, 0]);
+            }
         }
 
-        [TestMethod]
+
+
+            [TestMethod]
         public void SVR_UNIT_TEST_014_SaveUserCredentials_NewClient_CredentialsSaved()
         {
             //Arrange
