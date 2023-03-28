@@ -11,6 +11,7 @@ using Server.ML.NET;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
+using System.Diagnostics;
 using System.CodeDom;
 
 namespace Server
@@ -19,6 +20,7 @@ namespace Server
     {
         //Store the current state of the server - by default it should be idle
         Server.states currentState = states.Idle;
+        String currentClientUsername = "Server";
 
         public string[,] RunRecognition()
         {
@@ -172,6 +174,49 @@ namespace Server
             }
         }
 
+        public void saveUserSpecificEventToFile(string eventToLog)
+        {
+            //log for a specific user
+            string path = currentClientUsername + "Log.txt";
+            string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
+
+            if (!File.Exists(path))
+            { // Create a file to write to
+                using (StreamWriter Writer = new StreamWriter(File.Create(path))) {
+                    Writer.WriteLine(logEntry);
+                    Writer.Close();
+                }
+            } 
+            else
+            { //write to general program file
+                using (StreamWriter writer = new StreamWriter("ServerLog.txt", append: true))
+                {
+                    writer.WriteLine(logEntry);
+                    writer.Close();
+                }
+            }
+        }
+
+        public void saveServerEventToFile(string eventToLog)
+        {
+            //log for a specific user
+            string path = currentClientUsername + "Log.txt";
+            string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
+
+            //write to general program file
+            using (StreamWriter writer = new StreamWriter("ServerLog.txt", append: true))
+            {
+                writer.WriteLine(logEntry);
+                writer.Close();
+            }
+        }
+
+        public string openFile(String filename)
+        {
+            string readText = File.ReadAllText(filename);
+
+            return readText;
+        }
 
         //NOTE: For the following states, if a state has a automatic trigger the state can be trigged by the server reaching a certain point in the code. Otherwise the state can only be triggered from the received client packet
 
@@ -180,6 +225,8 @@ namespace Server
         {
             //Server is waiting for next state​​
             currentState = states.Idle;
+            saveUserSpecificEventToFile(" state changed to idle");
+            saveServerEventToFile(" state changed to idle");
         }
 
         //State Command: 2 - Authenticating(Client Header Trigger)​​
@@ -187,6 +234,8 @@ namespace Server
         {
             //Server is determining if the client can be accepted​​
             currentState = states.Auth;
+            saveUserSpecificEventToFile(" state changed to authenticating");
+            saveServerEventToFile(" state changed to authenticating");
         }
 
         //State Command: 3 - Receiving Packets(Client Header Trigger)​​
@@ -194,6 +243,8 @@ namespace Server
         {
             //Server is getting packets​​
             currentState = states.Recv;
+            saveUserSpecificEventToFile(" state changed to receiving packets");
+            saveServerEventToFile(" state changed to receiving packets");
         }
 
         //State Command: 4 - Analyzing Images(Automatic Trigger)​​
@@ -201,6 +252,8 @@ namespace Server
         {
             //Server is classifying the given image​​
             currentState = states.Analyze;
+            saveUserSpecificEventToFile(" state changed to analyzing images");
+            saveServerEventToFile(" state changed to analyzing images");
         }
 
         //State Command: 5 - Saving Images(Automatic Trigger)​​
@@ -208,6 +261,8 @@ namespace Server
         {
             //Server is internally saving the image and preparing to send the image​​
             currentState = states.Saving;
+            saveUserSpecificEventToFile(" state changed to saving images");
+            saveServerEventToFile(" state changed to saving images");
         }
 
         //State Command: 6 - Sending Analyzed Images(Client Header Trigger)​
@@ -215,6 +270,8 @@ namespace Server
         {
             //Server is sending the image packet​
             currentState = states.Sending;
+            saveUserSpecificEventToFile(" state changed to sending analyzed images");
+            saveServerEventToFile(" state changed to sending analyzed images");
         }
         public states getCurrentState()
         {

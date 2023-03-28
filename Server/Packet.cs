@@ -217,12 +217,7 @@ namespace Server
 
                 return loginData;
             }
-
-
         }
-
-
-
     }
 
     public class login
@@ -271,8 +266,6 @@ namespace Server
                 Console.WriteLine("An error occurred while writing to the file: " + e.Message);
                 error = true;
             }
-
-            
 
             return error;
         }
@@ -373,13 +366,5 @@ namespace Server
 
             return message;
         }
-
     }
-
-      
-    
-
-
-
-
 }

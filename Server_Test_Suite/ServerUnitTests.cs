@@ -13,12 +13,9 @@ namespace Server_Test_Suite
     public class ServerUnitTests
     {
         [TestMethod]
-        public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData()
+        public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData() //Goal
         {
             //Arrange
-
-
-
 
             //Act
             //Serialize the packet -- Save output to a data buffer
@@ -80,7 +77,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData() //after integration
         {
             //Arrange
 
@@ -90,7 +87,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()
         {
             //Arrange
             ProgramServer serverIDlE = new ProgramServer();
@@ -119,7 +116,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()
         {
             //Arrange
             // Create Packet
@@ -137,7 +134,7 @@ namespace Server_Test_Suite
 
 
         [TestMethod]
-        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()
 
         {
             //Arrange
@@ -343,7 +340,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_016_RecvImage_ClientSendsImage_ServerReceivesImageAndCanOpenIt()
+        public void SVR_UNIT_TEST_016_RecvImage_ClientSendsImage_ServerReceivesImageAndCanOpenIt() //after integration
         {
             //Arrange
 
@@ -363,50 +360,28 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_017_ViewFiles_OpenFiles_FilesOpen()
         {
             //Arrange
-
-            //no arrange
-
-            //Act
-
-            //open all test logs and files
-
-            //Assert
-
-            //verify all files are openable
-        }
-
-        [TestMethod]
-        public void SVR_UNIT_TEST_018_DisconnetClient_SelectDisconnect_ClientDisconnects()
-        {
-            //Arrange
-
-            //establish client server connetion
+            ProgramServer server = new ProgramServer(); 
 
             //Act
-
-            //trigger disconnect function in the server
+            string readInfo = server.openFile("testFile.txt");
 
             //Assert
-
-            //ensure the client closes - server waits for new connections
-
+            Assert.AreEqual("This is a test", readInfo);
         }
 
         [TestMethod]
         public void SVR_UNIT_TEST_019_SaveStateChanges_StateChange_ChangeShownInFile()
         {
             //Arrange
-
-            //Inititate and state change
+            ProgramServer server = new ProgramServer();
 
             //Act
-
-            //change states (different state then what was initialized)
+            server.setAutenticatingState();
 
             //Assert
-
             //open the file and search for the line reflecting this state change
+            string readInfo = server.openFile("ServerLog.txt");
+            Assert.IsTrue(readInfo.Contains("Username: Server state changed to authenticating: Time of day"));
         }
-
     }
 }
