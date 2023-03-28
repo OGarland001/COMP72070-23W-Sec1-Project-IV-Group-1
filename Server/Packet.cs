@@ -216,12 +216,7 @@ namespace Server
 
                 return loginData;
             }
-
-
         }
-
-
-
     }
 
     public class login
@@ -271,8 +266,6 @@ namespace Server
                 error = true;
             }
 
-            
-
             return error;
         }
 
@@ -312,13 +305,5 @@ namespace Server
             
             return found;
         }
-
     }
-
-      
-    
-
-
-
-
 }
