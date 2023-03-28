@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,12 +41,12 @@ namespace Client.InterfaceFiles
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,15 @@ namespace Client.InterfaceFiles
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
         {
-            //create access to users 
+           Microsoft.Win32. OpenFileDialog image = new OpenFileDialog();
+            image.Filter = "Image files|*.bmp;*.png;*.jpg";
+            image.FilterIndex = 1;
+
+            if (image.ShowDialog() == true)
+            {
+                imagePicture.Source = new BitmapImage(new Uri(image.FileName));
+               
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
