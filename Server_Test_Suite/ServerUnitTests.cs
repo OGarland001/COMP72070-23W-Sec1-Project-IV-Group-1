@@ -1,7 +1,10 @@
+using Google.Protobuf.WellKnownTypes;
 using Server;
+using Server.ML.NET.YoloParser;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
+using static SkiaSharp.SKPath;
 
 
 namespace Server_Test_Suite
@@ -10,12 +13,9 @@ namespace Server_Test_Suite
     public class ServerUnitTests
     {
         [TestMethod]
-        public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData()
+        public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData() //Goal
         {
             //Arrange
-
-
-
 
             //Act
             //Serialize the packet -- Save output to a data buffer
@@ -36,8 +36,8 @@ namespace Server_Test_Suite
             byte[] buffer = Encoding.ASCII.GetBytes("Hello!");
             //byte[] Sendbuffer = { };
             packet.setData(6, buffer);
-            packet.setHead((char)1, (char)2, states.Analyze);
-           
+            packet.setHead((char)1, (char)2, states.Recv);
+
 
             //packet.GetTail().setTxBuffer(Sendbuffer);
 
@@ -77,7 +77,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData() //after integration
         {
             //Arrange
 
@@ -87,39 +87,59 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_005_VerifyAllServerState_StateTrue_StateTrue()
         {
             //Arrange
-            //Create Packet
+            ProgramServer serverIDlE = new ProgramServer();
+            ProgramServer serverAUTHENTICATE = new ProgramServer();
+            ProgramServer serverRecieve = new ProgramServer();
+            ProgramServer serverAnalyze = new ProgramServer();
+            ProgramServer serverSending = new ProgramServer();
+            ProgramServer serverSave = new ProgramServer();
             //Act
             // Set all states to true
+            serverAUTHENTICATE.setAutenticatingState();
+            serverRecieve.setReceivingPacketsState();
+            serverAnalyze.setAnalyzingImagesState();
+            serverSending.setSendingAnalyzedImagesState();
+            serverSave.setSavingImagesState();
 
             //Assert
             // Verify all states are set to true
+            Assert.AreEqual(serverIDlE.getCurrentState(), states.Idle);
+            Assert.AreEqual(serverAUTHENTICATE.getCurrentState(), states.Auth);
+            Assert.AreEqual(serverRecieve.getCurrentState(), states.Recv);
+            Assert.AreEqual(serverAnalyze.getCurrentState(), states.Analyze);
+            Assert.AreEqual(serverSending.getCurrentState(), states.Sending);
+            Assert.AreEqual(serverSave.getCurrentState(), states.Saving);
+
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_006_ServerIsAlwaysIn_StateTrue_StateTrue()
         {
             //Arrange
             // Create Packet
+            ProgramServer server = new ProgramServer();
 
             //Act
             // Check packet is in state by default or run Recogniation method to check for recogniation state is true
+            server.RunRecognition();
 
             //Assert
-            // Assert Default state is true and rest are false
+            // Assert Analyzing State is set to current state not the default
+            Assert.AreNotEqual(server.getCurrentState(), states.Idle);
         }
 
 
 
         [TestMethod]
-        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()//----------------------------------------------------------HERE BRODIN
+        public void SVR_UNIT_TEST_008_GenerateImage_ImageCreated()
 
         {
             //Arrange
             //Create Packet
-            
+
             ProgramServer program = new ProgramServer();
             int width = 0;
             int height = 0;
@@ -127,7 +147,7 @@ namespace Server_Test_Suite
             //Act
             // Generate Image method -- needs to inputs
             program.RunRecognition();
-            
+
             string imageName = @"../../../ML.NET/assets\images\output\Bicycle.jpg";
             Image createdImage = Image.FromFile(imageName);
             width = createdImage.Size.Width;
@@ -170,11 +190,11 @@ namespace Server_Test_Suite
 
             bool Error = userlogin.SaveuserData("users.txt");
 
-            bool Correct = userlogin.LoaduserData("users.txt");
+            string Correct = userlogin.SignInUser("users.txt");
 
             //Assert
-            
-            Assert.IsTrue(Correct);
+
+            Assert.AreEqual("User signed in", Correct);
             Assert.IsFalse(Error);
         }
 
@@ -206,11 +226,11 @@ namespace Server_Test_Suite
             Packet RecievePacket = new Packet(packet.getTailBuffer());
 
             login userlogin = new login(RecievePacket);
-            
-            bool Correct = userlogin.LoaduserData("users.txt");
+            ///userlogin.SaveuserData("users.txt");
+            string Correct = userlogin.SignInUser("TestingUsers.txt");
 
             //Assert
-            Assert.IsTrue(Correct);
+            Assert.AreEqual("User signed in", Correct);
         }
 
         [TestMethod]
@@ -233,18 +253,29 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
+            login existinglogin = new login();
+            login login = new login();
+            string username = "Tester88";
+            string password = "Yellow$E2";
+            string existingUsername = username;
+            string existingPassword = "RandomPassword21!";
 
             //Client server connection established
             //Client requests authentication - invalid authentication
 
             //Act
 
+            login.SetuserData(username, password);
+            existinglogin.SetuserData(existingUsername, existingPassword);
+            existinglogin.SaveuserData("users.txt");
+            string result = login.RegisterUser("users.txt");
             //Attempt to perform authentication in server
 
             //Assert
-
+            Assert.AreEqual("Username must be unique", result);
             //Did a response get generated that the user was not unique
         }
+
         [TestMethod]
         public void SVR_UNIT_TEST_013_ImageDetections_DogImage_DogClassifciation()
         {
@@ -252,14 +283,16 @@ namespace Server_Test_Suite
 
             //Server integrated with the API image detection
             //Send the image to the api
+            ProgramServer server = new ProgramServer();
 
-            //Act
 
-            //collect the response from the api
+            // Collect the response from the API
+            string[,] objects = server.RunRecognition();
 
-            //Assert
-
-            //does the API response match the expectation
+            if (objects != null)
+            {
+                Assert.AreEqual("dog", objects[1, 0]);
+            }
         }
 
         [TestMethod]
@@ -270,12 +303,21 @@ namespace Server_Test_Suite
             //Client server connection established
             //Client requests authentication - valid authentication
 
-            //Act
+            login login = new login();
+            string username = "RandomUser1";
+            string password = "Password990$";
 
+
+            //Act
             //Perform authentication in server
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
 
             //Assert
+            Assert.AreEqual("User registered", result);
 
+            //clear contents of file so username is unique everytime
+            System.IO.File.WriteAllText("users.txt", string.Empty);
             //Did the users credentials get saved to the file?
         }
 
@@ -283,21 +325,24 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_015_AuthenticateClient_NewClient_ClientAuthenticated()
         {
             //Arrange
-
-            //Client server connection established
             //Client requests authentication - valid authentication
+            System.IO.File.WriteAllText("users.txt", string.Empty);
+            login login = new login();
+            string username = "Tester9six1";
+            string password = "123456";
 
             //Act
-
             //Perform authentication in server
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
 
             //Assert
-
             //Did the user get authorized?
+            Assert.AreEqual("User registered", result);
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_016_RecvImage_ClientSendsImage_ServerReceivesImageAndCanOpenIt()
+        public void SVR_UNIT_TEST_016_RecvImage_ClientSendsImage_ServerReceivesImageAndCanOpenIt() //after integration
         {
             //Arrange
 
@@ -317,50 +362,28 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_017_ViewFiles_OpenFiles_FilesOpen()
         {
             //Arrange
-
-            //no arrange
-
-            //Act
-
-            //open all test logs and files
-
-            //Assert
-
-            //verify all files are openable
-        }
-
-        [TestMethod]
-        public void SVR_UNIT_TEST_018_DisconnetClient_SelectDisconnect_ClientDisconnects()
-        {
-            //Arrange
-
-            //establish client server connetion
+            ProgramServer server = new ProgramServer();
 
             //Act
-
-            //trigger disconnect function in the server
+            string readInfo = server.openFile("testFile.txt");
 
             //Assert
-
-            //ensure the client closes - server waits for new connections
-
+            Assert.AreEqual("This is a test", readInfo);
         }
 
         [TestMethod]
         public void SVR_UNIT_TEST_019_SaveStateChanges_StateChange_ChangeShownInFile()
         {
             //Arrange
-
-            //Inititate and state change
+            ProgramServer server = new ProgramServer();
 
             //Act
-
-            //change states (different state then what was initialized)
+            server.setAutenticatingState();
 
             //Assert
-
             //open the file and search for the line reflecting this state change
+            string readInfo = server.openFile("ServerLog.txt");
+            Assert.IsTrue(readInfo.Contains("Username: Server state changed to authenticating: Time of day"));
         }
-
     }
 }
