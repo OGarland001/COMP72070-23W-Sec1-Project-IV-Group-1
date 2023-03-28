@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Client.InterfaceFiles
 {
@@ -31,7 +21,18 @@ namespace Client.InterfaceFiles
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new HomePage();
+            //Authecate then navigate to next page
+            bool authenticatedUser = false;
+
+            //CALL THE CLIENT SEND TO SERVER METHOD AND RETURN A TRUE OR FALSE IF IT WAS AUTHENTICATED
+
+            //authenticate passed
+            authenticatedUser = true;
+
+            if (authenticatedUser)
+            {
+                Main.Content = new HomePage();
+            }
         }
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
