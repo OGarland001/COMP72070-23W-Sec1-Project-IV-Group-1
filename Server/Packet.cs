@@ -354,8 +354,14 @@ namespace Server
             }
             else
             {
-                message = "User Registered";
-                SaveuserData(filePath);
+                if(SaveuserData(filePath) == false)
+                {
+                    message = "User registered";
+                }
+                else
+                {
+                    message = "Error Saving user's credentials";
+                }
             }
 
             return message;
