@@ -74,7 +74,7 @@ namespace Server_Test_Suite
         }
 
         [TestMethod]
-        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData()
+        public void SVR_UNIT_TEST_004_DynamicPacketCreated_Packet_DynamicPacketData() //after integration
         {
             //Arrange
 
