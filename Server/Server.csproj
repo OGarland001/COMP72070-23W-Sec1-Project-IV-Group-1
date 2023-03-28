@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ML.NET\assets\images\image1.jpg" />
+    <None Remove="ML.NET\assets\images\image2.jpg" />
+    <None Remove="ML.NET\assets\images\image3.jpg" />
+    <None Remove="ML.NET\assets\images\image4.jpg" />
+  </ItemGroup>
+	<ItemGroup>
+		<ApplicationDefinition Include="InterfaceFiles/App.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="ML.NET\assets\images\image1.jpg">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="ML.NET\assets\images\image2.jpg">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="ML.NET\assets\images\image3.jpg">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="ML.NET\assets\images\image4.jpg">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.ML" Version="3.0.0-preview.22621.2" />
+	  <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="3.0.0-preview.22621.2" />
+	  <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.14.1" />
+	  <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.0-preview.22621.2" />
+	  <PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.2.23128.3" />
+	  <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+	</ItemGroup>
+
+</Project>

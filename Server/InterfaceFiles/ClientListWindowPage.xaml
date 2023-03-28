@@ -1,0 +1,35 @@
+﻿<Page x:Class="Server.InterfaceFiles.ClientListWindowPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Server.InterfaceFiles"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ClientListWindowPage">
+
+    <Grid Background="White">
+        <Rectangle HorizontalAlignment="Left" Height="434" Stroke="SteelBlue" Fill="SteelBlue"  VerticalAlignment="Center" Width="173"/>
+        <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click"/>
+        <Button Content="Account Logs" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_1"/>
+        <Button Content="Client List" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="Button_Click_2"/>
+        <Button Content="Image Prediction History" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_3"/>
+        <TextBlock x:Name="Product_name" HorizontalAlignment="Left" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="29" Width="128" FontSize="24" FontFamily="Cascadia Mono SemiBold" Margin="650,380,0,0">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF00CAFF" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="400,22,0,0" TextWrapping="Wrap" Text="Client List" VerticalAlignment="Top" Width="142"  FontSize="20"/>
+        <Rectangle HorizontalAlignment="Left" Height="127" Margin="242,136,0,0" VerticalAlignment="Top" Width="195" Fill="SteelBlue"/>
+        <TextBlock HorizontalAlignment="Left" Margin="242,91,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="SteelBlue" FontSize="14" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="389,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF10AB3D" FontSize="10"><Run Language="en-ca" Text="Connected"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="242,118,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF6A6868" FontSize="10"><Run Text="Recently Sent "/><Run Language="en-ca" Text="C"/><Run Text="omm"/><Run Text="an"/><Run Text="d"/><Run Text="s"/></TextBlock>
+        <Ellipse HorizontalAlignment="Left" Height="9" Margin="375,98,0,0" VerticalAlignment="Top" Width="9" Fill="#FF10AB3D"/>
+        <Button Content="Manually Disconnect" HorizontalAlignment="Left" Margin="273,280,0,0" VerticalAlignment="Top" Click="Button_Click_4" BorderBrush="{x:Null}" Background="Red" Height="23" Width="133" Foreground="White"/>
+        <Frame x:Name="Main" Margin="0,0,0,0" />
+    </Grid>
+</Page>
