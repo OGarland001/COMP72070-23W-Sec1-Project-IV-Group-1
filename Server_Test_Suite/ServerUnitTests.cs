@@ -326,6 +326,7 @@ namespace Server_Test_Suite
         {
             //Arrange
             //Client requests authentication - valid authentication
+            System.IO.File.WriteAllText("users.txt", string.Empty);
             login login = new login();
             string username = "Tester9six1";
             string password = "123456";
@@ -337,7 +338,7 @@ namespace Server_Test_Suite
 
             //Assert
             //Did the user get authorized?
-            Assert.AreEqual("User Registered", result);
+            Assert.AreEqual("User registered", result);
         }
 
         [TestMethod]
