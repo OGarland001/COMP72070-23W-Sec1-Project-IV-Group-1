@@ -26,7 +26,7 @@ namespace Client.InterfaceFiles
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //username textbox
+            //username textbox TextChanged="UsernameLoginTextBox_TextChanged"
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)

@@ -25,8 +25,8 @@
         <Label x:Name="UsernameLabel" Content="Username" HorizontalAlignment="Left" Margin="324,172,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="76" OpacityMask="Black"/>
         <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="324,225,0,0" VerticalAlignment="Top" Opacity="0.5" Foreground="#FF00CAFF" Height="31" Width="71" OpacityMask="Black"/>
         <PasswordBox HorizontalAlignment="Left" Margin="329,248,0,0" VerticalAlignment="Top" Width="162" Height="22" BorderBrush="#FF00CAFF"/>
-        <Button x:Name="CreateAccountButton" Content="Create Account" HorizontalAlignment="Left" Margin="300,294,0,0" VerticalAlignment="Top" Width="192" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>
-        <Button x:Name="Log_In" Content="Login" HorizontalAlignment="Left" Margin="370,373,0,0" VerticalAlignment="Top" Height="20" Width="52" Opacity="0.66" Click="Log_In_Click" BorderBrush="#FF00CAFF"/>
+        <Button x:Name="CreateAccountButton" Content="Create Account" HorizontalAlignment="Left" Margin="295,294,0,0" VerticalAlignment="Top" Width="197" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>
+        <Button x:Name="Log_In" Content="Login" HorizontalAlignment="Left" Margin="368,374,0,0" VerticalAlignment="Top" Height="20" Width="52" Opacity="0.66" Click="Log_In_Click" BorderBrush="#FF00CAFF"/>
         <Frame x:Name="Main" Margin="0,0,0,0"/>
     </Grid>
 </Page>
