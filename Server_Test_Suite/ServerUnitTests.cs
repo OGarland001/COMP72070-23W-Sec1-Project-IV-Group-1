@@ -193,11 +193,11 @@ namespace Server_Test_Suite
 
             bool Error = userlogin.SaveuserData("users.txt");
 
-            bool Correct = userlogin.LoaduserData("users.txt");
+            string Correct = userlogin.SignInUser("users.txt");
 
             //Assert
             
-            Assert.IsTrue(Correct);
+            Assert.AreEqual("User signed in", Correct);
             Assert.IsFalse(Error);
         }
 
@@ -230,10 +230,10 @@ namespace Server_Test_Suite
 
             login userlogin = new login(RecievePacket);
             
-            bool Correct = userlogin.LoaduserData("users.txt");
+            string Correct = userlogin.SignInUser("users.txt");
 
             //Assert
-            Assert.IsTrue(Correct);
+            Assert.AreEqual("User signed in",Correct);
         }
 
         [TestMethod]
@@ -256,16 +256,21 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_012_NotUniqueUser_NewUserRequestWithoutUnique_IdentifiedAsNotUnique()
         {
             //Arrange
+            login login = new login();
+            string username = "Tester88";
+            string password = "Yellow$E2";
 
             //Client server connection established
             //Client requests authentication - invalid authentication
 
             //Act
 
+            login.SetuserData(username, password);
+            string result = login.RegisterUser("users.txt");
             //Attempt to perform authentication in server
 
             //Assert
-
+            Assert.AreEqual("Username must be unique", result);
             //Did a response get generated that the user was not unique
         }
         [TestMethod]
