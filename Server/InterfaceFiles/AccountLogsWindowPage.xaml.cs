@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,17 +13,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+
 
 namespace Server.InterfaceFiles
 {
+
+
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class AccountLogsWindowPage : Page
     {
+  
         public AccountLogsWindowPage()
         {
             InitializeComponent();
+            string filePath = "../../../ServerLog.txt";
+            string fileContents = File.ReadAllText(filePath);
+            label.Content = fileContents;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
