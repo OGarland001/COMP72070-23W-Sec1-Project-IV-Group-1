@@ -35,22 +35,22 @@ namespace Server.InterfaceFiles
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new ClientAccountsWindowPage();
+            Main.Content = new ClientAccountsWindowPage(server);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Main.Content = new AccountLogsWindowPage();
+            Main.Content = new AccountLogsWindowPage(server);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Main.Content = new ClientListWindowPage();
+            Main.Content = new ClientListWindowPage(server);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Main.Content = new ImagePredictionHistoryWindowPage();
+            Main.Content = new ImagePredictionHistoryWindowPage(server);
         }
     }
 }
