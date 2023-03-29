@@ -22,7 +22,9 @@ namespace Server.InterfaceFiles
     {
         public ImagePredictionHistoryWindowPage()
         {
+            
             InitializeComponent();
+            //AnalyzedImage.Source = 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
