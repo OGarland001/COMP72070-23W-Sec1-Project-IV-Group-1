@@ -21,26 +21,6 @@
             </TextBlock.Foreground>
         </TextBlock>
         <Label x:Name="UploadImageLabel" Content="Upload An IMAGE!!" HorizontalAlignment="Center" Margin="0,68,0,0" VerticalAlignment="Top" BorderBrush="Black" Foreground="#FF099EC5" Height="41" Width="208" OpacityMask="Black" FontWeight="Bold" FontSize="22"/>
-        <!--<Button x:Name="Upload_Image_Button_Copy" Content="" HorizontalAlignment="Left" Margin="40,127,0,0" VerticalAlignment="Top" Background="#FFDDDDDD" Height="239" Width="327" Click="Button_Click" FontWeight="Bold" BorderBrush="#FF00CAFF" RenderTransformOrigin="0.5,0.5" Opacity="0.33">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>-->
-        <!--<Button x:Name="Upload_Image_Button_Copy1" Content="" HorizontalAlignment="Left" Margin="433,127,0,0" VerticalAlignment="Top" Background="#FFDDDDDD" Height="240" Width="327" Click="Button_Click" FontWeight="Bold" BorderBrush="#FF00CAFF" RenderTransformOrigin="0.5,0.5" Opacity="0.33">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>-->
         <Image HorizontalAlignment="Center" Height="56" Margin="0,218,0,0" VerticalAlignment="Top" Width="56" Source="/InterfaceFiles/Images/arrowForImage.png">
             <Image.OpacityMask>
                 <SolidColorBrush Color="#FF099EC5"/>
@@ -50,7 +30,7 @@
         <Button x:Name="logout" Content="Logout" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="82" BorderBrush="#FF00CAFF" Opacity="0.66" FontWeight="Bold" Click="logout_Click"/>
         <Button x:Name="Upload_an_Image" Content="Upload an Image" HorizontalAlignment="Left" Margin="98,371,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Opacity="0.66" FontWeight="Bold" Click="Upload_an_Image_Click"/>
         <Button x:Name="Analyze" Content="Analyze!!" HorizontalAlignment="Left" Margin="492,372,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Click="Analyze_Click" Opacity="0.23"/>
-        <Image x:Name="imagePicture" HorizontalAlignment="Left" Margin="40,127,0,0" VerticalAlignment="Top" Height="239" Width="327"/>
+        <Image x:Name="imagePicture" HorizontalAlignment="Left" Margin="19,111,0,0" VerticalAlignment="Top" Height="251" Width="342"/>
         <Frame x:Name="Main" Margin="0,0,0,0" Navigated="Main_Navigated"/>
     </Grid>
 </Page>
