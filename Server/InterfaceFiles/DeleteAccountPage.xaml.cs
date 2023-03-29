@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace Server.InterfaceFiles
 {
@@ -20,9 +9,11 @@ namespace Server.InterfaceFiles
     /// </summary>
     public partial class DeleteAccountPage : Page
     {
-        public DeleteAccountPage()
+        private ProgramServer server;
+        public DeleteAccountPage(ProgramServer server)
         {
             InitializeComponent();
+            this.server = server;   
         }
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -42,22 +33,22 @@ namespace Server.InterfaceFiles
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ClientList(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ClientListWindowPage(this.server);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void AccountLogs(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new AccountLogsWindowPage(this.server);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ClientAccountsWindowPage(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ClientAccountsWindowPage(this.server);
         }
     }
 }

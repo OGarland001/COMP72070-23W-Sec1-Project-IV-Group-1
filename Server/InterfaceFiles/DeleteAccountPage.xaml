@@ -12,9 +12,9 @@
         <Rectangle HorizontalAlignment="Left" Height="434" Stroke="SteelBlue" Fill="SteelBlue"  VerticalAlignment="Center" Width="173"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="399,55,0,0" TextWrapping="Wrap" Text="Delete Account" VerticalAlignment="Top" Width="152" FontSize="20"/>
-        <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="Button_Click"/>
-        <Button Content="Account Logs" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_1"/>
-        <Button Content="Client List" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_2"/>
+        <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="ClientAccountsWindowPage"/>
+        <Button Content="Account Logs" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="AccountLogs"/>
+        <Button Content="Client List" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="ClientList"/>
         <Button Content="Image Prediction History" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_3"/>
         <TextBlock x:Name="Product_name" HorizontalAlignment="Left" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="29" Width="128" FontSize="24" FontFamily="Cascadia Mono SemiBold" Margin="650,380,0,0">
             <TextBlock.Foreground>

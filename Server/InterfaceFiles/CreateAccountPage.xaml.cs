@@ -20,9 +20,11 @@ namespace Server.InterfaceFiles
     /// </summary>
     public partial class CreateAccountPage : Page
     {
-        public CreateAccountPage()
+        private ProgramServer server;
+        public CreateAccountPage(ProgramServer server)
         {
             InitializeComponent();
+            this.server = server;
         }
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -37,21 +39,22 @@ namespace Server.InterfaceFiles
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new ClientListWindowPage(this.server);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new AccountLogsWindowPage(this.server);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Main.Content = new ClientAccountsWindowPage(this.server);
         }
     }
 }
