@@ -22,11 +22,17 @@ namespace Server
         //Store the current state of the server - by default it should be idle
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
+        private userLoginData userData;
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
 
+        }
+
+        public ProgramServer GetProgramServer()
+        {
+            return this;
         }
 
         public string[,] RunRecognition()
@@ -284,6 +290,145 @@ namespace Server
         public states getCurrentState()
         {
             return currentState;
+        }
+
+        public void IntializeUserData(Packet packet)
+        {
+            userLoginData temp = packet.deserializeUserLoginData();
+            userData.setUserName(temp.getUserName());
+            userData.setPassword(temp.getPassword());
+        }
+
+        public userLoginData GetuserData()
+        {
+            return userData;
+        }
+
+        public void SetuserData(string username, string password)
+        {
+            userData.setUserName(username);
+            userData.setPassword(password);
+        }
+
+        public bool SaveuserData(string filePath)
+        {
+
+            bool error = false;
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filePath, append: true))
+                {
+                    writer.WriteLine(userData.getUserName());
+                    writer.WriteLine(userData.getPassword());
+                    writer.Close();
+                }
+
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+                error = true;
+            }
+
+            return error;
+        }
+
+        public string SignInUser(string filePath)
+        {
+
+
+            string message = "Username or password is incorrect";
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+                    string line2 = reader.ReadLine();
+
+                    while ((line1 != null) && (line2 != null))
+                    {
+                        if ((line1 == userData.getUserName()) && (line2 == userData.getPassword()))
+                        {
+
+                            message = "User signed in";
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                        line2 = reader.ReadLine();
+                    }
+
+
+
+                    reader.Close();
+                }
+            }
+            catch (IOException e)
+            {
+                message = "Error Signing in user";
+            }
+
+            return message;
+        }
+
+
+        public bool checkUsername(string filePath)
+        {
+            bool unique = true;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+
+                    while ((line1 != null))
+                    {
+                        if ((line1 == userData.getUserName()))
+                        {
+                            unique = false;
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                    }
+
+
+
+                    reader.Close();
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+            }
+
+            return unique;
+        }
+
+
+        public string RegisterUser(string filePath)
+        {
+            string message;
+            if (checkUsername(filePath) == false)
+            {
+                //Non unique Username Entered
+                message = "Username must be unique";
+            }
+            else
+            {
+                if (SaveuserData(filePath) == false)
+                {
+                    message = "User registered";
+                }
+                else
+                {
+                    message = "Error Saving user's credentials";
+                }
+            }
+
+            return message;
         }
     }
 }
