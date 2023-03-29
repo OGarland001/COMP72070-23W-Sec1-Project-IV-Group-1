@@ -23,8 +23,10 @@ namespace Server.InterfaceFiles
     /// </summary>
     public partial class AccountLogsWindowPage : Page
     {
-        public AccountLogsWindowPage()
+        private ProgramServer server;
+        public AccountLogsWindowPage(ProgramServer server)
         {
+            this.server = server;
             InitializeComponent();
             string filePath = "../../../ServerLog.txt";
             string fileContents = File.ReadAllText(filePath);

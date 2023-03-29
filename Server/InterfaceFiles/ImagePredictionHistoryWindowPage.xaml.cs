@@ -20,31 +20,32 @@ namespace Server.InterfaceFiles
     /// </summary>
     public partial class ImagePredictionHistoryWindowPage : Page
     {
-        public ImagePredictionHistoryWindowPage()
+        private ProgramServer server;
+        public ImagePredictionHistoryWindowPage(ProgramServer server)
         {
-            
+            this.server = server;
             InitializeComponent();
             //AnalyzedImage.Source = 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Predicition.Content = new ClientAccountsWindowPage();
+            Predicition.Content = new ClientAccountsWindowPage(this.server);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Predicition.Content = new AccountLogsWindowPage();
+            Predicition.Content = new AccountLogsWindowPage(this.server);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Predicition.Content = new ClientListWindowPage();
+            Predicition.Content = new ClientListWindowPage(this.server);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Predicition.Content = new ImagePredictionHistoryWindowPage();
+            Predicition.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
     }
 }
