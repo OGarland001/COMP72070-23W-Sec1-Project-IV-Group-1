@@ -46,7 +46,7 @@ namespace Server.InterfaceFiles
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new CreateAccountPage();
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
