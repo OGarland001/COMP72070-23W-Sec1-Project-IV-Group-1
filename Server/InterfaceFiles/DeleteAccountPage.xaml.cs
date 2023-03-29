@@ -18,9 +18,9 @@ namespace Server.InterfaceFiles
     /// <summary>
     /// Interaction logic for CreateAccountPage.xaml
     /// </summary>
-    public partial class CreateAccountPage : Page
+    public partial class DeleteAccountPage : Page
     {
-        public CreateAccountPage()
+        public DeleteAccountPage()
         {
             InitializeComponent();
         }
@@ -33,6 +33,11 @@ namespace Server.InterfaceFiles
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Log_In_Click(object sender, RoutedEventArgs e)
+        {
+       
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -52,6 +57,7 @@ namespace Server.InterfaceFiles
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
         }
     }
 }
