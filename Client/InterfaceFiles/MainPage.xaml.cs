@@ -10,9 +10,11 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class MainPage : Page
     {
+        private ProgramClient client = new ProgramClient();
         public MainPage()
         {
             InitializeComponent();
+           
         }
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -22,14 +24,20 @@ namespace Client.InterfaceFiles
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             //Authecate then navigate to next page
-            bool authenticatedUser = false;
-
+            Packet userdataPacket = new Packet();
             //CALL THE CLIENT SEND TO SERVER METHOD AND RETURN A TRUE OR FALSE IF IT WAS AUTHENTICATED
+            userdataPacket.setHead('1', '2', states.Auth);
+            userLoginData loginData = new userLoginData();
 
-            //authenticate passed
-            authenticatedUser = true;
+            loginData.setUserName(UsernameLoginTextBox.Text);
+            loginData.setPassword(PasswordLoginTextBox.Password.ToString());
 
-            if (authenticatedUser)
+            userdataPacket.setData(loginData.serializeData().Length, loginData.serializeData());
+
+            client.authenticateUser(userdataPacket);
+            
+
+            if (client.authentcated)
             {
                 Main.Content = new HomePage();
             }
