@@ -1,0 +1,33 @@
+﻿<Page x:Class="Server.InterfaceFiles.FindAccountPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Server.InterfaceFiles"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DeleteAccountPage">
+
+    <Grid Background="White">
+        <Rectangle HorizontalAlignment="Left" Height="434" Stroke="SteelBlue" Fill="SteelBlue"  VerticalAlignment="Center" Width="173"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="399,55,0,0" TextWrapping="Wrap" Text="Find Account" VerticalAlignment="Top" Width="152" FontSize="20"/>
+        <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="ClientAccountsWindowPage"/>
+        <Button Content="Account Logs" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="AccountLogs"/>
+        <Button Content="Client List" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="ClientList"/>
+        <Button Content="Image Prediction History" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_3"/>
+        <TextBlock x:Name="Product_name" HorizontalAlignment="Left" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="29" Width="128" FontSize="24" FontFamily="Cascadia Mono SemiBold" Margin="650,380,0,0">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF00CAFF" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <TextBox x:Name="UsernameLoginTextBox" HorizontalAlignment="Left" Margin="399,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" BorderBrush="#FF00CAFF" Height="22" OpacityMask="Black" TextChanged="UsernameLoginTextBox_TextChanged"/>
+        <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="365,152,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/Images/usernamePhoto.png" OpacityMask="#FF00CAFF"/>
+        <Label x:Name="UsernameLabel" Content="Username To Find" HorizontalAlignment="Left" Margin="394,125,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="126" OpacityMask="Black"/>
+        <Button x:Name="CreateAccountButton" Content="Find Account" HorizontalAlignment="Left" Margin="370,247,0,0" VerticalAlignment="Top" Width="192" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>
+        <Frame x:Name="Main" Margin="0,0,0,0" />
+    </Grid>
+</Page>

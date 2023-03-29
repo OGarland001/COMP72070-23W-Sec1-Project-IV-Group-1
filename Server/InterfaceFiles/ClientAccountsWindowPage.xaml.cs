@@ -47,7 +47,7 @@ namespace Server.InterfaceFiles
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-
+            Main.Content = new FindAccountPage(this.server);
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
