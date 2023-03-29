@@ -30,6 +30,11 @@ namespace Server
 
         }
 
+        public ProgramServer GetProgramServer()
+        {
+            return this;
+        }
+
         public string[,] RunRecognition()
         {
             setAnalyzingImagesState();
