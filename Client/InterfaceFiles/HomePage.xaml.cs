@@ -33,6 +33,7 @@ namespace Client.InterfaceFiles
             //var accountsWindow = new AccountLogsWindow();
 
             //accountsWindow.Show();
+           
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)

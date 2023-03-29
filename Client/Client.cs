@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Ink;
@@ -9,15 +10,17 @@ namespace Client
 {
     public class ProgramClient
     {
-        public string clientUserName { get; set; }
+        private userLoginData clientData;
         public DateTime loginDate;
         public bool authentcated { get; set; }
 
-        public ProgramClient() {
-        
-           clientUserName= string.Empty;
-           loginDate = DateTime.Now; 
-           authentcated= false;
+        public ProgramClient()
+        {
+
+            clientData.setUserName(string.Empty);
+            clientData.setPassword(string.Empty);
+            loginDate = DateTime.Now;
+            authentcated = false;
 
         }
 
@@ -25,15 +28,15 @@ namespace Client
         {
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 11111);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 696969);
 
 
             Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            
+
+
             sender.Connect(localEndPoint);
             ///DO SOMETHING COOL WAITING FOR CONNECTION
-            Console.WriteLine("Socket connected to -> {0} ",
-                          sender.RemoteEndPoint.ToString());
+            
 
             sendPacket.SerializeData();
             int bytesSent = sender.Send(sendPacket.getTailBuffer());
@@ -42,10 +45,11 @@ namespace Client
             int byteRecv = sender.Receive(buffer);
 
             Packet recvPacket = new Packet(buffer);
-            userLoginData loginData = recvPacket.deserializeUserLoginData();
-            
-            
-            
+
+            this.clientData = recvPacket.deserializeUserLoginData();
+
+
+
             // Close Socket using
             // the method Close()
             sender.Shutdown(SocketShutdown.Both);
@@ -53,7 +57,6 @@ namespace Client
 
             if (recvPacket.GetHead().getState() == states.Recv)
             {
-                this.clientUserName = loginData.getUserName();
                 this.authentcated = true;
                 this.loginDate = DateTime.Now;
                 return true;

@@ -8,9 +8,10 @@ namespace Client.InterfaceFiles
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
+   
     public partial class MainPage : Page
     {
-        private ProgramClient client = new ProgramClient();
+        public ProgramClient client = new ProgramClient();
         public MainPage()
         {
             InitializeComponent();

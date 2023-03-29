@@ -8,6 +8,7 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ProgramClient client = new ProgramClient();
         public MainWindow()
         {
             InitializeComponent();
@@ -15,14 +16,30 @@ namespace Client.InterfaceFiles
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            
             //username textbox
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            //add a check for the credentials of user / if correct then login
-            Main.Content = new HomePage();
-            // if not do not login
+            //Authecate then navigate to next page
+            Packet userdataPacket = new Packet();
+            //CALL THE CLIENT SEND TO SERVER METHOD AND RETURN A TRUE OR FALSE IF IT WAS AUTHENTICATED
+            userdataPacket.setHead('1', '2', states.Auth);
+            userLoginData loginData = new userLoginData();
+
+            loginData.setUserName(UsernameLoginTextBox.Text);
+            loginData.setPassword(PasswordLoginTextBox.Password.ToString());
+
+            userdataPacket.setData(loginData.serializeData().Length, loginData.serializeData());
+
+            client.authenticateUser(userdataPacket);
+
+
+            if (client.authentcated)
+            {
+                Main.Content = new HomePage();
+            }
         }
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
