@@ -23,6 +23,12 @@ namespace Server
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
 
+        //This will act as the servers "main" and any/all connection to client, loading can be done here
+        public void run()
+        {
+
+        }
+
         public string[,] RunRecognition()
         {
             setAnalyzingImagesState();

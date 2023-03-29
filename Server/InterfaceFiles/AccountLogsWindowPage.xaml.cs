@@ -18,15 +18,11 @@ using System.IO;
 
 namespace Server.InterfaceFiles
 {
-
-
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class AccountLogsWindowPage : Page
     {
-  
         public AccountLogsWindowPage()
         {
             InitializeComponent();

@@ -25,7 +25,7 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="420,22,0,0" TextWrapping="Wrap" Text="Console Logs" VerticalAlignment="Top" Width="140"  FontSize="20" />
 
-        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Margin="194,68,10,63">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" Margin="194,78,10,56">
             <Label x:Name="label" BorderBrush="Black" BorderThickness="1" Margin="0,0,0,0" Width="NaN" Foreground="White">
                 <Label.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -35,8 +35,7 @@
                 </Label.Background>
             </Label>
         </ScrollViewer>
-        <TextBlock HorizontalAlignment="Left" Margin="198,52,0,0" TextWrapping="Wrap" Text="  ServerLog.txt" VerticalAlignment="Top" Width="577"  FontSize="20" Background="#FFF0F0F0" Height="16" />
-        <TextBlock HorizontalAlignment="Left" Margin="194,52,0,0" TextWrapping="Wrap" Text="  ServerLog.txt" VerticalAlignment="Top" Width="566"  FontSize="20" Background="#FFF0F0F0" />
+        <TextBlock HorizontalAlignment="Left" Margin="194,52,0,0" TextWrapping="Wrap" Text="  ServerLog.txt" VerticalAlignment="Top" Width="581"  FontSize="20" Background="#FFF0F0F0" />
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 

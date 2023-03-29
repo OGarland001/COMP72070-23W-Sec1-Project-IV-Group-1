@@ -24,6 +24,9 @@ namespace Server
         public MainWindow()
         {
             InitializeComponent();
+            //START MAIN PROGRAM - Client Connection
+            ProgramServer newServer = new ProgramServer();
+            newServer.run();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
