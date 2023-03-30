@@ -36,30 +36,18 @@ namespace Server
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
-            //Packet packet = new Packet();
-            //IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipAddr = ipHost.AddressList[0];
-            //IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
             Packet packet = new Packet();
             Int32 port = 11000;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];
 
-            //// Socket Class Constructor
-            //Socket listener = new Socket(ipAddr.AddressFamily,
-            //    SocketType.Stream, ProtocolType.Tcp);
-            //listener.Bind(localEndPoint);
-            //listener.Listen(10);
-            //Socket clientSocket = listener.Accept();
-            //byte[] bytes = new byte[552];
             using TcpClient client = server.AcceptTcpClient();
             bool connectedUser = false;
             NetworkStream stream = client.GetStream();
 
             int i;
 
-            //int bytesRead = clientSocket.Receive(bytes);
             while (!connectedUser)
             {
                 // Loop to receive all the data sent by the client.
@@ -67,26 +55,17 @@ namespace Server
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 
-           
-           
-            //Packet recvPacket = new Packet(bytes);
                 Packet recvPacket = new Packet(data);
 
                 IntializeUserData(recvPacket);
 
 
 
-            //userData = new userLoginData();
-            //userData = recvPacket.deserializeUserLoginData();
-            //if (recvPacket.GetHead().getState() == states.Auth)
-            //{
-            //    currentState = states.Auth;
                 if (recvPacket.GetHead().getState() == states.Auth)
                 {
                     //if we are authentcating a user
                     currentState = states.Auth;
 
-            //    string message = RegisterUser("users.txt");
                     string message = SignInUser("users.txt");
 
                     if (message == "User signed in")
@@ -124,18 +103,12 @@ namespace Server
 
                     string message = RegisterUser("users.txt");
 
-            //    if (message == "User registered")
-            //    {
-                    
-            //        //sets up a packet with nothing just to say that it was recived and passed
-            //        packet.setHead('2', '1', states.Recv);
                     if (message == "User registered")
                     {
 
                         //sets up a packet with nothing just to say that it was recived and passed
                         packet.setHead('2', '1', states.Recv);
 
-            //        packet.SerializeData();
                         packet.SerializeData();
                         byte[] sendbuf = packet.getTailBuffer();
                         NetworkStream clStream = client.GetStream();
@@ -143,15 +116,8 @@ namespace Server
                         clStream.Write(sendbuf, 0, sendbuf.Length);
 
 
-            //        clientSocket.Send(packet.getTailBuffer());
                         connectedUser = true;
 
-            //    }
-            //    else
-            //    {
-                    
-            //        //sends it back if it failed and needs to be reauthed.
-            //        packet.setHead('2', '1', states.Auth);
                     }
                     else
                     {
@@ -159,18 +125,22 @@ namespace Server
                         //sends it back if it failed and needs to be reauthed.
                         packet.setHead('2', '1', states.Auth);
 
-            //        packet.SerializeData();
                         packet.SerializeData();
 
-            //        clientSocket.Send(packet.getTailBuffer());
                         byte[] sendbuf = packet.getTailBuffer();
                         NetworkStream clStream = client.GetStream();
 
                         clStream.Write(sendbuf, 0, sendbuf.Length);
 
-            //    }
-            //}
+                    }
+                }
+            }
+
+
+
+
         }
+
 
         public void SocketCleanup(Socket socket)
         {
@@ -182,16 +152,10 @@ namespace Server
         {
             currentOriginalImage = originalImage;
         }
-                    }
-                }
-            }
-       
-
 
         public void setCurrentAnalyzedImage(string analyzedImage)
         {
             currentAnalyzedImage = analyzedImage;
-
         }
 
         public string getCurrentOriginalImage()
@@ -202,6 +166,12 @@ namespace Server
         public string getCurrentAnalyzedImage()
         {
             return currentAnalyzedImage;
+        }
+      
+
+        public ProgramServer GetProgramServer()
+        {
+            return this;
         }
 
         public string[,] RunRecognition(string filename)
