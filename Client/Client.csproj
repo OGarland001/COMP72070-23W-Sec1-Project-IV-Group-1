@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="protobuf-net" Version="3.2.16" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="InterfaceFiles\Images\usernamePhoto.png" />
     <Resource Include="InterfaceFiles\Images\arrowForImage.png" />
     <Resource Include="InterfaceFiles\Images\LockIcon.png" />

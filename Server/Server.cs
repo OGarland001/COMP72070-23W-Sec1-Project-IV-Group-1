@@ -16,6 +16,11 @@ using System.CodeDom;
 using System.Windows;
 using System.Net;
 using System.Net.Sockets;
+using Google.Protobuf;
+using System.Printing.IndexedProperties;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.Windows.Markup;
 
 namespace Server
 {
@@ -30,59 +35,107 @@ namespace Server
         public void run()
         {
             Packet packet = new Packet();
-            IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
+            Int32 port = 11000;
+            TcpListener server = new TcpListener(IPAddress.Loopback, port);
+            server.Start();
+            byte[] buffer = new byte[1026];
 
-            // Socket Class Constructor
-            Socket listener = new Socket(ipAddr.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
-            listener.Bind(localEndPoint);
-            listener.Listen(10);
-            Socket clientSocket = listener.Accept();
-            byte[] bytes = new byte[552];
+            using TcpClient client = server.AcceptTcpClient();
+            bool connectedUser = false;
+            NetworkStream stream = client.GetStream();
 
-            int bytesRead = clientSocket.Receive(bytes);
+            int i;
 
-           
-           
-            Packet recvPacket = new Packet(bytes);
-
-            Console.WriteLine("Number of bytes for a login packet = " + bytesRead.ToString());
-
-            userData = new userLoginData();
-            userData = recvPacket.deserializeUserLoginData();
-            if (recvPacket.GetHead().getState() == states.Auth)
+            while (!connectedUser)
             {
-                currentState = states.Auth;
+                // Loop to receive all the data sent by the client.
+                i = stream.Read(buffer, 0, buffer.Length);
+                byte[] data = new byte[i];
+                Array.Copy(buffer, data, i);
 
-                string message = RegisterUser("users.txt");
+                Packet recvPacket = new Packet(data);
 
-                if (message == "User registered")
+                IntializeUserData(recvPacket);
+
+
+
+                if (recvPacket.GetHead().getState() == states.Auth)
                 {
-                    
-                    //sets up a packet with nothing just to say that it was recived and passed
-                    packet.setHead('2', '1', states.Recv);
+                    //if we are authentcating a user
+                    currentState = states.Auth;
 
-                    packet.SerializeData();
+                    string message = SignInUser("users.txt");
 
-                    clientSocket.Send(packet.getTailBuffer());
+                    if (message == "User signed in")
+                    {
 
+                        //sets up a packet with nothing just to say that it was recived and passed
+                        packet.setHead('2', '1', states.Recv);
+
+                        packet.SerializeData();
+                        byte[] sendbuf = packet.getTailBuffer();
+                        NetworkStream clStream = client.GetStream();
+
+                        clStream.Write(sendbuf, 0, sendbuf.Length);
+                        connectedUser = true;
+                    }
+                    else
+                    {
+
+                        //sends it back if it failed and needs to be reauthed.
+                        packet.setHead('2', '1', states.Auth);
+
+                        packet.SerializeData();
+
+                        byte[] sendbuf = packet.getTailBuffer();
+                        NetworkStream clStream = client.GetStream();
+
+                        clStream.Write(sendbuf, 0, sendbuf.Length);
+
+                    }
                 }
-                else
+                else if (recvPacket.GetHead().getState() == states.NewAuth)
                 {
-                    
-                    //sends it back if it failed and needs to be reauthed.
-                    packet.setHead('2', '1', states.Auth);
+                    //If the user is wanting to be registered
+                    currentState = states.NewAuth;
 
-                    packet.SerializeData();
+                    string message = RegisterUser("users.txt");
 
-                    clientSocket.Send(packet.getTailBuffer());
+                    if (message == "User registered")
+                    {
 
+                        //sets up a packet with nothing just to say that it was recived and passed
+                        packet.setHead('2', '1', states.Recv);
+
+                        packet.SerializeData();
+                        byte[] sendbuf = packet.getTailBuffer();
+                        NetworkStream clStream = client.GetStream();
+
+                        clStream.Write(sendbuf, 0, sendbuf.Length);
+
+
+                        connectedUser = true;
+
+                    }
+                    else
+                    {
+
+                        //sends it back if it failed and needs to be reauthed.
+                        packet.setHead('2', '1', states.Auth);
+
+                        packet.SerializeData();
+
+                        byte[] sendbuf = packet.getTailBuffer();
+                        NetworkStream clStream = client.GetStream();
+
+                        clStream.Write(sendbuf, 0, sendbuf.Length);
+
+                    }
                 }
             }
-            
-            
+       
+
+
 
         }
 

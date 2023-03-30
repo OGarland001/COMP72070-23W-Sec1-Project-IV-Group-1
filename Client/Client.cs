@@ -1,10 +1,14 @@
 ﻿
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Ink;
+using ProtoBuf;
 
 namespace Client
 {
@@ -26,39 +30,32 @@ namespace Client
 
         public bool authenticateUser(Packet sendPacket)
         {
-            IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
+            //// Establish the remote endpoint for the socket.
+            Int32 port = 11000;
 
-
-            Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-
-            sender.Connect(localEndPoint);
-            ///DO SOMETHING COOL WAITING FOR CONNECTION
-            
+            using TcpClient client = new TcpClient(IPAddress.Loopback.ToString(), port);
 
             sendPacket.SerializeData();
-            
 
-            int bytesSent = sender.Send(sendPacket.getTailBuffer());
+            byte[] buffer = sendPacket.getTailBuffer();
 
-            byte[] buffer = new byte[bytesSent];
-            int byteRecv = sender.Receive(buffer);
+            NetworkStream stream = client.GetStream();
 
-            Packet recvPacket = new Packet(buffer);
+            stream.Write(buffer, 0, buffer.Length);
 
-            this.clientData = recvPacket.deserializeUserLoginData();
+            buffer = new byte[1024];
 
+            int i;
+            // Loop to receive all the data sent by the client.
+            i = stream.Read(buffer, 0, buffer.Length);
+            byte[] data = new byte[i];
+            Array.Copy(buffer, data, i);
 
+            Packet responsePacket = new Packet(data);
 
-            // Close Socket using
-            // the method Close()
-            sender.Shutdown(SocketShutdown.Both);
-            sender.Close();
-
-            if (recvPacket.GetHead().getState() == states.Recv)
+            if (responsePacket.GetHead().getState() == states.Recv)
             {
+                client.Close();
                 this.authentcated = true;
                 this.loginDate = DateTime.Now;
                 return true;
@@ -72,3 +69,4 @@ namespace Client
 
     }
 }
+

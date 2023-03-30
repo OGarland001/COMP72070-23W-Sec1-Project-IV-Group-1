@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
@@ -9,10 +10,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Server
 {
     //loginDataStruct
-    [Serializable]
+    [ProtoContract]
     public struct userLoginData
     {
+        [ProtoMember(1)]
         private string UserName;
+        [ProtoMember(2)]
         private string Password;
 
         public string getUserName()
@@ -29,38 +32,41 @@ namespace Server
         public byte[] serializeData()
         {
             //serialize the data attribute to the Txbuffer inside tail.
-
-            IFormatter formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
+            try
             {
-
-                //weird warning but not sure if it works yet microsoft says its good
-                formatter.Serialize(stream, this);
-                byte[] data = new byte[stream.Length];
-                data = stream.ToArray();
-                stream.Close();
-
-                return data;
+                using (var stream = new MemoryStream())
+                {
+                    Serializer.Serialize(stream, this);
+                    return stream.ToArray();
+                }
             }
-
+            catch
+            {
+                throw;
+            }
         }
     }
+
 
     //Enum States
     public enum states
     {
-        Idle, Auth, Recv, Analyze, Saving, Sending
+        Idle, Auth, NewAuth, Recv, Analyze, Saving, Sending
     }
-    [Serializable]
+    [ProtoContract]
     public struct Head
     {
         //ID from sender
+        [ProtoMember(1)]
         private char SenderID;
         //ID from reciever
+        [ProtoMember(2)]
         private char RecieverID;
         //Length of data
+        [ProtoMember(3)]
         private int Length;
         //enum states for each server state.
+        [ProtoMember(4)]
         private states State;
 
         public char getSenderID()
@@ -101,10 +107,11 @@ namespace Server
             State = state;
         }
     };
-    [Serializable]
+    [ProtoContract]
     public struct Body
     {
         //byte array for data
+        [ProtoMember(1)]
         public byte[] data;
 
         public void setData(byte[] buffer)
@@ -113,10 +120,11 @@ namespace Server
         }
         public byte[] getData() { return data; }
     };
-    [Serializable]
+    [ProtoContract]
     public struct Tail
     {
         //byte array for the send buffer
+        [ProtoMember(1)]
         public byte[] TxBuffer;
         public void setTxBuffer(byte[] buffer)
         {
@@ -127,11 +135,14 @@ namespace Server
 
 
     //Class Defination
-    [Serializable]
+    [ProtoContract]
     public class Packet
     {
+        [ProtoMember(1)]
         private Head head;
+        [ProtoMember(2)]
         private Body body;
+        [ProtoMember(3)]
         private Tail tail;
 
 
@@ -144,15 +155,21 @@ namespace Server
         }
         public Packet(byte[] data)
         {
-            //ParaConstructor of the data buffer.
-            using (MemoryStream ms = new MemoryStream(data))
-            {
 
-                IFormatter br = new BinaryFormatter();
-                //weird warning but not sure if it works yet microsoft says its good
-                Packet recvPacket = new Packet((Packet)br.Deserialize(ms));
-                this.setHead(recvPacket.GetHead().getSenderID(), recvPacket.GetHead().getReciverID(), recvPacket.GetHead().getState());
-                this.setData(recvPacket.GetHead().getLength(), recvPacket.GetBody().getData());
+            try
+            {
+                using (var stream = new MemoryStream(data))
+                {
+                    Packet packet = Serializer.Deserialize<Packet>(stream);
+                    this.head = packet.head;
+                    this.body = packet.body;
+                    this.tail = packet.tail;
+                }
+            }
+            catch
+            {
+                // Log error
+                throw;
             }
 
         }
@@ -161,12 +178,17 @@ namespace Server
         {
             //serialize the data attribute to the Txbuffer inside tail.
 
-            IFormatter formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
+            try
             {
-                //weird warning but not sure if it works yet microsoft says its good
-                formatter.Serialize(stream, this);
-                this.tail.setTxBuffer(stream.ToArray());
+                using (var stream = new MemoryStream())
+                {
+                    Serializer.Serialize(stream, this);
+                    this.tail.setTxBuffer(stream.ToArray());
+                }
+            }
+            catch
+            {
+                throw;
             }
 
 
@@ -207,16 +229,27 @@ namespace Server
         public userLoginData deserializeUserLoginData()
         {
             //ParaConstructor of the data buffer.
-            using (MemoryStream ms = new MemoryStream(this.body.getData()))
+
+            try
             {
-
-                IFormatter br = new BinaryFormatter();
-
-                userLoginData loginData = (userLoginData)br.Deserialize(ms);
-
-                return loginData;
+                using (var stream = new MemoryStream(this.body.getData()))
+                {
+                    userLoginData loginData = Serializer.Deserialize<userLoginData>(stream);
+                    return loginData;
+                }
             }
+            catch
+            {
+                // Log error
+                throw;
+            }
+
+
+
         }
+
+
+
     }
 
     public class login

@@ -38,6 +38,7 @@
 	  <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="3.0.0-preview.22621.2" />
 	  <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.14.1" />
 	  <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.0-preview.22621.2" />
+	  <PackageReference Include="protobuf-net" Version="3.2.16" />
 	  <PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.2.23128.3" />
 	  <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
 	</ItemGroup>
