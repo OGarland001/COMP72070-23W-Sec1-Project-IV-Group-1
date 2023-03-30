@@ -23,6 +23,8 @@ namespace Server
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
+        private string currentOriginalImage = "NoImagePlaceHolder.png";
+        private string currentAnalyzedImage = "NoImagePlaceHolder.png";
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -30,30 +32,47 @@ namespace Server
 
         }
 
-        public ProgramServer GetProgramServer()
+        public void setCurrentOriginalImage(string originalImage)
         {
-            return this;
+            currentOriginalImage = originalImage;
         }
 
-        public string[,] RunRecognition()
+        public void setCurrentAnalyzedImage(string analyzedImage)
+        {
+            currentAnalyzedImage = analyzedImage;
+        }
+
+        public string getCurrentOriginalImage()
+        {
+            return currentOriginalImage;
+        }
+
+        public string getCurrentAnalyzedImage()
+        {
+            return currentAnalyzedImage;
+        }
+
+        public string[,] RunRecognition(string filename)
         {
             setAnalyzingImagesState();
 
-            var assetsRelativePath = @"../../../ML.NET/assets";
+            var assetsRelativePath = @"../../../MLNET/assets";
             string assetsPath = GetAbsolutePath(assetsRelativePath);
             var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
             var imagesFolder = Path.Combine(assetsPath, "images");
             var outputFolder = Path.Combine(assetsPath, "images", "output");
+            var image = Path.Combine(imagesFolder, filename);
+            string imagefileName = filename;
+            string imageFilePath = Path.Combine(assetsPath, "images", imagefileName);
 
             // Initialize MLContext
             MLContext mlContext = new MLContext();
 
             try
             {
-                // Load Data
-                IEnumerable<ImageNetData> images = ImageNetData.ReadFromFile(imagesFolder);
-                IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
-
+                // Load the image data
+                var imageData = new ImageNetData() { ImagePath = imageFilePath };
+                var imageDataView = mlContext.Data.LoadFromEnumerable(new[] { imageData });
                 // Create instance of model scorer
                 var modelScorer = new OnnxModelScorer(imagesFolder, modelFilePath, mlContext);
 
@@ -68,38 +87,30 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                string[,] results = new string[images.Count(), 2];
+                string[,] results = new string[1, 2];
 
-                // Draw bounding boxes for detected objects in each of the images
-                for (var i = 0; i < images.Count(); i++)
+                // Draw bounding boxes for detected objects in the image
+                string imageFileName = filename;
+                IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
+
+                DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
+                string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
+
+                LogDetectedObjects(imageFileName, detectedObjects);
+
+                for (int j = 0; j < objects.Length; j++)
                 {
-                    string imageFileName = images.ElementAt(i).Label;
-                    IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
-
-                    DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
-                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
-                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
-
-                    LogDetectedObjects(imageFileName, detectedObjects);
-
-                    for (int j = 0; j < objects.Length; j++)
-                    {
-                        results[i, j] = objects[j];
-                        results[i, j + 1] = confidence[j];
-                    }
+                    results[0, j] = objects[j];
+                    results[0, j + 1] = confidence[j];
                 }
-
-
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
-
-
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-
+                Console.WriteLine("Error processing file {0}: {1}", filename, ex.Message);
                 return null;
             }
 

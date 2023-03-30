@@ -124,7 +124,7 @@ namespace Server_Test_Suite
 
             //Act
             // Check packet is in state by default or run Recogniation method to check for recogniation state is true
-            server.RunRecognition();
+            server.RunRecognition("Bicycle.jpg");
 
             //Assert
             // Assert Analyzing State is set to current state not the default
@@ -146,9 +146,9 @@ namespace Server_Test_Suite
 
             //Act
             // Generate Image method -- needs to inputs
-            program.RunRecognition();
+            program.RunRecognition("Bicycle.jpg");
 
-            string imageName = @"../../../ML.NET/assets\images\output\Bicycle.jpg";
+            string imageName = @"../../../MLNET/assets\images\output\Bicycle.jpg";
             Image createdImage = Image.FromFile(imageName);
             width = createdImage.Size.Width;
             height = createdImage.Size.Height;
@@ -287,7 +287,7 @@ namespace Server_Test_Suite
 
 
             // Collect the response from the API
-            string[,] objects = server.RunRecognition();
+            string[,] objects = server.RunRecognition("dog.jpg");
 
             if (objects != null)
             {

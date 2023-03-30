@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace Server.InterfaceFiles
 {
@@ -25,7 +28,14 @@ namespace Server.InterfaceFiles
         {
             this.server = server;
             InitializeComponent();
-            //AnalyzedImage.Source = 
+            // Get the current directory
+            string combinedAnalyzedPath = @"MLNET\assets\images\" + this.server.getCurrentAnalyzedImage();
+            string combinedOriginalPath = @"MLNET\assets\images\" + this.server.getCurrentOriginalImage();
+            AnalyzedImage.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, combinedAnalyzedPath)));
+            OrginialImage.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, combinedOriginalPath)));
+            //Infolist.
+            //this.server.SetuserData("Tyler", "Scscaccsa");
+            Username.Text = this.server.GetuserData().getUserName() + " Sent an image";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -47,5 +57,7 @@ namespace Server.InterfaceFiles
         {
             Predicition.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
+
+
     }
 }
