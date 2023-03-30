@@ -164,7 +164,6 @@ namespace Server
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
-
                 //weird warning but not sure if it works yet microsoft says its good
                 formatter.Serialize(stream, this);
                 this.tail.setTxBuffer(stream.ToArray());
