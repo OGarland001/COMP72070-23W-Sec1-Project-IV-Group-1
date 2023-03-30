@@ -9,14 +9,15 @@ namespace Server.InterfaceFiles
     /// <summary>
     /// Interaction logic for CreateAccountPage.xaml
     /// </summary>
-    public partial class FindAccountPage : Page
+    public partial class ResultPage : Page
     {
         private ProgramServer server;
 
-        public FindAccountPage(ProgramServer server)
+        public ResultPage(ProgramServer server, string textToShow)
         {
             InitializeComponent();
-            this.server = server;   
+            this.server = server;
+            DisplayText.Text = textToShow;
         }
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -26,30 +27,7 @@ namespace Server.InterfaceFiles
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            bool found = false;
-            string line;
-
-            System.IO.StreamReader file = new System.IO.StreamReader("../../../Users.txt");
-
-            while ((line = file.ReadLine()) != null)
-            {
-                if (line.Contains(UsernameLoginTextBox.Text))
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if(!found) 
-            {
-                Main.Content = new ResultPage(this.server, "The user has not been found in the server logs");
-            }
-            else
-            {
-                Main.Content = new ResultPage(this.server, "The potential user " + UsernameLoginTextBox.Text + " was found and has\nbeen connected to this server in the past.\n\nUser:\n" + line);
-            }
-
-            file.Close();
+           
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
