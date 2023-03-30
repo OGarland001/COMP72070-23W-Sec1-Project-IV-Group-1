@@ -24,9 +24,11 @@ namespace Client.InterfaceFiles
         public RequestLogsPage()
         {
             InitializeComponent();
-            //string filePath = "../../../ServerLog.txt";
-            //string fileContents = File.ReadAllText(filePath);
-            //label.Content = fileContents;
+            //recieve from file and write to ClientLog.txt
+
+            string filePath = "../../../ClientLog.txt";
+            string fileContents = File.ReadAllText(filePath);
+            label.Content = fileContents;
         }
 
         private void Return_Click(object sender, RoutedEventArgs e)
