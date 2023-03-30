@@ -30,9 +30,11 @@ namespace Client_Test_Suite
         }
         public bool CreateUserCreds(Packet packet)
         {
-            if (packet.GetHead().getState() == states.NewAuth)
+            Packet packet2Recv = new Packet(packet.getTailBuffer());
+
+            if (packet2Recv.GetHead().getState() == states.NewAuth)
             {
-                userLoginData recvLoginData = packet.deserializeUserLoginData();
+                userLoginData recvLoginData = packet2Recv.deserializeUserLoginData();
 
                 using (StreamWriter writer = new StreamWriter("userDataTest.txt"))
                 {

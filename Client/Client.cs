@@ -28,7 +28,7 @@ namespace Client
         {
             IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 696969);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
 
 
             Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -39,6 +39,8 @@ namespace Client
             
 
             sendPacket.SerializeData();
+            
+
             int bytesSent = sender.Send(sendPacket.getTailBuffer());
 
             byte[] buffer = new byte[bytesSent];
