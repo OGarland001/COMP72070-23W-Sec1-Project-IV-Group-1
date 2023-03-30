@@ -66,7 +66,7 @@ namespace Server
                     //if we are authentcating a user
                     currentState = states.Auth;
 
-                    string message = SignInUser("users.txt");
+                    string message = SignInUser("../../../Users.txt");
 
                     if (message == "User signed in")
                     {
@@ -101,7 +101,7 @@ namespace Server
                     //If the user is wanting to be registered
                     currentState = states.NewAuth;
 
-                    string message = RegisterUser("users.txt");
+                    string message = RegisterUser("../../../Users.txt");
 
                     if (message == "User registered")
                     {
