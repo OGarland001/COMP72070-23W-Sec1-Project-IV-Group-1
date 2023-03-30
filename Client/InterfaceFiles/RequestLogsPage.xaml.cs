@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,32 +17,23 @@ using System.Windows.Shapes;
 namespace Client.InterfaceFiles
 {
     /// <summary>
-    /// Interaction logic for CreateAccountPage.xaml
-    /// </summary>
-    public partial class CreateAccountPage : Page
+    /// Interaction logic for RequestLogsPage.xaml
+    /// </summary> 
+    public partial class RequestLogsPage : Page
     {
-        public CreateAccountPage()
+        public RequestLogsPage()
         {
-
             InitializeComponent();
-            
+            //recieve from file and write to ClientLog.txt
+
+            string filePath = "../../../ClientLog.txt";
+            string fileContents = File.ReadAllText(filePath);
+            label.Content = fileContents;
         }
 
-        private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
+        private void Return_Click(object sender, RoutedEventArgs e)
         {
             Main.Content = new HomePage();
-        }
-
-        private void Log_In_Click(object sender, RoutedEventArgs e)
-        {
-            Main.Content = new MainPage();
-
-       
         }
     }
 }

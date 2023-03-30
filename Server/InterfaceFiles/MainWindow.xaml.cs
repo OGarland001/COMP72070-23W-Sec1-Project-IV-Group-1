@@ -24,10 +24,11 @@ namespace Server
         private ProgramServer newServer;
         public MainWindow()
         {
-            InitializeComponent();
             //START MAIN PROGRAM - Client Connection
             newServer = new ProgramServer();
             newServer.run();
+            InitializeComponent();
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

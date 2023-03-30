@@ -7,13 +7,13 @@ namespace Server.InterfaceFiles
     /// <summary>
     /// Interaction logic for CreateAccountPage.xaml
     /// </summary>
-    public partial class CreateAccountPage : Page
+    public partial class DeleteAccountPage : Page
     {
         private ProgramServer server;
-        public CreateAccountPage(ProgramServer server)
+        public DeleteAccountPage(ProgramServer server)
         {
             InitializeComponent();
-            this.server = server;
+            this.server = server;   
         }
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -26,22 +26,27 @@ namespace Server.InterfaceFiles
 
         }
 
+        private void Log_In_Click(object sender, RoutedEventArgs e)
+        {
+       
+        }
+
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             Main.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ClientList(object sender, RoutedEventArgs e)
         {
             Main.Content = new ClientListWindowPage(this.server);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void AccountLogs(object sender, RoutedEventArgs e)
         {
             Main.Content = new AccountLogsWindowPage(this.server);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ClientAccountsWindowPage(object sender, RoutedEventArgs e)
         {
             Main.Content = new ClientAccountsWindowPage(this.server);
         }
