@@ -23,6 +23,7 @@ namespace Client.InterfaceFiles
     {
         public AfterPhotoPage()
         {
+            
             InitializeComponent();
         }
 

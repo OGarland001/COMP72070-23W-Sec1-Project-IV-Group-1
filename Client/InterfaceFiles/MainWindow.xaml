@@ -8,7 +8,6 @@
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
-
         </Grid.ColumnDefinitions>
         <TextBox x:Name="UsernameLoginTextBox" HorizontalAlignment="Left" Margin="329,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" BorderBrush="#FF00CAFF" Height="22" OpacityMask="Black" TextChanged="UsernameLoginTextBox_TextChanged"/>
         <TextBlock x:Name="Product_name" HorizontalAlignment="Left" Margin="296,44,0,0" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="85" Width="200" FontSize="36" FontFamily="Cascadia Mono SemiBold">

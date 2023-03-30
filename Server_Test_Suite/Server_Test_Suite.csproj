@@ -9,23 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ML.NET\assets\images\image1.jpg" />
-    <None Remove="ML.NET\assets\images\image2.jpg" />
-    <None Remove="ML.NET\assets\images\image3.jpg" />
-    <None Remove="ML.NET\assets\images\image4.jpg" />
+    <None Remove="MLNET\assets\images\image1.jpg" />
+    <None Remove="MLNET\assets\images\image2.jpg" />
+    <None Remove="MLNET\assets\images\image3.jpg" />
+    <None Remove="MLNET\assets\images\image4.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ML.NET\assets\images\image1.jpg">
+    <Content Include="MLNET\assets\images\image1.jpg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ML.NET\assets\images\image2.jpg">
+    <Content Include="MLNET\assets\images\image2.jpg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ML.NET\assets\images\image3.jpg">
+    <Content Include="MLNET\assets\images\image3.jpg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ML.NET\assets\images\image4.jpg">
+    <Content Include="MLNET\assets\images\image4.jpg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
@@ -44,10 +44,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Server\Server.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ML.NET\assets\images\output\" />
   </ItemGroup>
 
 </Project>

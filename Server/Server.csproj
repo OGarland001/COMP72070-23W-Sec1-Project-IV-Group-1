@@ -8,30 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ML.NET\**" />
+    <EmbeddedResource Remove="ML.NET\**" />
+    <None Remove="ML.NET\**" />
+    <Page Remove="ML.NET\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="InterfaceFiles\Images\arrowForImage.png" />
     <None Remove="InterfaceFiles\Images\LockIcon.png" />
     <None Remove="InterfaceFiles\Images\usernamePhoto.png" />
-    <None Remove="ML.NET\assets\images\image1.jpg" />
-    <None Remove="ML.NET\assets\images\image2.jpg" />
-    <None Remove="ML.NET\assets\images\image3.jpg" />
-    <None Remove="ML.NET\assets\images\image4.jpg" />
   </ItemGroup>
 	<ItemGroup>
 		<ApplicationDefinition Include="InterfaceFiles/App.xaml" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="ML.NET\assets\images\image1.jpg">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="ML.NET\assets\images\image2.jpg">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="ML.NET\assets\images\image3.jpg">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="ML.NET\assets\images\image4.jpg">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.ML" Version="3.0.0-preview.22621.2" />

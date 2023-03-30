@@ -30,22 +30,36 @@ namespace Server
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
+        private string currentOriginalImage = "NoImagePlaceHolder.png";
+        private string currentAnalyzedImage = "NoImagePlaceHolder.png";
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
+            //Packet packet = new Packet();
+            //IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
+            //IPAddress ipAddr = ipHost.AddressList[0];
+            //IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
             Packet packet = new Packet();
             Int32 port = 11000;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];
 
+            //// Socket Class Constructor
+            //Socket listener = new Socket(ipAddr.AddressFamily,
+            //    SocketType.Stream, ProtocolType.Tcp);
+            //listener.Bind(localEndPoint);
+            //listener.Listen(10);
+            //Socket clientSocket = listener.Accept();
+            //byte[] bytes = new byte[552];
             using TcpClient client = server.AcceptTcpClient();
             bool connectedUser = false;
             NetworkStream stream = client.GetStream();
 
             int i;
 
+            //int bytesRead = clientSocket.Receive(bytes);
             while (!connectedUser)
             {
                 // Loop to receive all the data sent by the client.
@@ -53,17 +67,26 @@ namespace Server
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 
+           
+           
+            //Packet recvPacket = new Packet(bytes);
                 Packet recvPacket = new Packet(data);
 
                 IntializeUserData(recvPacket);
 
 
 
+            //userData = new userLoginData();
+            //userData = recvPacket.deserializeUserLoginData();
+            //if (recvPacket.GetHead().getState() == states.Auth)
+            //{
+            //    currentState = states.Auth;
                 if (recvPacket.GetHead().getState() == states.Auth)
                 {
                     //if we are authentcating a user
                     currentState = states.Auth;
 
+            //    string message = RegisterUser("users.txt");
                     string message = SignInUser("users.txt");
 
                     if (message == "User signed in")
@@ -101,12 +124,18 @@ namespace Server
 
                     string message = RegisterUser("users.txt");
 
+            //    if (message == "User registered")
+            //    {
+                    
+            //        //sets up a packet with nothing just to say that it was recived and passed
+            //        packet.setHead('2', '1', states.Recv);
                     if (message == "User registered")
                     {
 
                         //sets up a packet with nothing just to say that it was recived and passed
                         packet.setHead('2', '1', states.Recv);
 
+            //        packet.SerializeData();
                         packet.SerializeData();
                         byte[] sendbuf = packet.getTailBuffer();
                         NetworkStream clStream = client.GetStream();
@@ -114,8 +143,15 @@ namespace Server
                         clStream.Write(sendbuf, 0, sendbuf.Length);
 
 
+            //        clientSocket.Send(packet.getTailBuffer());
                         connectedUser = true;
 
+            //    }
+            //    else
+            //    {
+                    
+            //        //sends it back if it failed and needs to be reauthed.
+            //        packet.setHead('2', '1', states.Auth);
                     }
                     else
                     {
@@ -123,20 +159,17 @@ namespace Server
                         //sends it back if it failed and needs to be reauthed.
                         packet.setHead('2', '1', states.Auth);
 
+            //        packet.SerializeData();
                         packet.SerializeData();
 
+            //        clientSocket.Send(packet.getTailBuffer());
                         byte[] sendbuf = packet.getTailBuffer();
                         NetworkStream clStream = client.GetStream();
 
                         clStream.Write(sendbuf, 0, sendbuf.Length);
 
-                    }
-                }
-            }
-       
-
-
-
+            //    }
+            //}
         }
 
         public void SocketCleanup(Socket socket)
@@ -145,30 +178,53 @@ namespace Server
             socket.Close();
         }
 
-        public ProgramServer GetProgramServer()
+        public void setCurrentOriginalImage(string originalImage)
         {
-            return this;
+            currentOriginalImage = originalImage;
+        }
+                    }
+                }
+            }
+       
+
+
+        public void setCurrentAnalyzedImage(string analyzedImage)
+        {
+            currentAnalyzedImage = analyzedImage;
+
         }
 
-        public string[,] RunRecognition()
+        public string getCurrentOriginalImage()
+        {
+            return currentOriginalImage;
+        }
+
+        public string getCurrentAnalyzedImage()
+        {
+            return currentAnalyzedImage;
+        }
+
+        public string[,] RunRecognition(string filename)
         {
             setAnalyzingImagesState();
 
-            var assetsRelativePath = @"../../../ML.NET/assets";
+            var assetsRelativePath = @"../../../MLNET/assets";
             string assetsPath = GetAbsolutePath(assetsRelativePath);
             var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
             var imagesFolder = Path.Combine(assetsPath, "images");
             var outputFolder = Path.Combine(assetsPath, "images", "output");
+            var image = Path.Combine(imagesFolder, filename);
+            string imagefileName = filename;
+            string imageFilePath = Path.Combine(assetsPath, "images", imagefileName);
 
             // Initialize MLContext
             MLContext mlContext = new MLContext();
 
             try
             {
-                // Load Data
-                IEnumerable<ImageNetData> images = ImageNetData.ReadFromFile(imagesFolder);
-                IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
-
+                // Load the image data
+                var imageData = new ImageNetData() { ImagePath = imageFilePath };
+                var imageDataView = mlContext.Data.LoadFromEnumerable(new[] { imageData });
                 // Create instance of model scorer
                 var modelScorer = new OnnxModelScorer(imagesFolder, modelFilePath, mlContext);
 
@@ -183,38 +239,30 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                string[,] results = new string[images.Count(), 2];
+                string[,] results = new string[1, 2];
 
-                // Draw bounding boxes for detected objects in each of the images
-                for (var i = 0; i < images.Count(); i++)
+                // Draw bounding boxes for detected objects in the image
+                string imageFileName = filename;
+                IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
+
+                DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
+                string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
+
+                LogDetectedObjects(imageFileName, detectedObjects);
+
+                for (int j = 0; j < objects.Length; j++)
                 {
-                    string imageFileName = images.ElementAt(i).Label;
-                    IList<YoloBoundingBox> detectedObjects = boundingBoxes.ElementAt(i);
-
-                    DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
-                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
-                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
-
-                    LogDetectedObjects(imageFileName, detectedObjects);
-
-                    for (int j = 0; j < objects.Length; j++)
-                    {
-                        results[i, j] = objects[j];
-                        results[i, j + 1] = confidence[j];
-                    }
+                    results[0, j] = objects[j];
+                    results[0, j + 1] = confidence[j];
                 }
-
-
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
-
-
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-
+                Console.WriteLine("Error processing file {0}: {1}", filename, ex.Message);
                 return null;
             }
 
