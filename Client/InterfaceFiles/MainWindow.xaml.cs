@@ -31,7 +31,10 @@ namespace Client.InterfaceFiles
             loginData.setUserName(UsernameLoginTextBox.Text);
             loginData.setPassword(PasswordLoginTextBox.Password.ToString());
 
-            userdataPacket.setData(loginData.serializeData().Length, loginData.serializeData());
+            byte[] data = new byte[loginData.getUserName().Length + loginData.getPassword().Length];
+            data = loginData.serializeData();
+
+            userdataPacket.setData(data.Length, data);
 
             client.authenticateUser(userdataPacket);
 

@@ -22,7 +22,9 @@ namespace Client.InterfaceFiles
     {
         public CreateAccountPage()
         {
+
             InitializeComponent();
+            
         }
 
         private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)

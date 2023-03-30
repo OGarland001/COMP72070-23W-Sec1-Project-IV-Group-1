@@ -176,6 +176,8 @@ namespace Client_Test_Suite
             sendPacket.setHead((char)05, (char)2, states.NewAuth);
             sendPacket.setData(data.Length, data);
 
+            sendPacket.SerializeData();
+
             //stub acting like its the server
             bool result = server.CreateUserCreds(sendPacket);
 

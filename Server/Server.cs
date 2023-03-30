@@ -14,6 +14,8 @@ using FontStyle = System.Drawing.FontStyle;
 using System.Diagnostics;
 using System.CodeDom;
 using System.Windows;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Server
 {
@@ -27,7 +29,67 @@ namespace Server
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
+            Packet packet = new Packet();
+            IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress ipAddr = ipHost.AddressList[0];
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6969);
 
+            // Socket Class Constructor
+            Socket listener = new Socket(ipAddr.AddressFamily,
+                SocketType.Stream, ProtocolType.Tcp);
+            listener.Bind(localEndPoint);
+            listener.Listen(10);
+            Socket clientSocket = listener.Accept();
+            byte[] bytes = new byte[552];
+
+            int bytesRead = clientSocket.Receive(bytes);
+
+           
+           
+            Packet recvPacket = new Packet(bytes);
+
+            Console.WriteLine("Number of bytes for a login packet = " + bytesRead.ToString());
+
+            userData = new userLoginData();
+            userData = recvPacket.deserializeUserLoginData();
+            if (recvPacket.GetHead().getState() == states.Auth)
+            {
+                currentState = states.Auth;
+
+                string message = RegisterUser("users.txt");
+
+                if (message == "User registered")
+                {
+                    
+                    //sets up a packet with nothing just to say that it was recived and passed
+                    packet.setHead('2', '1', states.Recv);
+
+                    packet.SerializeData();
+
+                    clientSocket.Send(packet.getTailBuffer());
+
+                }
+                else
+                {
+                    
+                    //sends it back if it failed and needs to be reauthed.
+                    packet.setHead('2', '1', states.Auth);
+
+                    packet.SerializeData();
+
+                    clientSocket.Send(packet.getTailBuffer());
+
+                }
+            }
+            
+            
+
+        }
+
+        public void SocketCleanup(Socket socket)
+        {
+            socket.Shutdown(SocketShutdown.Both);
+            socket.Close();
         }
 
         public ProgramServer GetProgramServer()
