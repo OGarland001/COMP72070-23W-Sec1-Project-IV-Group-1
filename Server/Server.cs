@@ -44,74 +44,88 @@ namespace Server
             
             while (!connectedUser)
             {
+
+                // Loop to receive all the data sent by the client.
+                using TcpClient client = server.AcceptTcpClient();
+                NetworkStream stream = client.GetStream();
+
+                i = stream.Read(buffer, 0, buffer.Length);
+                byte[] data = new byte[i];
+                Array.Copy(buffer, data, i);
+
+                Packet recvPacket = new Packet(data);
+
+                if (recvPacket.GetHead().getState() == states.Auth)
+                {
+                   AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
+                }
                 
-                    // Loop to receive all the data sent by the client.
-                    using TcpClient client = server.AcceptTcpClient();
-                    NetworkStream stream = client.GetStream();
-                    try
+            }
+
+            void AuthenticateUser(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
+            {
+                
+                try
+                {
+
+
+                    if (recvPacket.GetBody().getData() != null)
                     {
+                        IntializeUserData(recvPacket);
 
-                        i = stream.Read(buffer, 0, buffer.Length);
-                        byte[] data = new byte[i];
-                        Array.Copy(buffer, data, i);
-
-                        Packet recvPacket = new Packet(data);
-
-                        if (recvPacket.GetBody().getData() != null)
+                        if (recvPacket.GetHead().getState() == states.Auth)
                         {
-                            IntializeUserData(recvPacket);
+                            //if we are authentcating a user
+                            currentState = states.Auth;
 
-                            if (recvPacket.GetHead().getState() == states.Auth)
+                            string message = SignInUser("../../../Users.txt");
+
+                            if (message == "User signed in")
                             {
-                                //if we are authentcating a user
-                                currentState = states.Auth;
 
-                                string message = SignInUser("../../../Users.txt");
-
-                                if (message == "User signed in")
-                                {
-
-                                    //sets up a packet with nothing just to say that it was recived and passed
-                                    connectedUser = sendAuthentcatedAckPacket(packet, client);
-                                }
-                                else
-                                {
-                                    stream.Close();
-                                    sendReAuthAckPacket(packet, client);
-
-                                }
+                                //sets up a packet with nothing just to say that it was recived and passed
+                                connectedUser = sendAuthentcatedAckPacket(packet, client);
                             }
-                            else if (recvPacket.GetHead().getState() == states.NewAuth)
+                            else
                             {
-                                //If the user is wanting to be registered
-                                currentState = states.NewAuth;
+                                stream.Close();
+                                sendReAuthAckPacket(packet, client);
 
-                                string message = RegisterUser("../../../Users.txt");
-
-                                if (message == "User registered")
-                                {
-                                    connectedUser = sendAuthentcatedAckPacket(packet, client);
-
-                                }
-                                else
-                                {
-                                    stream.Close();
-                                    sendReAuthAckPacket(packet, client);
-
-                                }
                             }
                         }
-                        else
+                        else if (recvPacket.GetHead().getState() == states.NewAuth)
                         {
-                            stream.Close();
-                            sendReAuthAckPacket(packet, client);
+                            //If the user is wanting to be registered
+                            currentState = states.NewAuth;
 
+                            string message = RegisterUser("../../../Users.txt");
+
+                            if (message == "User registered")
+                            {
+                                connectedUser = sendAuthentcatedAckPacket(packet, client);
+
+                            }
+                            else
+                            {
+                                stream.Close();
+                                sendReAuthAckPacket(packet, client);
+
+                            }
                         }
                     }
-                    catch (Exception exception)
+                    else
                     {
-                        Console.WriteLine(exception.Message);
+                        stream.Close();
+                        sendReAuthAckPacket(packet, client);
+
                     }
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+
+               
             }
         }
 
