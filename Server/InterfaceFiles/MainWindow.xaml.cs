@@ -13,7 +13,7 @@ namespace Server
         {
             //START MAIN PROGRAM - Client Connection
             newServer = new ProgramServer();
-            //newServer.run();
+            newServer.run();
             InitializeComponent();
             
         }

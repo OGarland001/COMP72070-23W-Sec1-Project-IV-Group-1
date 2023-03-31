@@ -60,10 +60,6 @@ namespace Server
                         {
                             IntializeUserData(recvPacket);
 
-
-
-
-
                             if (recvPacket.GetHead().getState() == states.Auth)
                             {
                                 //if we are authentcating a user
@@ -115,13 +111,7 @@ namespace Server
                     {
                         Console.WriteLine(exception.Message);
                     }
-                
-
             }
-
-
-
-
         }
 
         private static bool sendAuthentcatedAckPacket(Packet packet, TcpClient client)

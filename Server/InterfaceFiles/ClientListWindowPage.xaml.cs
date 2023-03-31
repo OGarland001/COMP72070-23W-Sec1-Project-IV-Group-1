@@ -14,6 +14,7 @@ namespace Server.InterfaceFiles
         {
             this.server = server;
             InitializeComponent();
+            ClientUsername.Text = this.server.GetuserData().getUserName();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

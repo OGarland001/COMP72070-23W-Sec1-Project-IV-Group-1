@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System;
 
 
 namespace Server.InterfaceFiles
@@ -26,6 +27,7 @@ namespace Server.InterfaceFiles
         {
             bool found = false;
             string line;
+            int count = 1;
 
             try
             {
@@ -33,11 +35,12 @@ namespace Server.InterfaceFiles
 
                 while ((line = file.ReadLine()) != null)
                 {
-                    if (line.Contains(UsernameLoginTextBox.Text))
+                    if (line.Contains(UsernameLoginTextBox.Text) && count % 2 != 0)
                     {
                         found = true;
                         break;
                     }
+                    count++;
                 }
 
                 if (!found)
