@@ -49,8 +49,10 @@ namespace Client.InterfaceFiles
 
             userdataPacket.setData(data.Length, data);
 
+            //display a message box showing a waiting message till the user is connected and authenticated
+            MessageBox.Show("Please wait while we connect you to the server");
             client.authenticateUser(userdataPacket);
-
+            MessageBox.Show("Connected!");
 
             if (client.authentcated)
             {
