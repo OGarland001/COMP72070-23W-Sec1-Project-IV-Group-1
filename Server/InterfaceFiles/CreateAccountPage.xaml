@@ -29,7 +29,7 @@
         <Image x:Name="Password_Icon" HorizontalAlignment="Left" Height="30" Margin="365,197,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/Images/LockIcon.png" OpacityMask="Black"/>
         <Label x:Name="UsernameLabel" Content="Username" HorizontalAlignment="Left" Margin="394,125,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="76" OpacityMask="Black"/>
         <Label x:Name="PasswordLabel" Content="Password" HorizontalAlignment="Left" Margin="394,178,0,0" VerticalAlignment="Top" Opacity="0.5" Foreground="#FF00CAFF" Height="31" Width="71" OpacityMask="Black"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="399,201,0,0" VerticalAlignment="Top" Width="162" Height="22" BorderBrush="#FF00CAFF"/>
+        <PasswordBox x:Name="PasswordLoginTextBox" HorizontalAlignment="Left" Margin="399,201,0,0" VerticalAlignment="Top" Width="162" Height="22" BorderBrush="#FF00CAFF"/>
         <Button x:Name="CreateAccountButton" Content="Create Account" HorizontalAlignment="Left" Margin="370,247,0,0" VerticalAlignment="Top" Width="192" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>

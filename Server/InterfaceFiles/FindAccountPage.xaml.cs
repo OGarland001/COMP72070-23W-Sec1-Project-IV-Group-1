@@ -29,27 +29,34 @@ namespace Server.InterfaceFiles
             bool found = false;
             string line;
 
-            System.IO.StreamReader file = new System.IO.StreamReader("../../../Users.txt");
-
-            while ((line = file.ReadLine()) != null)
+            try
             {
-                if (line.Contains(UsernameLoginTextBox.Text))
+                System.IO.StreamReader file = new System.IO.StreamReader("../../../Users.txt");
+
+                while ((line = file.ReadLine()) != null)
                 {
-                    found = true;
-                    break;
+                    if (line.Contains(UsernameLoginTextBox.Text))
+                    {
+                        found = true;
+                        break;
+                    }
                 }
-            }
 
-            if(!found) 
-            {
-                Main.Content = new ResultPage(this.server, "The user has not been found in the server logs");
-            }
-            else
-            {
-                Main.Content = new ResultPage(this.server, "The potential user " + UsernameLoginTextBox.Text + " was found and has\nbeen connected to this server in the past.\n\nUser:\n" + line);
-            }
+                if (!found)
+                {
+                    Main.Content = new ResultPage(this.server, "The user has not been found in the server logs");
+                }
+                else
+                {
+                    Main.Content = new ResultPage(this.server, "The potential user " + UsernameLoginTextBox.Text + " was found and has\nbeen connected to this server in the past.\n\nUser:\n" + line);
+                }
 
-            file.Close();
+                file.Close();
+            }
+            catch 
+            {
+                Main.Content = new ResultPage(this.server, "An error occured while attempting to find a user");
+            }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
