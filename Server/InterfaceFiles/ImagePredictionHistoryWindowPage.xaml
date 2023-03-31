@@ -31,10 +31,10 @@
         <Image Name="OrginialImage" HorizontalAlignment="Left" Height="142" Margin="307,131,0,0" VerticalAlignment="Top" Width="148"/>
         <Image Name ="AnalyzedImage" HorizontalAlignment="Left" Height="142" Margin="472,131,0,0" VerticalAlignment="Top" Width="148"/>
 
-        <Expander Margin="613,85,22,227" ExpandDirection="Right" Background="#7F000000">
-            <ListBox Name ="Infolist"  d:ItemsSource="{d:SampleData ItemCount=5}" Background="{x:Null}" Height="127" Width="95" BorderBrush="{x:Null}"/>
+        <Expander Margin="613,85,10,137" ExpandDirection="Right" Background="{x:Null}" IsExpanded="True" Foreground="{x:Null}">
+            <ListBox Name="ListBox"/>
 
         </Expander>
-       <Frame x:Name="Predicition" Margin="0,0,0,0" />
+        <Frame x:Name="Predicition" Margin="0,0,0,0"/>
     </Grid>
 </Page>

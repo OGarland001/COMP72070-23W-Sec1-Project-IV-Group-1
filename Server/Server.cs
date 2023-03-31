@@ -32,6 +32,7 @@ namespace Server
         private userLoginData userData;
         private string currentOriginalImage = "NoImagePlaceHolder.png";
         private string currentAnalyzedImage = "NoImagePlaceHolder.png";
+        private string[,] detectedObjects = new string[10, 10];
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -139,6 +140,16 @@ namespace Server
 
 
 
+        }
+
+        public void setDetectedObjects(string[,] objects)
+        {
+            Array.Copy(objects, detectedObjects, objects.Length);
+        }
+
+        public string[,] getDetectedObjects()
+        {
+            return this.detectedObjects;
         }
 
 
