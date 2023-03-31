@@ -1,5 +1,4 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -41,6 +40,10 @@ namespace Client.InterfaceFiles
             if (client.authentcated)
             {
                 Main.Content = new HomePage();
+            }
+            else
+            {
+                MessageBox.Show("Invalid Username or Password");
             }
         }
 

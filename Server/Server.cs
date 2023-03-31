@@ -11,16 +11,9 @@ using Server.ML.NET;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
-using System.Diagnostics;
-using System.CodeDom;
-using System.Windows;
 using System.Net;
 using System.Net.Sockets;
-using Google.Protobuf;
-using System.Printing.IndexedProperties;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Windows.Markup;
+
 
 namespace Server
 {
@@ -38,108 +31,128 @@ namespace Server
         public void run()
         {
             Packet packet = new Packet();
-            Int32 port = 11000;
+            Int32 port = 11001;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];
 
-            using TcpClient client = server.AcceptTcpClient();
+            
             bool connectedUser = false;
-            NetworkStream stream = client.GetStream();
+            
 
             int i;
-
+            
             while (!connectedUser)
             {
-                // Loop to receive all the data sent by the client.
-                i = stream.Read(buffer, 0, buffer.Length);
-                byte[] data = new byte[i];
-                Array.Copy(buffer, data, i);
-
-                Packet recvPacket = new Packet(data);
-
-                IntializeUserData(recvPacket);
-
-
-
-                if (recvPacket.GetHead().getState() == states.Auth)
-                {
-                    //if we are authentcating a user
-                    currentState = states.Auth;
-
-                    string message = SignInUser("../../../Users.txt");
-
-                    if (message == "User signed in")
+                
+                    // Loop to receive all the data sent by the client.
+                    using TcpClient client = server.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+                    try
                     {
 
-                        //sets up a packet with nothing just to say that it was recived and passed
-                        packet.setHead('2', '1', states.Recv);
+                        i = stream.Read(buffer, 0, buffer.Length);
+                        byte[] data = new byte[i];
+                        Array.Copy(buffer, data, i);
 
-                        packet.SerializeData();
-                        byte[] sendbuf = packet.getTailBuffer();
-                        NetworkStream clStream = client.GetStream();
+                        Packet recvPacket = new Packet(data);
 
-                        clStream.Write(sendbuf, 0, sendbuf.Length);
-                        connectedUser = true;
+                        if (recvPacket.GetBody().getData() != null)
+                        {
+                            IntializeUserData(recvPacket);
+
+
+
+
+
+                            if (recvPacket.GetHead().getState() == states.Auth)
+                            {
+                                //if we are authentcating a user
+                                currentState = states.Auth;
+
+                                string message = SignInUser("../../../Users.txt");
+
+                                if (message == "User signed in")
+                                {
+
+                                    //sets up a packet with nothing just to say that it was recived and passed
+                                    connectedUser = sendAuthentcatedAckPacket(packet, client);
+                                }
+                                else
+                                {
+                                    stream.Close();
+                                    sendReAuthAckPacket(packet, client);
+
+                                }
+                            }
+                            else if (recvPacket.GetHead().getState() == states.NewAuth)
+                            {
+                                //If the user is wanting to be registered
+                                currentState = states.NewAuth;
+
+                                string message = RegisterUser("../../../Users.txt");
+
+                                if (message == "User registered")
+                                {
+                                    connectedUser = sendAuthentcatedAckPacket(packet, client);
+
+                                }
+                                else
+                                {
+                                    stream.Close();
+                                    sendReAuthAckPacket(packet, client);
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            stream.Close();
+                            sendReAuthAckPacket(packet, client);
+
+                        }
                     }
-                    else
+                    catch (Exception exception)
                     {
-
-                        //sends it back if it failed and needs to be reauthed.
-                        packet.setHead('2', '1', states.Auth);
-
-                        packet.SerializeData();
-
-                        byte[] sendbuf = packet.getTailBuffer();
-                        NetworkStream clStream = client.GetStream();
-
-                        clStream.Write(sendbuf, 0, sendbuf.Length);
-
+                        Console.WriteLine(exception.Message);
                     }
-                }
-                else if (recvPacket.GetHead().getState() == states.NewAuth)
-                {
-                    //If the user is wanting to be registered
-                    currentState = states.NewAuth;
+                
 
-                    string message = RegisterUser("../../../Users.txt");
-
-                    if (message == "User registered")
-                    {
-
-                        //sets up a packet with nothing just to say that it was recived and passed
-                        packet.setHead('2', '1', states.Recv);
-
-                        packet.SerializeData();
-                        byte[] sendbuf = packet.getTailBuffer();
-                        NetworkStream clStream = client.GetStream();
-
-                        clStream.Write(sendbuf, 0, sendbuf.Length);
-
-
-                        connectedUser = true;
-
-                    }
-                    else
-                    {
-
-                        //sends it back if it failed and needs to be reauthed.
-                        packet.setHead('2', '1', states.Auth);
-
-                        packet.SerializeData();
-
-                        byte[] sendbuf = packet.getTailBuffer();
-                        NetworkStream clStream = client.GetStream();
-
-                        clStream.Write(sendbuf, 0, sendbuf.Length);
-
-                    }
-                }
             }
 
 
 
 
+        }
+
+        private static bool sendAuthentcatedAckPacket(Packet packet, TcpClient client)
+        {
+            bool connectedUser;
+            //sets up a packet with nothing just to say that it was recived and passed
+            packet.setHead('2', '1', states.Recv);
+
+            packet.SerializeData();
+            byte[] sendbuf = packet.getTailBuffer();
+            NetworkStream clStream = client.GetStream();
+
+            clStream.Write(sendbuf, 0, sendbuf.Length);
+
+
+            connectedUser = true;
+            return connectedUser;
+        }
+
+        private static void sendReAuthAckPacket(Packet packet, TcpClient client)
+        {
+            //sends it back if it failed and needs to be reauthed.
+            packet.setHead('2', '1', states.Auth);
+
+            packet.SerializeData();
+
+            byte[] sendbuf = packet.getTailBuffer();
+            NetworkStream clStream = client.GetStream();
+
+            clStream.Write(sendbuf, 0, sendbuf.Length);
         }
 
         public void setDetectedObjects(string[,] objects)
