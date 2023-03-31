@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +36,29 @@ namespace Server.InterfaceFiles
             OrginialImage.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, combinedOriginalPath)));
             //Infolist.
             //this.server.SetuserData("Tyler", "Scscaccsa");
+            
             Username.Text = this.server.GetuserData().getUserName() + " Sent an image";
+         
+
+            if (server.getDetectedObjects().GetLength(0) > 0) 
+            {
+                string[,] detectedObjects = server.getDetectedObjects();
+
+                var data = new List<string>();
+
+                for (int i = 0; i < detectedObjects.GetLength(0); i++)
+                {
+                    string row = "";
+                    for (int j = 0; j < detectedObjects.GetLength(1); j++)
+                    {
+                        row += detectedObjects[i, j] + "\n";
+                    }
+                    data.Add(row.TrimEnd());
+                }
+
+                ListBox.ItemsSource = data;
+            }
+           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -58,6 +81,6 @@ namespace Server.InterfaceFiles
             Predicition.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
 
-
+        
     }
 }
