@@ -11,16 +11,9 @@ using Server.ML.NET;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
-using System.Diagnostics;
-using System.CodeDom;
-using System.Windows;
 using System.Net;
 using System.Net.Sockets;
-using Google.Protobuf;
-using System.Printing.IndexedProperties;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Windows.Markup;
+
 
 namespace Server
 {
