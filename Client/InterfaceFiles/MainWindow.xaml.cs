@@ -43,6 +43,10 @@ namespace Client.InterfaceFiles
             {
                 Main.Content = new HomePage();
             }
+            else
+            {
+                MessageBox.Show("Invalid Username or Password");
+            }
         }
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)

@@ -31,7 +31,7 @@ namespace Client
         public bool authenticateUser(Packet sendPacket)
         {
             //// Establish the remote endpoint for the socket.
-            Int32 port = 11000;
+            Int32 port = 11001;
 
             using TcpClient client = new TcpClient(IPAddress.Loopback.ToString(), port);
 

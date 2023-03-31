@@ -56,6 +56,10 @@ namespace Client.InterfaceFiles
             {
                 Main.Content = new HomePage();
             }
+            else
+            {
+                MessageBox.Show("Invalid Username or Password");
+            }
             
         }
 
