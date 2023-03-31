@@ -12,7 +12,7 @@
         <Rectangle HorizontalAlignment="Left" Height="434" Stroke="SteelBlue" Fill="SteelBlue"  VerticalAlignment="Center" Width="173"/>
         <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click"/>
         <Button Content="Account Logs" HorizontalAlignment="Left" Margin="0,95,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_1"/>
-        <Button Content="Client List" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="Button_Click_2"/>
+        <Button Content="Connected Client" HorizontalAlignment="Left" Margin="0,148,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="#FF76AEDD" Foreground="White" Click="Button_Click_2"/>
         <Button Content="Image Prediction History" HorizontalAlignment="Left" Margin="0,201,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click_3"/>
         <TextBlock x:Name="Product_name" HorizontalAlignment="Left" TextWrapping="Wrap" Text="classifAI" VerticalAlignment="Top" Height="29" Width="128" FontSize="24" FontFamily="Cascadia Mono SemiBold" Margin="650,380,0,0">
             <TextBlock.Foreground>
@@ -23,7 +23,7 @@
             </TextBlock.Foreground>
         </TextBlock>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
-        <TextBlock HorizontalAlignment="Left" Margin="400,22,0,0" TextWrapping="Wrap" Text="Client List" VerticalAlignment="Top" Width="142"  FontSize="20"/>
+        <TextBlock HorizontalAlignment="Left" Margin="389,22,0,0" TextWrapping="Wrap" Text="Connected Client" VerticalAlignment="Top" Width="153"  FontSize="20"/>
         <Rectangle HorizontalAlignment="Left" Height="127" Margin="242,136,0,0" VerticalAlignment="Top" Width="195" Fill="SteelBlue"/>
         <TextBlock HorizontalAlignment="Left" Margin="242,91,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="SteelBlue" FontSize="14" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Margin="389,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF10AB3D" FontSize="10"><Run Language="en-ca" Text="Connected"/></TextBlock>
