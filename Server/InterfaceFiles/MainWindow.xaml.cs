@@ -1,4 +1,5 @@
 ﻿using Server.InterfaceFiles;
+using System.Threading;
 using System.Windows;
 
 namespace Server
@@ -11,11 +12,21 @@ namespace Server
         private ProgramServer newServer;
         public MainWindow()
         {
-            //START MAIN PROGRAM - Client Connection
-            newServer = new ProgramServer();
-            newServer.run();
+
+
+            Thread[] threads = new Thread[1];
+
+
+            threads[0] = new Thread(new ThreadStart(() => {
+                newServer = new ProgramServer();
+                newServer.run(); }));
+
+            threads[0].Start();
+
             InitializeComponent();
-            
+
+
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
