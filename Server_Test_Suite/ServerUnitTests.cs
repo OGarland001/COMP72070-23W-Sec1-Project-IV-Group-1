@@ -16,7 +16,9 @@ namespace Server_Test_Suite
         public void SVR_UNIT_TEST_001_DataEncryptedBeforeSend_EncryptedData() //Goal
         {
             //Arrange
+            //ProgramServer server = new ProgramServer();
 
+            //server.CreateUserFolder("Owen");
             //Act
             //Serialize the packet -- Save output to a data buffer
             //Encrypt buffer -- Encryption Class and save to encryption buffer
@@ -124,7 +126,7 @@ namespace Server_Test_Suite
 
             //Act
             // Check packet is in state by default or run Recogniation method to check for recogniation state is true
-            server.RunRecognition("Bicycle.jpg");
+            server.RunRecognition("Bicycle.jpg","Tyler");
 
             //Assert
             // Assert Analyzing State is set to current state not the default
@@ -146,7 +148,7 @@ namespace Server_Test_Suite
 
             //Act
             // Generate Image method -- needs to inputs
-            program.RunRecognition("Bicycle.jpg");
+            program.RunRecognition("Bicycle.jpg", "Tyler");
 
             string imageName = @"../../../MLNET/assets\images\output\Bicycle.jpg";
             Image createdImage = Image.FromFile(imageName);
@@ -287,11 +289,11 @@ namespace Server_Test_Suite
 
 
             // Collect the response from the API
-            string[,] objects = server.RunRecognition("dog.jpg");
+            string[,] objects = server.RunRecognition("dog.jpg","Tyler");
 
             if (objects != null)
             {
-                Assert.AreEqual("dog", objects[1, 0]);
+                Assert.AreEqual("dog", objects[0, 0]);
             }
         }
 

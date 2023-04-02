@@ -42,5 +42,8 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Users\Tyler\assets\images\output\" />
+	</ItemGroup>
 
 </Project>

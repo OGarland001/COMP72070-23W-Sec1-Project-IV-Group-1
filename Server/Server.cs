@@ -23,8 +23,8 @@ namespace Server
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
-        private string currentOriginalImage = "NoImagePlaceHolder.png";
-        private string currentAnalyzedImage = "NoImagePlaceHolder.png";
+        private string currentOriginalImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
+        private string currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
         private string[,] detectedObjects = new string[10, 10];
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
@@ -238,12 +238,12 @@ namespace Server
 
         public void setCurrentOriginalImage(string originalImage)
         {
-            currentOriginalImage = originalImage;
+            currentOriginalImage = @"Users\" + GetuserData().getUserName() + @"\assets\images\" + originalImage;
         }
 
         public void setCurrentAnalyzedImage(string analyzedImage)
         {
-            currentAnalyzedImage = analyzedImage;
+            currentAnalyzedImage = @"Users\" + GetuserData().getUserName() + @"\assets\images\output\" + analyzedImage;
         }
 
         public string getCurrentOriginalImage()
@@ -262,13 +262,15 @@ namespace Server
             return this;
         }
 
-        public string[,] RunRecognition(string filename)
+        public string[,] RunRecognition(string filename, string username)
         {
             setAnalyzingImagesState();
-
+            //string path = @"../../../" + username + "/assets";
             var assetsRelativePath = @"../../../MLNET/assets";
-            string assetsPath = GetAbsolutePath(assetsRelativePath);
-            var modelFilePath = Path.Combine(assetsPath, "Model", "TinyYolo2_model.onnx");
+            var UsersassetsRelativePath = @"../../../Users/" + username + "/assets";
+            string assetsPath = GetAbsolutePath(UsersassetsRelativePath);
+            string MLassetsPath = GetAbsolutePath(assetsRelativePath);
+            var modelFilePath = Path.Combine(MLassetsPath, "Model", "TinyYolo2_model.onnx");
             var imagesFolder = Path.Combine(assetsPath, "images");
             var outputFolder = Path.Combine(assetsPath, "images", "output");
             var image = Path.Combine(imagesFolder, filename);
@@ -650,6 +652,29 @@ namespace Server
             }
 
             return message;
+        }
+
+        public bool CreateUserFolder(string username)
+        {
+            bool error = false;
+            string subdirUser = @"../../../Users/" + username;
+            string subdirAssets = subdirUser + "/assets/";
+            string subdirImage = subdirAssets + "images/";
+            string subdirOutput = subdirImage + "output";
+            // If directory does not exist, create it.
+            if (!Directory.Exists(subdirUser))
+            {
+                Directory.CreateDirectory(subdirUser);
+                Directory.CreateDirectory(subdirAssets);
+                Directory.CreateDirectory(subdirImage);
+                Directory.CreateDirectory(subdirOutput);
+            }
+            else
+            {
+                error = true;
+            }
+
+            return error;
         }
     }
 }

@@ -30,8 +30,8 @@ namespace Server.InterfaceFiles
             this.server = server;
             InitializeComponent();
             // Get the current directory
-            string combinedAnalyzedPath = @"MLNET\assets\images\output\" + this.server.getCurrentAnalyzedImage();
-            string combinedOriginalPath = @"MLNET\assets\images\" + this.server.getCurrentOriginalImage();
+            string combinedAnalyzedPath = this.server.getCurrentAnalyzedImage();
+            string combinedOriginalPath = this.server.getCurrentOriginalImage();
             AnalyzedImage.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, combinedAnalyzedPath)));
             OrginialImage.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, combinedOriginalPath)));
             //Infolist.
