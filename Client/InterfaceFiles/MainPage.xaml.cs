@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Net.Sockets;
+using System.Net;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -36,7 +39,12 @@ namespace Client.InterfaceFiles
 
             // display a message box showing a waiting message till the user is connected and authenticated
             MessageBox.Show("Please wait while we connect you to the server");
-            client.authenticateUser(userdataPacket);
+            //// Establish the remote endpoint for the socket.
+            Int32 port = 11001;
+
+            using TcpClient clientSock = new TcpClient(IPAddress.Loopback.ToString(), port);
+
+            client.authenticateUser(userdataPacket, clientSock);
             MessageBox.Show("Connected!");
 
             if (client.authentcated)

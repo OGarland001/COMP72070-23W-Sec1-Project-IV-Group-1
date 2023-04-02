@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Net.Sockets;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Client.InterfaceFiles
@@ -38,7 +39,8 @@ namespace Client.InterfaceFiles
 
             //display a message box showing a waiting message till the user is connected and authenticated
             MessageBox.Show("Please wait while we connect you to the server");
-            client.authenticateUser(userdataPacket);
+            TcpClient clientTcp = new TcpClient(); 
+            client.authenticateUser(userdataPacket, clientTcp);
             MessageBox.Show("Connected!");
 
             if (client.authentcated)

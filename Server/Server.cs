@@ -13,7 +13,7 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
-
+using System.Windows.Media.Animation;
 
 namespace Server
 {
@@ -59,6 +59,11 @@ namespace Server
                 {
                    AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
                 }
+                else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
+                {
+                    receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
+                }
+                
                 
             }
 
@@ -157,6 +162,61 @@ namespace Server
             NetworkStream clStream = client.GetStream();
 
             clStream.Write(sendbuf, 0, sendbuf.Length);
+        }
+
+        private void receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
+        {
+            //save the image to the server run recongition and then send the image back to the client
+            string filepath = "../../../Images/" + userData.getUserName() + ".jpg";
+            if (recvPacket.GetBody().getData() != null)
+            {
+                //begin to save the data from the packet to the image file, and begin receiving more packets to get more images
+                currentState = states.Recv;
+                using (BinaryWriter writer = new BinaryWriter(new FileStream(filepath, FileMode.Open)))
+                {
+                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                    writer.Write(recvPacket.GetBody().getData());
+
+                    writer.Flush();
+                    bool continueSaving = true;
+                    do
+                    {
+                        int i = stream.Read(buffer, 0, buffer.Length);
+                        byte[] data = new byte[i];
+                        Array.Copy(buffer, data, i);
+
+                        Packet packet = new Packet(data);
+
+                        if (packet.GetHead().getState() == states.Sending)
+                        {
+                            writer.Write(recvPacket.GetBody().getData());
+                            writer.Flush();
+                        }
+                        else if (packet.GetHead().getState() == states.Analyze)
+                        {
+                            writer.Write(recvPacket.GetBody().getData());
+                            writer.Flush();
+                            writer.Close();
+
+                            continueSaving = false;
+
+                        }
+                        else
+                        {
+                            //Show error that the image couldn't be saved
+                            continueSaving = false;
+                        }
+                    } while (continueSaving);
+                }
+
+            }
+            else
+            {
+                stream.Close();
+               
+            }
+           
+
         }
 
         public void setDetectedObjects(string[,] objects)

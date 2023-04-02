@@ -59,6 +59,11 @@ namespace Client.InterfaceFiles
 
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
+            //take the image that is uploaded to the screen imagePicture, and then convert to a byte array and setup the packet structure and send 100 bytes at a time to the server
+            //then recieve the processed image and display it on the screen
+
+            
+
             //call the server / send image to the server via a packet
             // Send a request to the server to start sending the image packets
             //byte[] request = Encoding.ASCII.GetBytes("SendImage");

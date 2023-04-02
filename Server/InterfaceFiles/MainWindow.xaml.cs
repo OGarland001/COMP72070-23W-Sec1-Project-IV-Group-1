@@ -32,6 +32,7 @@ namespace Server
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Main.Content = new ClientAccountsWindowPage(this.newServer);
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
