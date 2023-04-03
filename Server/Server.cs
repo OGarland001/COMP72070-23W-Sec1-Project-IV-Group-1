@@ -109,6 +109,7 @@ namespace Server
 
                             string message = RegisterUser("../../../Users.txt");
                             CreateUserFolder(userData.getUserName());
+                            userData.createUserFile();
                             if (message == "User registered")
                             {
                                 connectedUser = sendAuthentcatedAckPacket(packet, client);
