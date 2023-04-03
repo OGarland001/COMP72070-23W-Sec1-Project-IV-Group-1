@@ -169,15 +169,13 @@ namespace Server
             clStream.Write(sendbuf, 0, sendbuf.Length);
         }
 
+
+
         private void receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
-            string path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/Tester.jpg";
-            if (File.Exists(path))
-            {
-                Random num = new Random();
-                int id = num.Next();
-                path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/Tester" + id.ToString() + ".jpg";
-            }
+            string count = (userData.getSendCount() + 1).ToString();
+            string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + userData.getUserName() + count +".jpg";
+            
             
             try
             {
@@ -194,10 +192,10 @@ namespace Server
                     byte[] sendbuf = firstPacket.getTailBuffer();
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
-                    int count = 0;
+                   
                     while (true)
                     {
-                        count++;   
+                          
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
@@ -217,8 +215,8 @@ namespace Server
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                            byte[] lastData = receivedPacket.GetBody().getData();
-                            file.Write(lastData, 0, lastData.Length);
+                           
+                            
                             Packet lastPacket = new Packet();
                             lastPacket.setHead('2', '1', states.Saving);
                             lastPacket.setData(noData.Length, noData);
@@ -234,10 +232,12 @@ namespace Server
                         file.Write(imageData, 0, imageData.Length);
                     }
                     file.Close();
+                    userData.saveSendCount();
                 }
             }
             catch (Exception e)
             {
+                
                 Console.WriteLine(e.ToString());
                
             }
