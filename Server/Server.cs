@@ -14,6 +14,7 @@ using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
 
+
 namespace Server
 {
     public class ProgramServer
@@ -110,6 +111,8 @@ namespace Server
                             string message = RegisterUser("../../../Users.txt");
                             CreateUserFolder(userData.getUserName());
                             userData.createUserFile();
+
+                           
                             if (message == "User registered")
                             {
                                 connectedUser = sendAuthentcatedAckPacket(packet, client);

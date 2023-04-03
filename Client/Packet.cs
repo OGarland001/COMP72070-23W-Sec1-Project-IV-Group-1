@@ -81,6 +81,21 @@ namespace Client
             
             
         }
+        public void createUserFile()
+        {
+            string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+                StreamWriter writer = new StreamWriter(path);
+                {
+                    int count = 0;
+                    writer.WriteLine(count.ToString());
+                    writer.Close();
+                }
+            }
+
+        }
         public void saveSendCount()
         {
             //open a file and read the number and increment and save the number again

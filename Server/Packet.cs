@@ -49,17 +49,23 @@ namespace Server
         public void createUserFile()
         {
             string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
-            if (File.Exists(path))
+            if (!File.Exists(path))
             {
-                File.Create(path);
-                StreamWriter writer = new StreamWriter(path);
+                using (FileStream fs = File.Create(path))
                 {
-                    int count = 0;
-                    writer.WriteLine(count.ToString());
-                    writer.Close();
+                    fs.Close();
                 }
             }
+
+            StreamWriter writer = new StreamWriter(path);
+            {
+                int count = 0;
+                writer.WriteLine(count.ToString());
+                writer.Close();
+            }
             
+
+
         }
         public int getSendCount()
         {
