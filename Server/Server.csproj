@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="ML.NET\**" />
+    <Compile Remove="Users\Tyler\**" />
     <EmbeddedResource Remove="ML.NET\**" />
+    <EmbeddedResource Remove="Users\Tyler\**" />
     <None Remove="ML.NET\**" />
+    <None Remove="Users\Tyler\**" />
     <Page Remove="ML.NET\**" />
+    <Page Remove="Users\Tyler\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,9 +45,6 @@
 	  <Content Include="InterfaceFiles\Images\usernamePhoto.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Users\Tyler\assets\images\output\" />
 	</ItemGroup>
 
 </Project>

@@ -9,9 +9,10 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ProgramClient client = new ProgramClient();
+        public ProgramClient client;
         public MainWindow()
         {
+            client = new ProgramClient();
             InitializeComponent();
         }
 
@@ -40,12 +41,12 @@ namespace Client.InterfaceFiles
             //display a message box showing a waiting message till the user is connected and authenticated
             MessageBox.Show("Please wait while we connect you to the server");
             TcpClient clientTcp = new TcpClient(); 
-            client.authenticateUser(userdataPacket, clientTcp);
+            client.authenticateUser(userdataPacket);
             MessageBox.Show("Connected!");
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage();
+                Main.Content = new HomePage(this.client);
             }
             else
             {
@@ -55,7 +56,7 @@ namespace Client.InterfaceFiles
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new CreateAccountPage();
+            Main.Content = new CreateAccountPage(this.client);
         }
 
         private void Main_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)

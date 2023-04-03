@@ -18,6 +18,8 @@ namespace Client
     {
         private userLoginData clientData;
         public DateTime loginDate;
+        public TcpClient tcpClient = new TcpClient();
+        public NetworkStream stream;
         public bool authentcated { get; set; }
 
         public ProgramClient()
@@ -27,19 +29,19 @@ namespace Client
             clientData.setPassword(string.Empty);
             loginDate = DateTime.Now;
             authentcated = false;
-
+            this.tcpClient.Connect(IPAddress.Loopback, 11002);
+            this.stream = tcpClient.GetStream();
         }
 
-        public bool authenticateUser(Packet sendPacket, TcpClient client)
+        public bool authenticateUser(Packet sendPacket)
         {
 
             //connect the client to the server
-            client.Connect(IPAddress.Loopback, 11001);
             sendPacket.SerializeData();
 
             byte[] buffer = sendPacket.getTailBuffer();
 
-            NetworkStream stream = client.GetStream();
+            
 
             stream.Write(buffer, 0, buffer.Length);
 
@@ -55,7 +57,6 @@ namespace Client
 
             if (responsePacket.GetHead().getState() == states.Recv)
             {
-                client.Close();
                 this.authentcated = true;
                 this.loginDate = DateTime.Now;
                 return true;
@@ -67,15 +68,13 @@ namespace Client
 
         }
 
-        public bool sendImage(string filepath, TcpClient client)
+        public bool sendImage(string filepath)
         {
             try
-            {
-                client.Connect(IPAddress.Loopback, 11001);
-                NetworkStream stream = client.GetStream();
+            { 
 
                 byte[] imageBuffer = File.ReadAllBytes(filepath);
-
+               
                 int index = 0;
                 bool lastPacketSent = false;
                 while (!lastPacketSent)

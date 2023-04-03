@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection;
 
 namespace Client.InterfaceFiles
 {
@@ -21,8 +22,10 @@ namespace Client.InterfaceFiles
     /// </summary> 
     public partial class RequestLogsPage : Page
     {
-        public RequestLogsPage()
+        ProgramClient client;
+        public RequestLogsPage(ProgramClient client)
         {
+            this.client = client;
             InitializeComponent();
             //recieve from file and write to ClientLog.txt
 
@@ -33,7 +36,7 @@ namespace Client.InterfaceFiles
 
         private void Return_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new HomePage();
+            Main.Content = new HomePage(this.client);
         }
     }
 }

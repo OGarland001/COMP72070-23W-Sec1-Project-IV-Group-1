@@ -31,7 +31,7 @@ namespace Server
         public void run()
         {
             Packet packet = new Packet();
-            Int32 port = 11001;
+            Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];

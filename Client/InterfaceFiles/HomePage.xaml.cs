@@ -24,19 +24,21 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class HomePage : Page
     {
-        public HomePage()
+        private ProgramClient client;
+        public HomePage(ProgramClient client)
         {
             InitializeComponent();
+            this.client = client;
         }
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new RequestLogsPage();
+            Main.Content = new RequestLogsPage(this.client);
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new MainPage();
+            Main.Content = new MainPage(this.client);
 
         }
 
@@ -60,35 +62,11 @@ namespace Client.InterfaceFiles
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
             //take the image that is uploaded to the screen imagePicture, and then convert to a byte array and setup the packet structure and send 100 bytes at a time to the server
-            //then recieve the processed image and display it on the screen
-
             
-
-            //call the server / send image to the server via a packet
-            // Send a request to the server to start sending the image packets
-            //byte[] request = Encoding.ASCII.GetBytes("SendImage");
-            //client.GetStream().Write(request, 0, request.Length);
-            ////client is the tcpClient "name" for the connection
+            //imagePicture path
+            string path = imagePicture.Source.ToString();
             
-
-            ////recieve the processed packet and print out the new image
-
-            ////byte[] buffer;
-            //List<byte> imageBytes = new List<byte>();
-            //int bytesRead;
-            //while ((bytesRead = client.GetStream().Read(request, 0, request.Length)) > 0)
-            //{
-            //    imageBytes.AddRange(request.Take(bytesRead));
-            //}
-
-            //// Create a BitmapImage from the received bytes
-            //BitmapImage image = new BitmapImage();
-            //image.BeginInit();
-            //image.StreamSource = new MemoryStream(imageBytes.ToArray());
-            //image.EndInit();
-
-            //// Display the image in GUI
-            //imagePicture.Source = image;
+            client.sendImage(path);
 
         }
 

@@ -21,15 +21,16 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class AfterPhotoPage : Page
     {
-        public AfterPhotoPage()
+        ProgramClient client;
+        public AfterPhotoPage(ProgramClient client)
         {
-            
+            this.client = client;
             InitializeComponent();
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new MainPage();
+            Main.Content = new MainPage(this.client);
         }
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)

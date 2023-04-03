@@ -14,8 +14,9 @@ namespace Client.InterfaceFiles
     public partial class MainPage : Page
     {
         public ProgramClient client = new ProgramClient();
-        public MainPage()
+        public MainPage(ProgramClient client)
         {
+            this.client = client;
             InitializeComponent();
            
         }
@@ -40,16 +41,13 @@ namespace Client.InterfaceFiles
             // display a message box showing a waiting message till the user is connected and authenticated
             MessageBox.Show("Please wait while we connect you to the server");
             //// Establish the remote endpoint for the socket.
-            Int32 port = 11001;
 
-            using TcpClient clientSock = new TcpClient(IPAddress.Loopback.ToString(), port);
-
-            client.authenticateUser(userdataPacket, clientSock);
+            client.authenticateUser(userdataPacket);
             MessageBox.Show("Connected!");
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage();
+                Main.Content = new HomePage(this.client);
             }
             else
             {
@@ -59,7 +57,7 @@ namespace Client.InterfaceFiles
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new CreateAccountPage();
+            Main.Content = new CreateAccountPage(this.client);
         }
 
         private void Main_Navigated(object sender, NavigationEventArgs e)

@@ -1,6 +1,5 @@
-using Server;
 using Client;
-using System.Net.Sockets;
+using Server;
 
 namespace Integration_Tests
 {
@@ -9,6 +8,7 @@ namespace Integration_Tests
     {
         private ProgramClient client;
         private ProgramServer server;
+
         [TestMethod]
         public void INT_TEST_002_AuthenticateandVerifyTheUser()
         {
@@ -19,7 +19,7 @@ namespace Integration_Tests
             Client.userLoginData userData = new Client.userLoginData();
 
             userData.setUserName(userName);
-            userData.setPassword(password); 
+            userData.setPassword(password);
 
 
             Client.Packet packet = new Client.Packet();
@@ -30,23 +30,23 @@ namespace Integration_Tests
 
             packet.setData(userDataBuffer.Length, userDataBuffer);
 
-            
 
-           
+
+
             try
             {
                 server = new ProgramServer();
                 client = new ProgramClient();
 
                 Thread[] threads = new Thread[2];
-                threads[0] = new Thread(new ThreadStart(() => {server.run(); }));
-                
-                threads[1] = new Thread(new ThreadStart(() => { TcpClient clientTcp = new TcpClient(); client.authenticateUser(packet, clientTcp); }));
+                threads[0] = new Thread(new ThreadStart(() => { server.run(); }));
+
+                threads[1] = new Thread(new ThreadStart(() => { client.authenticateUser(packet); }));
 
                 threads[0].Start();
                 threads[1].Start();
 
-                
+
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
@@ -66,35 +66,35 @@ namespace Integration_Tests
             try
             {
 
-           
-            server = new ProgramServer();
-            
-            client = new ProgramClient();
-                server.SetuserData(userData.getUserName(), userData.getPassword());
-            // Start the server thread
-            Thread serverThread = new Thread(() => {
-                server.run();
-                
-            });
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
 
-          
-            // Start the client thread
-            Thread clientThread = new Thread(() => {
-                
-                TcpClient clientTcp = new TcpClient();
-                client.sendImage("../../../Tester.jpg", clientTcp);
-               
-            });
+                });
 
-            serverThread.Start();
-            clientThread.Start();
+
+                // Start the client thread
+                Thread clientThread = new Thread(() =>
+                {
+                    client = new ProgramClient();
+                   
+                    client.sendImage("../../../Tester.jpg");
+
+                });
+
+                serverThread.Start();
+                clientThread.Start();
 
                 clientThread.Join();
-           
-            
-           
-            }catch(Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
-            string count = (userData.getSendCount() + 1).ToString();
+                
+
+
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+            string count = (userData.getSendCount()).ToString();
             string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + userData.getUserName() + count + ".jpg";
             bool result = File.Exists(path);
             Assert.IsTrue(result);
