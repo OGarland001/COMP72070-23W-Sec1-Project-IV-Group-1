@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.IO;
 
-
 namespace Server.InterfaceFiles
 {
     /// <summary>

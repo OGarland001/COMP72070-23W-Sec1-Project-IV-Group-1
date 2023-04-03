@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using System.Windows.Shapes;
 using ProtoBuf;
 
 #pragma warning disable SYSLIB0011
@@ -51,6 +52,62 @@ namespace Client
             catch
             {
                 throw;
+            }
+        }
+
+        public int getSendCount()
+        {
+            string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
+            if (File.Exists(path))
+            {
+                StreamReader streamReader = new StreamReader(path);
+                {
+                    string data = streamReader.ReadLine();
+                    if (data != null)
+                    {
+                        int count = Int32.Parse(data);
+                        streamReader.Close();
+                        return count;
+                    }
+
+                }
+            }
+            else
+            {
+                return 0;
+            }
+
+            return 0;
+            
+            
+        }
+        public void saveSendCount()
+        {
+            //open a file and read the number and increment and save the number again
+            string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
+            if (File.Exists(path))
+            {
+                int count = getSendCount();
+                count++;
+            
+
+                StreamWriter writer = new StreamWriter(path);
+                {
+                    writer.WriteLine(count.ToString());
+                    writer.Close();
+                }
+            }
+            else
+            {
+                int count = getSendCount();
+                count++;
+
+                File.Create(path);
+                StreamWriter writer = new StreamWriter(path);
+                {
+                    writer.WriteLine(count.ToString());
+                    writer.Close();
+                }
             }
         }
     }

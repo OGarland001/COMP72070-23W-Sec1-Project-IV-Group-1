@@ -24,7 +24,7 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <TextBox x:Name="UsernameLoginTextBox" HorizontalAlignment="Left" Margin="399,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" BorderBrush="#FF00CAFF" Height="22" OpacityMask="Black" TextChanged="UsernameLoginTextBox_TextChanged"/>
+        <TextBox x:Name="UsernameLoginTextBox" HorizontalAlignment="Left" Margin="399,156,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" BorderBrush="#FF00CAFF" Height="22" OpacityMask="Black"/>
         <Image x:Name="Username_Icon" HorizontalAlignment="Left" Height="30" Margin="365,152,0,0" VerticalAlignment="Top" Width="30" Source="/InterfaceFiles/Images/usernamePhoto.png" OpacityMask="#FF00CAFF"/>
         <Label x:Name="UsernameLabel" Content="Username To Delete" HorizontalAlignment="Left" Margin="394,125,0,0" VerticalAlignment="Top" Opacity="0.5" BorderBrush="Black" Foreground="#FF00CAFF" Height="31" Width="126" OpacityMask="Black"/>
         <Button x:Name="CreateAccountButton" Content="Delete Account" HorizontalAlignment="Left" Margin="370,247,0,0" VerticalAlignment="Top" Width="192" Height="37" FontWeight="Bold" BorderBrush="#FF00CAFF" Opacity="0.66" Click="CreateAccountButton_Click"/>

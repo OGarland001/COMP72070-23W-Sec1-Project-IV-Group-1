@@ -93,7 +93,7 @@ namespace Client
                     {
                         Packet lastPacket = new Packet();
                         lastPacketSent = true;
-                        sendPacket.setHead('1', '2', states.Analyze);
+                        lastPacket.setHead('1', '2', states.Analyze);
                         byte[] noData = new byte[0];
                         lastPacket.setData(noData.Length, noData);
                         lastPacket.SerializeData();

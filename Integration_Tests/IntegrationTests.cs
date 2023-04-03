@@ -13,7 +13,7 @@ namespace Integration_Tests
         public void INT_TEST_002_AuthenticateandVerifyTheUser()
         {
 
-            string userName = "admin";
+            string userName = "tester";
             string password = "password";
 
             Client.userLoginData userData = new Client.userLoginData();
@@ -60,16 +60,19 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_024_SendandRecieveImages_ReturnFullySavedImageOnServer()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
             try
             {
 
            
             server = new ProgramServer();
+            
             client = new ProgramClient();
-
+                server.SetuserData(userData.getUserName(), userData.getPassword());
             // Start the server thread
             Thread serverThread = new Thread(() => {
-              
                 server.run();
                 
             });
@@ -79,18 +82,20 @@ namespace Integration_Tests
             Thread clientThread = new Thread(() => {
                 
                 TcpClient clientTcp = new TcpClient();
-                client.sendImage("C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/boob.jpg", clientTcp);
+                client.sendImage("../../../Tester.jpg", clientTcp);
                
             });
 
             serverThread.Start();
             clientThread.Start();
 
-            clientThread.Join();
+                clientThread.Join();
+           
+            
            
             }catch(Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
-
-            string path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/boobiesCreated.jpg";
+            string count = (userData.getSendCount() + 1).ToString();
+            string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + userData.getUserName() + count + ".jpg";
             bool result = File.Exists(path);
             Assert.IsTrue(result);
 

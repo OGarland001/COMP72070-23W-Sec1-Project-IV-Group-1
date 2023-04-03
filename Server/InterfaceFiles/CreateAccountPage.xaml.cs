@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
-
 
 namespace Server.InterfaceFiles
 {
@@ -16,11 +14,6 @@ namespace Server.InterfaceFiles
         {
             InitializeComponent();
             this.server = server;
-        }
-
-        private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)

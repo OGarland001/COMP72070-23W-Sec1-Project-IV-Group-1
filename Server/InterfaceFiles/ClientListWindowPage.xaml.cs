@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-
 namespace Server.InterfaceFiles
 {
     /// <summary>
@@ -35,10 +34,9 @@ namespace Server.InterfaceFiles
         {
             Main.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
-
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-
+            //MANULLAY DISCONNECT CLIENT**
         }
     }
 }
