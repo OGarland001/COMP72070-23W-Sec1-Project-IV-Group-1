@@ -121,13 +121,17 @@ namespace Client
         [ProtoMember(1)]
         public byte[] data;
 
+        public Body()
+        {
+            data = new byte[500];
+        }
+
         public void setData(byte[] buffer)
         {
             data = buffer;
         }
         public byte[] getData() { return data; }
-    };
-    [ProtoContract]
+    }    [ProtoContract]
     public struct Tail
     {
         //byte array for the send buffer
@@ -254,17 +258,7 @@ namespace Client
             
 
         }
-        //Image to byte array converter method
-
-        //public byte[] ImageToByteArray(System.Drawing.Image imageIn)
-        //{
-          
-        //    using (var ms = new MemoryStream())
-        //    {
-        //        imageIn.Save(ms, imageIn.RawFormat);
-        //        return ms.ToArray();
-        //    }
-        //}
+     
 
 
 

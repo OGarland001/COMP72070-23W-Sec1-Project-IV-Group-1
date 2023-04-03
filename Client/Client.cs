@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Ink;
 using ProtoBuf;
 using System.Windows.Media;
+using System.Reflection;
 
 namespace Client
 {
@@ -31,8 +32,9 @@ namespace Client
 
         public bool authenticateUser(Packet sendPacket, TcpClient client)
         {
-      
 
+            //connect the client to the server
+            client.Connect(IPAddress.Loopback, 11001);
             sendPacket.SerializeData();
 
             byte[] buffer = sendPacket.getTailBuffer();
@@ -67,56 +69,82 @@ namespace Client
 
         public bool sendImage(string filepath, TcpClient client)
         {
-            //reading a image file 255 bytes at a time.
-            FileInfo fileInfo = new FileInfo(filepath);
-
-            byte[] data = new byte[byte.MaxValue];
             try
             {
-                if (!fileInfo.Exists)
-                {
-                    return false;
-                }
-         
-            using (BinaryReader reader = new BinaryReader(new FileStream(filepath, FileMode.Open)))
-            {
+                client.Connect(IPAddress.Loopback, 11001);
+                NetworkStream stream = client.GetStream();
 
-                    NetworkStream stream = client.GetStream();
-                    //keep reading data until end of file
-                   
-                    while (reader.BaseStream.Position != reader.BaseStream.Length)
-                {
-                    reader.BaseStream.Seek(50, SeekOrigin.Begin);
-                    reader.Read(data, 0, data.Length);
+                byte[] imageBuffer = File.ReadAllBytes(filepath);
 
+                int index = 0;
+                bool lastPacketSent = false;
+                while (!lastPacketSent)
+                {
                     Packet sendPacket = new Packet();
                     sendPacket.setHead('1', '2', states.Sending);
-                    sendPacket.setData(data.Length, data);
+                    byte[] dataBuf = new byte[500];
 
+                    int bytesToCopy = Math.Min(dataBuf.Length, imageBuffer.Length - index);
+                    Array.Copy(imageBuffer, index, dataBuf, 0, bytesToCopy);
+                    index += bytesToCopy;
+
+                    // Check if this is the last packet
+                    if (bytesToCopy == 0)
+                    {
+                        Packet lastPacket = new Packet();
+                        lastPacketSent = true;
+                        sendPacket.setHead('1', '2', states.Analyze);
+                        byte[] noData = new byte[0];
+                        lastPacket.setData(noData.Length, noData);
+                        lastPacket.SerializeData();
+                        stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
+                        continue;
+                    }
+
+                    sendPacket.setData(bytesToCopy, dataBuf);
                     sendPacket.SerializeData();
+                    stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
 
-                    byte[] buffer = sendPacket.getTailBuffer();
-                    stream.Write(buffer, 0, buffer.Length);
+                    byte[] recvBuf = new byte[1024];
+                    int amount = stream.Read(recvBuf, 0, recvBuf.Length);
+
+                    byte[] array = new byte[amount];
+                    Array.Copy(recvBuf, array, amount);
+                    Packet recvPacket = new Packet(array);
+
+                    if (lastPacketSent)
+                    {
+                        if (recvPacket.GetHead().getState() != states.Recv)
+                        {
+                            Exception e = new Exception();
+                            throw e;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (recvPacket.GetHead().getState() != states.Saving)
+                        {
+                            Exception e = new Exception();
+                            throw e;
+                        }
+                    }
                 }
-
-                    // create the last packet
-                    Packet lastPacket = new Packet();
-                    lastPacket.setHead('1', '2', states.Analyze);
-                    lastPacket.setData((int)reader.BaseStream.Length % byte.MaxValue, data);
-
-                    lastPacket.SerializeData();
-
-                    byte[] lastBuffer = lastPacket.getTailBuffer();
-                    stream.Write(lastBuffer, 0, lastBuffer.Length);
-
-                    
-
-                }
+                return false;
             }
-            catch (Exception e) { Console.WriteLine(e.ToString()); }
-                //send the last packet with the end of file flag.
-            return true;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
         }
+
+
+
+
 
     }
 }

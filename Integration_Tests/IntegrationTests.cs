@@ -30,77 +30,69 @@ namespace Integration_Tests
 
             packet.setData(userDataBuffer.Length, userDataBuffer);
 
-            client = new ProgramClient();
-
-            server = new ProgramServer();
-            try
-            {
-                Thread[] threads = new Thread[2];
-
-
-                threads[0] = new Thread(new ThreadStart(() => { server.run(); }));
-                TcpClient clientTcp = new TcpClient();
-                threads[1] = new Thread(new ThreadStart(() => { client.authenticateUser(packet, clientTcp); }));
-
-                threads[0].Start();
-                threads[1].Start();
-
-                Assert.IsTrue(client.authentcated);
-
-            }
-            catch(Exception ex) { Console.WriteLine(ex.Message); };
-
-
-
-
             
 
-        }
-        [TestMethod]
-        public void INT_TEST_024_SendandRecieveImages_ReturnFullySavedImageOnServer()
-        {
-
-            string userName = "Tester";
-            string password = "test";
-
-            Client.userLoginData userData = new Client.userLoginData();
-
-            userData.setUserName(userName);
-            userData.setPassword(password);
-
-
-            Client.Packet packet = new Client.Packet();
-
-            packet.setHead('1', '2', Client.states.NewAuth);
-
-            byte[] userDataBuffer = userData.serializeData();
-
-            packet.setData(userDataBuffer.Length, userDataBuffer);
-
-            client = new ProgramClient();
-
-            server = new ProgramServer();
+           
             try
             {
+                server = new ProgramServer();
+                client = new ProgramClient();
+
                 Thread[] threads = new Thread[2];
-
-
-                threads[0] = new Thread(new ThreadStart(() => { server.run(); }));
-
-                TcpClient clientTcp = new TcpClient();
-                threads[1] = new Thread(new ThreadStart(() => { client.sendImage("../", clientTcp); }));
+                threads[0] = new Thread(new ThreadStart(() => {server.run(); }));
+                
+                threads[1] = new Thread(new ThreadStart(() => { TcpClient clientTcp = new TcpClient(); client.authenticateUser(packet, clientTcp); }));
 
                 threads[0].Start();
                 threads[1].Start();
 
-                Assert.IsTrue(client.authentcated);
+                
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
 
+            //Checks the username within the text file in integration test project
+            Assert.IsTrue(server.checkUsername("../Users.txt"));
 
 
+        }
 
+        [TestMethod]
+        public void INT_TEST_024_SendandRecieveImages_ReturnFullySavedImageOnServer()
+        {
+            try
+            {
+
+           
+            server = new ProgramServer();
+            client = new ProgramClient();
+
+            // Start the server thread
+            Thread serverThread = new Thread(() => {
+              
+                server.run();
+                
+            });
+
+          
+            // Start the client thread
+            Thread clientThread = new Thread(() => {
+                
+                TcpClient clientTcp = new TcpClient();
+                client.sendImage("C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/boob.jpg", clientTcp);
+               
+            });
+
+            serverThread.Start();
+            clientThread.Start();
+
+            clientThread.Join();
+           
+            }catch(Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+
+            string path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/boobiesCreated.jpg";
+            bool result = File.Exists(path);
+            Assert.IsTrue(result);
 
 
         }

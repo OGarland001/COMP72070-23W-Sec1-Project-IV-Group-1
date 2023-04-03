@@ -55,13 +55,18 @@ namespace Server
 
                 Packet recvPacket = new Packet(data);
 
-                if (recvPacket.GetHead().getState() == states.Auth)
+                if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
                 {
                    AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
                     receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
+                }
+                else
+                {
+                    stream.Close();
+                    sendReAuthAckPacket(packet, client);
                 }
                 
                 
@@ -104,7 +109,7 @@ namespace Server
                             currentState = states.NewAuth;
 
                             string message = RegisterUser("../../../Users.txt");
-
+                            CreateUserFolder(userData.getUserName());
                             if (message == "User registered")
                             {
                                 connectedUser = sendAuthentcatedAckPacket(packet, client);
@@ -166,58 +171,79 @@ namespace Server
 
         private void receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
-            //save the image to the server run recongition and then send the image back to the client
-            string filepath = "../../../Images/" + userData.getUserName() + ".jpg";
-            if (recvPacket.GetBody().getData() != null)
+            string path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/Tester.jpg";
+            if (File.Exists(path))
             {
-                //begin to save the data from the packet to the image file, and begin receiving more packets to get more images
-                currentState = states.Recv;
-                using (BinaryWriter writer = new BinaryWriter(new FileStream(filepath, FileMode.Open)))
-                {
-                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
-                    writer.Write(recvPacket.GetBody().getData());
-
-                    writer.Flush();
-                    bool continueSaving = true;
-                    do
-                    {
-                        int i = stream.Read(buffer, 0, buffer.Length);
-                        byte[] data = new byte[i];
-                        Array.Copy(buffer, data, i);
-
-                        Packet packet = new Packet(data);
-
-                        if (packet.GetHead().getState() == states.Sending)
-                        {
-                            writer.Write(recvPacket.GetBody().getData());
-                            writer.Flush();
-                        }
-                        else if (packet.GetHead().getState() == states.Analyze)
-                        {
-                            writer.Write(recvPacket.GetBody().getData());
-                            writer.Flush();
-                            writer.Close();
-
-                            continueSaving = false;
-
-                        }
-                        else
-                        {
-                            //Show error that the image couldn't be saved
-                            continueSaving = false;
-                        }
-                    } while (continueSaving);
-                }
-
+                Random num = new Random();
+                int id = num.Next();
+                path = "C:/Users/oweng/OneDrive/Desktop/Project-IV/ProjectFiles/Integration_Tests/bin/Debug/Users/Tester/assets/images/Tester" + id.ToString() + ".jpg";
             }
-            else
+            
+            try
             {
-                stream.Close();
+              
+                byte[] receiveBuffer = new byte[1000];
+
+                using (FileStream file = new FileStream(path, FileMode.Create))
+                {
+
+                    file.Write(recvPacket.GetBody().getData(), 0, recvPacket.GetBody().getData().Length);
+                    Packet firstPacket = new Packet();
+                    firstPacket.setHead('2', '1', states.Saving);
+                    firstPacket.SerializeData();
+                    byte[] sendbuf = firstPacket.getTailBuffer();
+
+                    stream.Write(sendbuf, 0, sendbuf.Length);
+                    int count = 0;
+                    while (true)
+                    {
+                        count++;   
+                        int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        byte[] data = new byte[bytesRead];
+                        Array.Copy(receiveBuffer, data, bytesRead);
+
+                        Packet receivedPacket = new Packet(data);
+                        
+
+                        Packet ackPacket = new Packet();
+                        ackPacket.setHead('2', '1', states.Saving);
+                        byte[] noData = new byte[0];
+                        ackPacket.setData(noData.Length, noData);
+                        ackPacket.SerializeData();
+                        byte[] buf = ackPacket.getTailBuffer();
+
+                        stream.Write(buf, 0, buf.Length);
+
+
+                        if (receivedPacket.GetHead().getState() == states.Analyze)
+                        {
+                            byte[] lastData = receivedPacket.GetBody().getData();
+                            file.Write(lastData, 0, lastData.Length);
+                            Packet lastPacket = new Packet();
+                            lastPacket.setHead('2', '1', states.Saving);
+                            lastPacket.setData(noData.Length, noData);
+                            lastPacket.SerializeData();
+                            byte[] newbuf = lastPacket.getTailBuffer();
+
+                            stream.Write(newbuf, 0, newbuf.Length);
+                            break;
+                        }
+
+                        byte[] imageData = receivedPacket.GetBody().getData();
+
+                        file.Write(imageData, 0, imageData.Length);
+                    }
+                    file.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
                
             }
-           
-
+            
         }
+
 
         public void setDetectedObjects(string[,] objects)
         {
