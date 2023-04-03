@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-
 
 namespace Server.InterfaceFiles
 {
@@ -18,16 +15,6 @@ namespace Server.InterfaceFiles
             InitializeComponent();
             this.server = server;
             DisplayText.Text = textToShow;
-        }
-
-        private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
-        {
-           
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
