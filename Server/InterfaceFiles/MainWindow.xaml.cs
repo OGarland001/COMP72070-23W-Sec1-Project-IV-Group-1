@@ -12,10 +12,7 @@ namespace Server
         private ProgramServer newServer;
         public MainWindow()
         {
-
-
             Thread[] threads = new Thread[1];
-
 
             threads[0] = new Thread(new ThreadStart(() => {
                 newServer = new ProgramServer();
@@ -24,15 +21,11 @@ namespace Server
             threads[0].Start();
 
             InitializeComponent();
-
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Main.Content = new ClientAccountsWindowPage(this.newServer);
-
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

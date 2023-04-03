@@ -13,7 +13,6 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Media.Animation;
 
 namespace Server
 {

@@ -16,11 +16,6 @@ namespace Server.InterfaceFiles
             this.server = server;   
         }
 
-        private void UsernameLoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
             string line;
@@ -68,11 +63,6 @@ namespace Server.InterfaceFiles
             {
                 Main.Content = new ResultPage(this.server, "An error occured while attempting to delete a user");
             }
-        }
-
-        private void Log_In_Click(object sender, RoutedEventArgs e)
-        {
-       
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
