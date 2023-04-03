@@ -61,7 +61,11 @@ namespace Server
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
-                    receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
+                    string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
+                    setCurrentOriginalImage(fileName);
+                    setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
+                    setCurrentAnalyzedImage(fileName);
+                    
                 }
                 else
                 {
@@ -174,10 +178,11 @@ namespace Server
 
 
 
-        private void receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
+        private string receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
             string count = (userData.getSendCount() + 1).ToString();
-            string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + userData.getUserName() + count +".jpg";
+            string fileName = userData.getUserName() + count + ".jpg";
+            string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + fileName;
             
             
             try
@@ -244,6 +249,8 @@ namespace Server
                 Console.WriteLine(e.ToString());
                
             }
+
+            return fileName;
             
         }
 
