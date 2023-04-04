@@ -260,6 +260,86 @@ namespace Server
             return fileName;
         }
 
+        private bool sendImage(TcpClient client, NetworkStream stream)
+        {
+            try
+            {
+                string count = (userData.getSendCount()).ToString();
+                string fileName = userData.getUserName() + count + ".jpg";
+                string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + fileName;
+
+                byte[] imageBuffer = File.ReadAllBytes(path);
+
+                int index = 0;
+                bool lastPacketSent = false;
+                while (!lastPacketSent)
+                {
+                    Packet sendPacket = new Packet();
+                    sendPacket.setHead('2', '1', states.Sending);
+                    byte[] dataBuf = new byte[500];
+
+                    int bytesToCopy = Math.Min(dataBuf.Length, imageBuffer.Length - index);
+                    Array.Copy(imageBuffer, index, dataBuf, 0, bytesToCopy);
+                    index += bytesToCopy;
+
+
+                    // Check if this is the last packet
+                    if (bytesToCopy == 0)
+                    {
+                        Packet lastPacket = new Packet();
+                        lastPacketSent = true;
+                        lastPacket.setHead('2', '1', states.Saving);
+                        byte[] noData = new byte[0];
+                        lastPacket.setData(noData.Length, noData);
+                        lastPacket.SerializeData();
+                        stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
+                        stream.Flush();
+                        continue;
+                    }
+
+                    sendPacket.setData(bytesToCopy, dataBuf);
+                    sendPacket.SerializeData();
+                    stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
+                    stream.Flush();
+                    byte[] recvBuf = new byte[1024];
+                    int amount = stream.Read(recvBuf, 0, recvBuf.Length);
+
+                    byte[] array = new byte[amount];
+                    Array.Copy(recvBuf, array, amount);
+                    Packet recvPacket = new Packet(array);
+
+                    if (lastPacketSent)
+                    {
+                        if (recvPacket.GetHead().getState() != states.Recv)
+                        {
+                            Exception e = new Exception();
+                            throw e;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (recvPacket.GetHead().getState() != states.Saving)
+                        {
+                            Exception e = new Exception();
+                            throw e;
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+
+
+        }
+
         public void setDetectedObjects(string[,] objects)
         {
             Array.Copy(objects, detectedObjects, objects.Length);
@@ -338,23 +418,39 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                string[,] results = new string[1, 2];
+                
 
                 // Draw bounding boxes for detected objects in the image
                 string imageFileName = filename;
                 IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
-
-                DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
-                string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
-                string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
-
-                LogDetectedObjects(imageFileName, detectedObjects);
-
-                for (int j = 0; j < objects.Length; j++)
+                int count = detectedObjects.Count;
+                string[,] results;
+                
+                if(count > 0)
                 {
-                    results[0, j] = objects[j];
-                    results[0, j + 1] = confidence[j];
+                    results = new string[count, 2];
+                    DrawBoundingBox(imageFilePath, outputFolder, imageFileName, detectedObjects);
+                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
+
+                    LogDetectedObjects(imageFileName, detectedObjects);
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 0] = objects[j];
+                    }
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 1] = confidence[j];
+                    }
+
                 }
+                else
+                {
+                    results = new string[1, 2] { { "No Objects", "0" }};
+                }
+               
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
@@ -377,7 +473,7 @@ namespace Server
 
             void DrawBoundingBox(string inputImageLocation, string outputImageLocation, string imageName, IList<YoloBoundingBox> filteredBoundingBoxes)
             {
-                Image image = Image.FromFile(Path.Combine(inputImageLocation, imageName));
+                Image image = Image.FromFile(inputImageLocation);
 
                 var originalImageHeight = image.Height;
                 var originalImageWidth = image.Width;

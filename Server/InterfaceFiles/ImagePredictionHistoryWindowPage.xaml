@@ -25,11 +25,11 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Admin" VerticalAlignment="Top" Width="76" Foreground="White" Background="{x:Null}" FontSize="24" Height="39" Margin="48,3,0,0"/>
         <TextBlock HorizontalAlignment="Left" Margin="386,22,0,0" TextWrapping="Wrap" Text="Image Prediction" VerticalAlignment="Top" Width="156" FontSize="20"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
-        <Rectangle HorizontalAlignment="Left" Height="230" Margin="293,85,0,0" VerticalAlignment="Top" Width="341" Fill="#FF7CBFF7"/>
-        <Rectangle HorizontalAlignment="Left" Height="59" Margin="293,313,0,0" VerticalAlignment="Top" Width="341" Fill="SteelBlue"/>
-        <TextBlock Name="Username" HorizontalAlignment="Left" Margin="396,335,0,0" TextWrapping="Wrap" Text="Username Send an image" VerticalAlignment="Top" Foreground="White"/>
-        <Image Name="OrginialImage" HorizontalAlignment="Left" Height="142" Margin="307,131,0,0" VerticalAlignment="Top" Width="148"/>
-        <Image Name ="AnalyzedImage" HorizontalAlignment="Left" Height="142" Margin="472,131,0,0" VerticalAlignment="Top" Width="148"/>
+        <Rectangle HorizontalAlignment="Left" Height="230" Margin="195,85,0,0" VerticalAlignment="Top" Width="439" Fill="#FF7CBFF7"/>
+        <Rectangle HorizontalAlignment="Left" Height="59" Margin="195,313,0,0" VerticalAlignment="Top" Width="439" Fill="SteelBlue"/>
+        <TextBlock Name="Username" HorizontalAlignment="Left" Margin="347,335,0,0" TextWrapping="Wrap" Text="Username Send an image" VerticalAlignment="Top" Foreground="White"/>
+        <Image Name="OrginialImage" HorizontalAlignment="Left" Height="205" Margin="195,85,0,0" VerticalAlignment="Top" Width="213"/>
+        <Image Name ="AnalyzedImage" HorizontalAlignment="Left" Height="205" Margin="429,85,0,0" VerticalAlignment="Top" Width="205"/>
 
         <Expander Margin="613,85,10,137" ExpandDirection="Right" Background="{x:Null}" IsExpanded="True" Foreground="{x:Null}">
             <ListBox Name="ListBox"/>

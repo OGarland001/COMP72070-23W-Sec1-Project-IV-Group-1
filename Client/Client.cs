@@ -148,6 +148,72 @@ namespace Client
             
         }
 
+        public bool recieveImage()
+        {
+            string path = "../../../UsersImages/Output.jpg";
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            try
+            {
+                NetworkStream stream = this.tcpClient.GetStream();
+
+                byte[] receiveBuffer = new byte[1000];
+
+                using (FileStream file = new FileStream(path, FileMode.Create))
+                {
+
+                    while (true)
+                    {
+
+                        int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        byte[] data = new byte[bytesRead];
+                        Array.Copy(receiveBuffer, data, bytesRead);
+
+                        Packet receivedPacket = new Packet(data);
+
+
+                        Packet ackPacket = new Packet();
+                        ackPacket.setHead('2', '1', states.Saving);
+                        byte[] noData = new byte[0];
+                        ackPacket.setData(noData.Length, noData);
+                        ackPacket.SerializeData();
+                        byte[] buf = ackPacket.getTailBuffer();
+
+                        stream.Write(buf, 0, buf.Length);
+
+
+                        if (receivedPacket.GetHead().getState() == states.Analyze)
+                        {
+                            Packet lastPacket = new Packet();
+                            lastPacket.setHead('2', '1', states.Saving);
+                            lastPacket.setData(noData.Length, noData);
+                            lastPacket.SerializeData();
+                            byte[] newbuf = lastPacket.getTailBuffer();
+
+                            stream.Write(newbuf, 0, newbuf.Length);
+                            break;
+                        }
+
+                        byte[] imageData = receivedPacket.GetBody().getData();
+
+                        file.Write(imageData, 0, imageData.Length);
+                    }
+                    file.Close();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.ToString());
+
+            }
+
+            return false;
+        }
+
          ~ProgramClient()
         {
             

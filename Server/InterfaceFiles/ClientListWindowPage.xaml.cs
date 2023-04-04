@@ -51,7 +51,7 @@ namespace Server.InterfaceFiles
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             //MANULLAY DISCONNECT CLIENT
-            this.server.disconnectClient();
+            //this.server.disconnectClient();
         }
     }
 }
