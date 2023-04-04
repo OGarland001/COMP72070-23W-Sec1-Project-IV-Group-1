@@ -35,6 +35,7 @@
             <ListBox Name="ListBox"/>
 
         </Expander>
+        <Button x:Name="refresh" Content="Refresh" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Height="26" Width="82" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="refresh_Click"/>
         <Frame x:Name="Predicition" Margin="0,0,0,0"/>
     </Grid>
 </Page>

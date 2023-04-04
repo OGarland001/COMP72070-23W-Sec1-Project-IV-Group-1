@@ -13,6 +13,8 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
+using Server.InterfaceFiles;
+using System.Windows.Media.Imaging;
 
 namespace Server
 {
@@ -220,7 +222,7 @@ namespace Server
             string fileName = userData.getUserName() + count + ".jpg";
             string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + fileName;
              
-            try
+            try 
             {
                 byte[] receiveBuffer = new byte[1000];
 
@@ -261,7 +263,6 @@ namespace Server
                             lastPacket.setData(noData.Length, noData);
                             lastPacket.SerializeData();
                             byte[] newbuf = lastPacket.getTailBuffer();
-
                             stream.Write(newbuf, 0, newbuf.Length);
                             //stream.Flush();
                             break;
