@@ -14,7 +14,7 @@ using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
 using SkiaSharp;
-
+using System.Threading;
 
 namespace Server
 {
@@ -32,6 +32,8 @@ namespace Server
         TcpClient? storeClient;
         TcpListener? storeServer;
         Packet? storePacket;
+        private readonly object streamLock = new object();
+        userLoginData blankUser = new userLoginData();
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -41,17 +43,16 @@ namespace Server
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];
-                        
+
             bool connectedUser = true;
-            
-            int i;
+
+            int i = 0;
             // Loop to receive all the data sent by the client.
             TcpClient client = server.AcceptTcpClient();
-            
+
             while (connectedUser)
             {
                 NetworkStream stream = client.GetStream();
-
                 i = stream.Read(buffer, 0, buffer.Length);
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
@@ -60,7 +61,7 @@ namespace Server
 
                 if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
                 {
-                   AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
+                    AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
@@ -71,7 +72,6 @@ namespace Server
                 }
                 else
                 {
-                    
                     sendReAuthAckPacket(packet, client, stream);
                 }
 
@@ -84,16 +84,8 @@ namespace Server
 
         public void disconnectClient()
         {
-            try
-            {
-                if (storePacket != null && storeClient != null) { sendReAuthAckPacket(storePacket, storeClient); }
-                if (storeStream != null) { storeStream.Close(); }
-                if (storeClient != null) { storeClient.Close(); }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error disconnecting client: " + ex.Message);
-            }
+            if (storePacket != null && storeClient != null && storeStream != null) { sendDisconectPacket(storePacket, storeClient, storeStream); }
+            userData = blankUser;
         }
 
         void AuthenticateUser(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
@@ -186,6 +178,19 @@ namespace Server
 
             byte[] sendbuf = packet.getTailBuffer();
             
+
+            stream.Write(sendbuf, 0, sendbuf.Length);
+        }
+
+        private static void sendDisconectPacket(Packet packet, TcpClient client, NetworkStream stream)
+        {
+            //sends it back if it failed and needs to be reauthed.
+            packet.setHead('2', '1', states.Discon);
+
+            packet.SerializeData();
+
+            byte[] sendbuf = packet.getTailBuffer();
+
 
             stream.Write(sendbuf, 0, sendbuf.Length);
         }
