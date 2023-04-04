@@ -40,7 +40,7 @@ namespace Server
             Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
-            byte[] buffer = new byte[1026];
+            //byte[] buffer = new byte[1026];
                         
             bool connectedUser = true;
             
@@ -51,8 +51,9 @@ namespace Server
             while (connectedUser)
             {
                 NetworkStream stream = client.GetStream();
-
+                byte[] buffer = new byte[1000];
                 i = stream.Read(buffer, 0, buffer.Length);
+                stream.Flush();
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 
@@ -64,10 +65,20 @@ namespace Server
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
+                    System.Threading.Thread.Sleep(5000);
                     string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
-                    setCurrentAnalyzedImage(fileName);
+                    
+                    if(!checkObjectsDetected())
+                    {
+                        setCurrentAnalyzedImage(fileName);
+                    }
+                    else
+                    {
+                        currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
+                    }
+                    
                 }
                 else
                 {
@@ -209,10 +220,12 @@ namespace Server
                     byte[] sendbuf = firstPacket.getTailBuffer();
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
+                    //stream.Flush();
                    
                     while (true)
                     {
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        //stream.Flush();
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
 
@@ -226,6 +239,7 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
+                        //stream.Flush();
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
@@ -236,13 +250,17 @@ namespace Server
                             byte[] newbuf = lastPacket.getTailBuffer();
 
                             stream.Write(newbuf, 0, newbuf.Length);
+                            //stream.Flush();
                             break;
                         }
 
                         byte[] imageData = receivedPacket.GetBody().getData();
 
                         file.Write(imageData, 0, imageData.Length);
+                       
                     }
+                    stream.Flush();
+                    //stream.Close();
                     file.Close();
                     userData.saveSendCount();
                 }
@@ -344,6 +362,17 @@ namespace Server
         {
             return this.detectedObjects;
         }
+        public bool checkObjectsDetected()
+        {
+            bool empty = false;
+
+            if (this.detectedObjects[0,0] == "No Objects")
+            {
+                empty = true;
+            }
+
+            return empty;
+        }
 
         public void SocketCleanup(Socket socket)
         {
@@ -378,7 +407,7 @@ namespace Server
 
         public string[,] RunRecognition(string filename, string username)
         {
-            setAnalyzingImagesState();
+            //setAnalyzingImagesState();
             //string path = @"../../../" + username + "/assets";
             var assetsRelativePath = @"../../../MLNET/assets";
             var UsersassetsRelativePath = @"../../../Users/" + username + "/assets";
