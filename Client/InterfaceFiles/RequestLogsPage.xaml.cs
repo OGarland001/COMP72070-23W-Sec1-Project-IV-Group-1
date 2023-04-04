@@ -27,6 +27,10 @@ namespace Client.InterfaceFiles
         {
             this.client = client;
             InitializeComponent();
+            if (!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
             //recieve from file and write to ClientLog.txt
 
             string filePath = "../../../ClientLog.txt";
@@ -36,7 +40,7 @@ namespace Client.InterfaceFiles
 
         private void Return_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new HomePage(ref this.client);
+            Main.Content = new HomePage(this.client);
         }
     }
 }

@@ -128,7 +128,7 @@ namespace Server
     //Enum States
     public enum states
     {
-        Idle, Auth, NewAuth, Recv, Analyze, Saving, Sending
+        Idle, Auth, NewAuth, Recv, Analyze, Saving, Sending, Discon
     }
     [ProtoContract]
     public struct Head

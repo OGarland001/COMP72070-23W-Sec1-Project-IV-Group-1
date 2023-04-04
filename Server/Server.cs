@@ -13,8 +13,6 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
-using SkiaSharp;
-
 
 namespace Server
 {
@@ -32,6 +30,9 @@ namespace Server
         TcpClient? storeClient;
         TcpListener? storeServer;
         Packet? storePacket;
+        private readonly object streamLock = new object();
+        userLoginData blankUser = new userLoginData();
+        bool disconnect = false;
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -40,37 +41,63 @@ namespace Server
             Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
-            byte[] buffer = new byte[1026];
+            //byte[] buffer = new byte[1026];
                         
             bool connectedUser = true;
-            
-            int i;
+
+            int i = 0;
             // Loop to receive all the data sent by the client.
             TcpClient client = server.AcceptTcpClient();
-            
+
             while (connectedUser)
             {
                 NetworkStream stream = client.GetStream();
-
+                byte[] buffer = new byte[1000];
                 i = stream.Read(buffer, 0, buffer.Length);
+                stream.Flush();
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 
                 Packet recvPacket = new Packet(data);
-
-                if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
+                if (recvPacket.GetHead().getState() == states.Discon)
                 {
-                   AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
+                    if (disconnect == true)
+                    {
+                        sendDisconectPacket(packet, client, stream, states.Discon);
+                        disconnect = false;
+                    }
+                    else
+                    {
+                        sendDisconectPacket(packet, client, stream, states.Idle);
+                    }
+                }
+                else if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
+                {
+                    AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
+                    System.Threading.Thread.Sleep(5000);
                     string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
+                    
+                    if(!checkObjectsDetected())
+                    {
+                        setCurrentAnalyzedImage(fileName);
+                    }
+                    else
+                    {
+                        currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
+                    }
                     setCurrentAnalyzedImage(fileName);
 
                     System.Threading.Thread.Sleep(5000);
                     sendImage(client, stream);
+                    
+                }
+                else
+                {
                     
                 }
                 else
@@ -87,19 +114,11 @@ namespace Server
             }
         }
 
-        //public void disconnectClient()
-        //{
-        //    try
-        //    {
-        //        if (storePacket != null && storeClient != null) { sendReAuthAckPacket(storePacket, storeClient); }
-        //        if (storeStream != null) { storeStream.Close(); }
-        //        if (storeClient != null) { storeClient.Close(); }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Error disconnecting client: " + ex.Message);
-        //    }
-        //}
+        public void disconnectClient()
+        {
+            disconnect = true;
+            userData = blankUser;
+        }
 
         void AuthenticateUser(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
@@ -195,6 +214,19 @@ namespace Server
             stream.Write(sendbuf, 0, sendbuf.Length);
         }
 
+        private static void sendDisconectPacket(Packet packet, TcpClient client, NetworkStream stream, states state)
+        {
+            //sends it back if it failed and needs to be reauthed.
+            packet.setHead('2', '1', state);
+
+            packet.SerializeData();
+
+            byte[] sendbuf = packet.getTailBuffer();
+
+
+            stream.Write(sendbuf, 0, sendbuf.Length);
+        }
+
         private string receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
             string count = (userData.getSendCount() + 1).ToString();
@@ -214,10 +246,12 @@ namespace Server
                     byte[] sendbuf = firstPacket.getTailBuffer();
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
+                    //stream.Flush();
                    
                     while (true)
                     {
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        //stream.Flush();
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
 
@@ -231,6 +265,7 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
+                        //stream.Flush();
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
@@ -241,13 +276,17 @@ namespace Server
                             byte[] newbuf = lastPacket.getTailBuffer();
 
                             stream.Write(newbuf, 0, newbuf.Length);
+                            //stream.Flush();
                             break;
                         }
 
                         byte[] imageData = receivedPacket.GetBody().getData();
 
                         file.Write(imageData, 0, imageData.Length);
+                       
                     }
+                    stream.Flush();
+                    //stream.Close();
                     file.Close();
                     userData.saveSendCount();
                 }
@@ -349,6 +388,17 @@ namespace Server
         {
             return this.detectedObjects;
         }
+        public bool checkObjectsDetected()
+        {
+            bool empty = false;
+
+            if (this.detectedObjects[0,0] == "No Objects")
+            {
+                empty = true;
+            }
+
+            return empty;
+        }
 
         public void SocketCleanup(Socket socket)
         {
@@ -383,7 +433,7 @@ namespace Server
 
         public string[,] RunRecognition(string filename, string username)
         {
-            setAnalyzingImagesState();
+            //setAnalyzingImagesState();
             //string path = @"../../../" + username + "/assets";
             var assetsRelativePath = @"../../../MLNET/assets";
             var UsersassetsRelativePath = @"../../../Users/" + username + "/assets";

@@ -47,7 +47,7 @@ namespace Client.InterfaceFiles
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage(ref this.client);
+                Main.Content = new HomePage(this.client);
             }
             else
             {
