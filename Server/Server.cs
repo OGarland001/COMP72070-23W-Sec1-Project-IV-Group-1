@@ -13,6 +13,7 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
+using SkiaSharp;
 
 
 namespace Server
@@ -27,6 +28,11 @@ namespace Server
         private string currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
         private string[,] detectedObjects = new string[10, 10];
 
+        NetworkStream? storeStream;
+        TcpClient? storeClient;
+        TcpListener? storeServer;
+        Packet? storePacket;
+
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
@@ -35,19 +41,15 @@ namespace Server
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
             byte[] buffer = new byte[1026];
-
-            
+                        
             bool connectedUser = true;
             
-
             int i;
             // Loop to receive all the data sent by the client.
             TcpClient client = server.AcceptTcpClient();
             
-
             while (connectedUser)
             {
-
                 NetworkStream stream = client.GetStream();
 
                 i = stream.Read(buffer, 0, buffer.Length);
@@ -66,7 +68,6 @@ namespace Server
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
                     setCurrentAnalyzedImage(fileName);
-                    
                 }
                 else
                 {
@@ -74,17 +75,32 @@ namespace Server
                     sendReAuthAckPacket(packet, client, stream);
                 }
 
-                
+                storeStream = stream;
+                storeClient = client;
+                storeServer = server;
+                storePacket = packet;
             }
-
         }
+
+        //public void disconnectClient()
+        //{
+        //    try
+        //    {
+        //        if (storePacket != null && storeClient != null) { sendReAuthAckPacket(storePacket, storeClient); }
+        //        if (storeStream != null) { storeStream.Close(); }
+        //        if (storeClient != null) { storeClient.Close(); }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error disconnecting client: " + ex.Message);
+        //    }
+        //}
+
         void AuthenticateUser(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
             Packet packet = new Packet(recvPacket);
             try
             {
-
-
                 if (recvPacket.GetBody().getData() != null)
                 {
                     IntializeUserData(recvPacket);
@@ -143,8 +159,6 @@ namespace Server
             {
                 Console.WriteLine(exception.Message);
             }
-
-
         }
 
         private static bool sendAuthentcatedAckPacket(Packet packet, TcpClient client, NetworkStream stream)
@@ -158,7 +172,6 @@ namespace Server
        
 
             stream.Write(sendbuf, 0, sendbuf.Length);
-
 
             connectedUser = true;
             return connectedUser;
@@ -177,23 +190,18 @@ namespace Server
             stream.Write(sendbuf, 0, sendbuf.Length);
         }
 
-
-
         private string receiveImage(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
             string count = (userData.getSendCount() + 1).ToString();
             string fileName = userData.getUserName() + count + ".jpg";
             string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + fileName;
-            
-            
+             
             try
             {
-              
                 byte[] receiveBuffer = new byte[1000];
 
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
-
                     file.Write(recvPacket.GetBody().getData(), 0, recvPacket.GetBody().getData().Length);
                     Packet firstPacket = new Packet();
                     firstPacket.setHead('2', '1', states.Saving);
@@ -204,14 +212,12 @@ namespace Server
                    
                     while (true)
                     {
-                          
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
 
                         Packet receivedPacket = new Packet(data);
                         
-
                         Packet ackPacket = new Packet();
                         ackPacket.setHead('2', '1', states.Saving);
                         byte[] noData = new byte[0];
@@ -221,11 +227,8 @@ namespace Server
 
                         stream.Write(buf, 0, buf.Length);
 
-
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                           
-                            
                             Packet lastPacket = new Packet();
                             lastPacket.setHead('2', '1', states.Saving);
                             lastPacket.setData(noData.Length, noData);
@@ -246,13 +249,10 @@ namespace Server
             }
             catch (Exception e)
             {
-                
                 Console.WriteLine(e.ToString());
-               
             }
 
             return fileName;
-            
         }
 
         private bool sendImage(TcpClient client, NetworkStream stream)
@@ -345,7 +345,6 @@ namespace Server
             return this.detectedObjects;
         }
 
-
         public void SocketCleanup(Socket socket)
         {
             socket.Shutdown(SocketShutdown.Both);
@@ -371,7 +370,6 @@ namespace Server
         {
             return currentAnalyzedImage;
         }
-      
 
         public ProgramServer GetProgramServer()
         {
@@ -415,23 +413,39 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                string[,] results = new string[1, 2];
+                
 
                 // Draw bounding boxes for detected objects in the image
                 string imageFileName = filename;
                 IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
-
-                DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
-                string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
-                string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
-
-                LogDetectedObjects(imageFileName, detectedObjects);
-
-                for (int j = 0; j < objects.Length; j++)
+                int count = detectedObjects.Count;
+                string[,] results;
+                
+                if(count > 0)
                 {
-                    results[0, j] = objects[j];
-                    results[0, j + 1] = confidence[j];
+                    results = new string[count, 2];
+                    DrawBoundingBox(imageFilePath, outputFolder, imageFileName, detectedObjects);
+                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
+
+                    LogDetectedObjects(imageFileName, detectedObjects);
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 0] = objects[j];
+                    }
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 1] = confidence[j];
+                    }
+
                 }
+                else
+                {
+                    results = new string[1, 2] { { "No Objects", "0" }};
+                }
+               
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
@@ -441,8 +455,6 @@ namespace Server
                 Console.WriteLine("Error processing file {0}: {1}", filename, ex.Message);
                 return null;
             }
-
-
 
             string GetAbsolutePath(string relativePath)
             {
@@ -456,7 +468,7 @@ namespace Server
 
             void DrawBoundingBox(string inputImageLocation, string outputImageLocation, string imageName, IList<YoloBoundingBox> filteredBoundingBoxes)
             {
-                Image image = Image.FromFile(Path.Combine(inputImageLocation, imageName));
+                Image image = Image.FromFile(inputImageLocation);
 
                 var originalImageHeight = image.Height;
                 var originalImageWidth = image.Width;
@@ -651,7 +663,6 @@ namespace Server
 
         public bool SaveuserData(string filePath)
         {
-
             bool error = false;
 
             try
@@ -675,8 +686,6 @@ namespace Server
 
         public string SignInUser(string filePath)
         {
-
-
             string message = "Username or password is incorrect";
             try
             {
@@ -697,8 +706,6 @@ namespace Server
                         line1 = reader.ReadLine();
                         line2 = reader.ReadLine();
                     }
-
-
 
                     reader.Close();
                 }
@@ -733,8 +740,6 @@ namespace Server
                         line1 = reader.ReadLine();
                     }
 
-
-
                     reader.Close();
                 }
             }
@@ -745,7 +750,6 @@ namespace Server
 
             return unique;
         }
-
 
         public string RegisterUser(string filePath)
         {
