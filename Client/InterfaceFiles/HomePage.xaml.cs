@@ -90,10 +90,12 @@ namespace Client.InterfaceFiles
             client.receiveImage();
 
             //// create a new BitmapImage object with the image file as the source
-            BitmapImage bitmap = new BitmapImage(new Uri("../UserImage/Output.jpg", UriKind.Relative));
+            BitmapImage bitmap = new BitmapImage(new Uri("../../../UserImages/Output.jpg", UriKind.Relative));
 
             // set the bitmap as the source of the outputPicture object
             outputPicture.Source = bitmap;
+            //pop up saying it set it to the image
+            MessageBox.Show("Image has been set to the output image");
 
         }
 
