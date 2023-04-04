@@ -13,6 +13,8 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
+using System.Collections;
 
 namespace Server
 {
@@ -22,8 +24,8 @@ namespace Server
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
-        private string currentOriginalImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
-        private string currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
+        private string currentOriginalImage = @"MLNET\assets\images\NoImage.png";
+        private string currentAnalyzedImage = @"MLNET\assets\images\output\NoAnalyzedImage.png";
         private string[,] detectedObjects = new string[10, 10];
 
         NetworkStream? storeStream;
@@ -54,7 +56,7 @@ namespace Server
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[1000];
                 i = stream.Read(buffer, 0, buffer.Length);
-                stream.Flush();
+                
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 
@@ -77,7 +79,8 @@ namespace Server
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
-                    System.Threading.Thread.Sleep(5000);
+                  
+                    System.Threading.Thread.Sleep(10000);
                     string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
@@ -88,7 +91,7 @@ namespace Server
                     }
                     else
                     {
-                        currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
+                        currentAnalyzedImage = @"MLNET\assets\images\output\NoAnalyzedImage.png";
                     }
                     
                 }
@@ -102,6 +105,10 @@ namespace Server
                 storeClient = client;
                 storeServer = server;
                 storePacket = packet;
+                stream.Flush();
+                buffer = null;
+                //Stack.Clear();
+
             }
         }
 
@@ -227,6 +234,7 @@ namespace Server
             try
             {
                 byte[] receiveBuffer = new byte[1000];
+                //byte[] sendbuf = new byte[1000];
 
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
