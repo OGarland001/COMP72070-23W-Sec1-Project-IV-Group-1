@@ -192,6 +192,10 @@ namespace Client
                 NetworkStream stream = this.tcpClient.GetStream();
                 byte[] receiveBuffer = new byte[1000];
 
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
 

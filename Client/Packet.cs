@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ProtoBuf;
+using System;
+using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Sockets;
-using System.Printing.IndexedProperties;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
 using System.Windows.Shapes;
-using ProtoBuf;
 
 #pragma warning disable SYSLIB0011
 
@@ -54,7 +46,27 @@ namespace Client
                 throw;
             }
         }
+        public void createUserFile()
+        {
+            string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
+            if (!File.Exists(path))
+            {
+                using (FileStream fs = File.Create(path))
+                {
+                    fs.Close();
+                }
+            }
 
+            StreamWriter writer = new StreamWriter(path);
+            {
+                int count = 0;
+                writer.WriteLine(count.ToString());
+                writer.Close();
+            }
+
+
+
+        }
         public int getSendCount()
         {
             string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
@@ -78,22 +90,7 @@ namespace Client
             }
 
             return 0;
-            
-            
-        }
-        public void createUserFile()
-        {
-            string path = @"../../../Users/" + getUserName() + "/" + getUserName() + ".txt";
-            if (!File.Exists(path))
-            {
-                File.Create(path);
-                StreamWriter writer = new StreamWriter(path);
-                {
-                    int count = 0;
-                    writer.WriteLine(count.ToString());
-                    writer.Close();
-                }
-            }
+
 
         }
         public void saveSendCount()
@@ -104,7 +101,7 @@ namespace Client
             {
                 int count = getSendCount();
                 count++;
-            
+
 
                 StreamWriter writer = new StreamWriter(path);
                 {
@@ -126,6 +123,7 @@ namespace Client
             }
         }
     }
+
 
     //Enum States
     public enum states
@@ -193,17 +191,13 @@ namespace Client
         [ProtoMember(1)]
         public byte[] data;
 
-        public Body()
-        {
-            data = new byte[500];
-        }
-
         public void setData(byte[] buffer)
         {
             data = buffer;
         }
         public byte[] getData() { return data; }
-    }    [ProtoContract]
+    };
+    [ProtoContract]
     public struct Tail
     {
         //byte array for the send buffer
@@ -270,7 +264,7 @@ namespace Client
                 }
             }
             catch
-            { 
+            {
                 throw;
             }
 
@@ -326,13 +320,161 @@ namespace Client
                 // Log error
                 throw;
             }
-          
-            
+
+
 
         }
-     
 
 
 
+    }
+
+    public class login
+    {
+        private userLoginData userData;
+
+        public login()
+        {
+            userData = new userLoginData();
+        }
+
+        public login(Packet packet)
+        {
+            userLoginData temp = packet.deserializeUserLoginData();
+            userData.setUserName(temp.getUserName());
+            userData.setPassword(temp.getPassword());
+        }
+
+        public userLoginData GetuserData()
+        {
+            return userData;
+        }
+
+        public void SetuserData(string username, string password)
+        {
+            userData.setUserName(username);
+            userData.setPassword(password);
+        }
+
+        public bool SaveuserData(string filePath)
+        {
+
+            bool error = false;
+
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filePath, append: true))
+                {
+                    writer.WriteLine(userData.getUserName());
+                    writer.WriteLine(userData.getPassword());
+                    writer.Close();
+                }
+
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+                error = true;
+            }
+
+            return error;
+        }
+
+        public string SignInUser(string filePath)
+        {
+
+
+            string message = "Username or password is incorrect";
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+                    string line2 = reader.ReadLine();
+
+                    while ((line1 != null) && (line2 != null))
+                    {
+                        if ((line1 == userData.getUserName()) && (line2 == userData.getPassword()))
+                        {
+
+                            message = "User signed in";
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                        line2 = reader.ReadLine();
+                    }
+
+
+
+                    reader.Close();
+                }
+            }
+            catch (IOException e)
+            {
+                message = "Error Signing in user";
+            }
+
+            return message;
+        }
+
+
+        public bool checkUsername(string filePath)
+        {
+            bool unique = true;
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line1 = reader.ReadLine();
+
+                    while ((line1 != null))
+                    {
+                        if ((line1 == userData.getUserName()))
+                        {
+                            unique = false;
+                            break;
+                        }
+
+                        line1 = reader.ReadLine();
+                    }
+
+
+
+                    reader.Close();
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("An error occurred while writing to the file: " + e.Message);
+            }
+
+            return unique;
+        }
+
+
+        public string RegisterUser(string filePath)
+        {
+            string message;
+            if (checkUsername(filePath) == false)
+            {
+                //Non unique Username Entered
+                message = "Username must be unique";
+            }
+            else
+            {
+                if (SaveuserData(filePath) == false)
+                {
+                    message = "User registered";
+                }
+                else
+                {
+                    message = "Error Saving user's credentials";
+                }
+            }
+
+            return message;
+        }
     }
 }

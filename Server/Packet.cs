@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 using System.Windows.Shapes;
 
 #pragma warning disable SYSLIB0011
@@ -63,7 +64,7 @@ namespace Server
                 writer.WriteLine(count.ToString());
                 writer.Close();
             }
-            
+
 
 
         }
@@ -190,6 +191,7 @@ namespace Server
         //byte array for data
         [ProtoMember(1)]
         public byte[] data;
+        
 
         public void setData(byte[] buffer)
         {
