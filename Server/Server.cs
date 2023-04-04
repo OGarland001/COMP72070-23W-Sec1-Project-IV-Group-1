@@ -76,8 +76,6 @@ namespace Server
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
-                  
-                    System.Threading.Thread.Sleep(10000);
                     string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
@@ -92,7 +90,7 @@ namespace Server
                     }
                     setCurrentAnalyzedImage(fileName);
 
-                    System.Threading.Thread.Sleep(5000);
+                    
                     sendImage(client, stream);
                     
                 }
