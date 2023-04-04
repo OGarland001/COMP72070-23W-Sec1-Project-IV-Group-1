@@ -99,10 +99,6 @@ namespace Server
                 else
                 {
                     
-                }
-                else
-                {
-                    
                     sendReAuthAckPacket(packet, client, stream);
                 }
 
