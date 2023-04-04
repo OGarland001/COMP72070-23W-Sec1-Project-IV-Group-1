@@ -70,7 +70,8 @@ namespace Server
                 }
                 else
                 {
-                    sendReAuthAckPacket(packet, client);
+                    
+                    sendReAuthAckPacket(packet, client, stream);
                 }
 
                 
@@ -99,12 +100,12 @@ namespace Server
                         {
 
                             //sets up a packet with nothing just to say that it was recived and passed
-                            connectedUser = sendAuthentcatedAckPacket(packet, client);
+                            connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
                         }
                         else
                         {
-                            stream.Close();
-                            sendReAuthAckPacket(packet, client);
+                          
+                            sendReAuthAckPacket(packet, client, stream);
 
                         }
                     }
@@ -120,21 +121,21 @@ namespace Server
 
                         if (message == "User registered")
                         {
-                            connectedUser = sendAuthentcatedAckPacket(packet, client);
+                            connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
 
                         }
                         else
                         {
-                            stream.Close();
-                            sendReAuthAckPacket(packet, client);
+                            
+                            sendReAuthAckPacket(packet, client,stream);
 
                         }
                     }
                 }
                 else
                 {
-                    stream.Close();
-                    sendReAuthAckPacket(packet, client);
+                   
+                    sendReAuthAckPacket(packet, client, stream);
 
                 }
             }
@@ -146,7 +147,7 @@ namespace Server
 
         }
 
-        private static bool sendAuthentcatedAckPacket(Packet packet, TcpClient client)
+        private static bool sendAuthentcatedAckPacket(Packet packet, TcpClient client, NetworkStream stream)
         {
             bool connectedUser;
             //sets up a packet with nothing just to say that it was recived and passed
@@ -154,16 +155,16 @@ namespace Server
 
             packet.SerializeData();
             byte[] sendbuf = packet.getTailBuffer();
-            NetworkStream clStream = client.GetStream();
+       
 
-            clStream.Write(sendbuf, 0, sendbuf.Length);
+            stream.Write(sendbuf, 0, sendbuf.Length);
 
 
             connectedUser = true;
             return connectedUser;
         }
 
-        private static void sendReAuthAckPacket(Packet packet, TcpClient client)
+        private static void sendReAuthAckPacket(Packet packet, TcpClient client, NetworkStream stream)
         {
             //sends it back if it failed and needs to be reauthed.
             packet.setHead('2', '1', states.Auth);
@@ -171,9 +172,9 @@ namespace Server
             packet.SerializeData();
 
             byte[] sendbuf = packet.getTailBuffer();
-            NetworkStream clStream = client.GetStream();
+            
 
-            clStream.Write(sendbuf, 0, sendbuf.Length);
+            stream.Write(sendbuf, 0, sendbuf.Length);
         }
 
 
