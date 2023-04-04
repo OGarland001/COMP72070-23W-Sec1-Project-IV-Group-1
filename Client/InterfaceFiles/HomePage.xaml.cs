@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.Sockets;
+using Path = System.IO.Path;
 
 namespace Client.InterfaceFiles
 {
@@ -85,15 +86,10 @@ namespace Client.InterfaceFiles
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-
-
             client.receiveImage();
 
-            //// create a new BitmapImage object with the image file as the source
-            BitmapImage bitmap = new BitmapImage(new Uri("../../../UserImages/Output.jpg", UriKind.Relative));
-
             // set the bitmap as the source of the outputPicture object
-            outputPicture.Source = bitmap;
+            outputPicture.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\Output.jpg")));
             //pop up saying it set it to the image
             MessageBox.Show("Image has been set to the output image");
 
