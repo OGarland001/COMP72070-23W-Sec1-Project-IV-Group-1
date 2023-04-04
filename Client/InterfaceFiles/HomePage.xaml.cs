@@ -70,10 +70,18 @@ namespace Client.InterfaceFiles
             try
             {
                 client.sendImage(@path);
-            }catch (Exception ex) { Console.WriteLine(ex.Message); }
-            
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-            //RECEIVE
+
+
+            client.receiveImage();
+
+            //// create a new BitmapImage object with the image file as the source
+            BitmapImage bitmap = new BitmapImage(new Uri("../UserImage/Output.jpg", UriKind.Relative));
+
+            // set the bitmap as the source of the outputPicture object
+            outputPicture.Source = bitmap;
 
         }
 

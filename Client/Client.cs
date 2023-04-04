@@ -148,17 +148,13 @@ namespace Client
             
         }
 
-        public bool recieveImage()
+        public bool receiveImage()
         {
-            string path = "../../../UsersImages/Output.jpg";
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
+            string path = "../../../UserImages/Output.jpg";
+
             try
             {
                 NetworkStream stream = this.tcpClient.GetStream();
-
                 byte[] receiveBuffer = new byte[1000];
 
                 using (FileStream file = new FileStream(path, FileMode.Create))
@@ -166,16 +162,14 @@ namespace Client
 
                     while (true)
                     {
-
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
 
                         Packet receivedPacket = new Packet(data);
 
-
                         Packet ackPacket = new Packet();
-                        ackPacket.setHead('2', '1', states.Saving);
+                        ackPacket.setHead('1', '2', states.Saving);
                         byte[] noData = new byte[0];
                         ackPacket.setData(noData.Length, noData);
                         ackPacket.SerializeData();
@@ -183,11 +177,10 @@ namespace Client
 
                         stream.Write(buf, 0, buf.Length);
 
-
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
                             Packet lastPacket = new Packet();
-                            lastPacket.setHead('2', '1', states.Saving);
+                            lastPacket.setHead('1', '2', states.Saving);
                             lastPacket.setData(noData.Length, noData);
                             lastPacket.SerializeData();
                             byte[] newbuf = lastPacket.getTailBuffer();
@@ -206,15 +199,14 @@ namespace Client
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.ToString());
-
+                return false;
             }
 
-            return false;
+           
         }
 
-         ~ProgramClient()
+        ~ProgramClient()
         {
             
             this.tcpClient.Close();

@@ -68,6 +68,10 @@ namespace Server
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
                     setCurrentAnalyzedImage(fileName);
+
+                    System.Threading.Thread.Sleep(5000);
+                    sendImage(client, stream);
+                    
                 }
                 else
                 {
@@ -79,6 +83,7 @@ namespace Server
                 storeClient = client;
                 storeServer = server;
                 storePacket = packet;
+                stream.Flush();
             }
         }
 
@@ -257,85 +262,85 @@ namespace Server
 
         private bool sendImage(TcpClient client, NetworkStream stream)
         {
-            try
-            {
+                try
+                {
                 string count = (userData.getSendCount()).ToString();
                 string fileName = userData.getUserName() + count + ".jpg";
-                string path = @"../../../Users/" + userData.getUserName() + "/assets/images/" + fileName;
+                string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
 
-                byte[] imageBuffer = File.ReadAllBytes(path);
+                
+                    byte[] imageBuffer = File.ReadAllBytes(path);
 
-                int index = 0;
-                bool lastPacketSent = false;
-                while (!lastPacketSent)
-                {
-                    Packet sendPacket = new Packet();
-                    sendPacket.setHead('2', '1', states.Sending);
-                    byte[] dataBuf = new byte[500];
-
-                    int bytesToCopy = Math.Min(dataBuf.Length, imageBuffer.Length - index);
-                    Array.Copy(imageBuffer, index, dataBuf, 0, bytesToCopy);
-                    index += bytesToCopy;
-
-
-                    // Check if this is the last packet
-                    if (bytesToCopy == 0)
+                    int index = 0;
+                    bool lastPacketSent = false;
+                    while (!lastPacketSent)
                     {
-                        Packet lastPacket = new Packet();
-                        lastPacketSent = true;
-                        lastPacket.setHead('2', '1', states.Saving);
-                        byte[] noData = new byte[0];
-                        lastPacket.setData(noData.Length, noData);
-                        lastPacket.SerializeData();
-                        stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
-                        stream.Flush();
-                        continue;
-                    }
+                        Packet sendPacket = new Packet();
+                        sendPacket.setHead('2', '1', states.Sending);
+                        byte[] dataBuf = new byte[500];
 
-                    sendPacket.setData(bytesToCopy, dataBuf);
-                    sendPacket.SerializeData();
-                    stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
-                    stream.Flush();
-                    byte[] recvBuf = new byte[1024];
-                    int amount = stream.Read(recvBuf, 0, recvBuf.Length);
+                        int bytesToCopy = Math.Min(dataBuf.Length, imageBuffer.Length - index);
+                        Array.Copy(imageBuffer, index, dataBuf, 0, bytesToCopy);
+                        index += bytesToCopy;
 
-                    byte[] array = new byte[amount];
-                    Array.Copy(recvBuf, array, amount);
-                    Packet recvPacket = new Packet(array);
-
-                    if (lastPacketSent)
-                    {
-                        if (recvPacket.GetHead().getState() != states.Recv)
+                        // Check if this is the last packet
+                        if (bytesToCopy == 0)
                         {
-                            Exception e = new Exception();
-                            throw e;
+                            Packet lastPacket = new Packet();
+                            lastPacketSent = true;
+                            lastPacket.setHead('2', '1', states.Analyze);
+                            byte[] noData = new byte[0];
+                            lastPacket.setData(noData.Length, noData);
+                            lastPacket.SerializeData();
+                            stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
+                            stream.Flush();
+                            continue;
+                        }
+
+                        sendPacket.setData(bytesToCopy, dataBuf);
+                        sendPacket.SerializeData();
+                        stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
+                        stream.Flush();
+                        byte[] recvBuf = new byte[1024];
+                        int amount = stream.Read(recvBuf, 0, recvBuf.Length);
+
+                        byte[] array = new byte[amount];
+                        Array.Copy(recvBuf, array, amount);
+                        Packet recvPacket = new Packet(array);
+
+                        if (lastPacketSent)
+                        {
+                            if (recvPacket.GetHead().getState() != states.Recv)
+                            {
+                                Exception e = new Exception();
+                                throw e;
+                            }
+                            else
+                            {
+                                return true;
+                            }
                         }
                         else
                         {
-                            return true;
+                            if (recvPacket.GetHead().getState() != states.Saving)
+                            {
+                                Exception e = new Exception();
+                                throw e;
+                            }
                         }
                     }
-                    else
-                    {
-                        if (recvPacket.GetHead().getState() != states.Saving)
-                        {
-                            Exception e = new Exception();
-                            throw e;
-                        }
-                    }
+                    return false;
                 }
-                return false;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return false;
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    return false;
+                }
 
 
         }
 
-        public void setDetectedObjects(string[,] objects)
+            public void setDetectedObjects(string[,] objects)
         {
             Array.Copy(objects, detectedObjects, objects.Length);
         }
