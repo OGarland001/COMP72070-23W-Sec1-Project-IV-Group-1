@@ -335,23 +335,39 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                string[,] results = new string[1, 2];
+                
 
                 // Draw bounding boxes for detected objects in the image
                 string imageFileName = filename;
                 IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
-
-                DrawBoundingBox(imagesFolder, outputFolder, imageFileName, detectedObjects);
-                string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
-                string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
-
-                LogDetectedObjects(imageFileName, detectedObjects);
-
-                for (int j = 0; j < objects.Length; j++)
+                int count = detectedObjects.Count;
+                string[,] results;
+                
+                if(count > 0)
                 {
-                    results[0, j] = objects[j];
-                    results[0, j + 1] = confidence[j];
+                    results = new string[count, 2];
+                    DrawBoundingBox(imageFilePath, outputFolder, imageFileName, detectedObjects);
+                    string[] objects = detectedObjects.Select(obj => obj.Label).ToArray();
+                    string[] confidence = detectedObjects.Select(obj => obj.Confidence.ToString()).ToArray();
+
+                    LogDetectedObjects(imageFileName, detectedObjects);
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 0] = objects[j];
+                    }
+
+                    for (int j = 0; j < count; j++)
+                    {
+                        results[j, 1] = confidence[j];
+                    }
+
                 }
+                else
+                {
+                    results = new string[1, 2] { { "No Objects", "0" }};
+                }
+               
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
@@ -376,7 +392,7 @@ namespace Server
 
             void DrawBoundingBox(string inputImageLocation, string outputImageLocation, string imageName, IList<YoloBoundingBox> filteredBoundingBoxes)
             {
-                Image image = Image.FromFile(Path.Combine(inputImageLocation, imageName));
+                Image image = Image.FromFile(inputImageLocation);
 
                 var originalImageHeight = image.Height;
                 var originalImageWidth = image.Width;
