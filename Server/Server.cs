@@ -25,11 +25,6 @@ namespace Server
         private string currentOriginalImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
         private string currentAnalyzedImage = @"MLNET\assets\images\output\NoImagePlaceHolder.png";
         private string[,] detectedObjects = new string[10, 10];
-
-        NetworkStream? storeStream;
-        TcpClient? storeClient;
-        TcpListener? storeServer;
-        Packet? storePacket;
         private readonly object streamLock = new object();
         userLoginData blankUser = new userLoginData();
         bool disconnect = false;
@@ -102,10 +97,6 @@ namespace Server
                     sendReAuthAckPacket(packet, client, stream);
                 }
 
-                storeStream = stream;
-                storeClient = client;
-                storeServer = server;
-                storePacket = packet;
                 stream.Flush();
             }
         }
