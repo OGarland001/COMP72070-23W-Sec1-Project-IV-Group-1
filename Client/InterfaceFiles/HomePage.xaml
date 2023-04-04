@@ -32,6 +32,7 @@
         <Button x:Name="Analyze" Content="Analyze!!" HorizontalAlignment="Left" Margin="511,372,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Click="Analyze_Click" Opacity="0.23" FontWeight="Bold"/>
         <Image x:Name="imagePicture" HorizontalAlignment="Left" Margin="19,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
         <Image x:Name="outputPicture" HorizontalAlignment="Left" Margin="428,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
-        <Frame x:Name="Main" Margin="0,0,0,0" Navigated="Main_Navigated"/>
+        <Button x:Name="refresh" Content="Refresh" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Height="26" Width="82" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="refresh_Click"/>
+        <Frame x:Name="Main" Margin="0,0,0,0"/>
     </Grid>
 </Page>
