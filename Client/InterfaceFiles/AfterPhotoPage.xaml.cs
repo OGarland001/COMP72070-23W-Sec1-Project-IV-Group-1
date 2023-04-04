@@ -26,6 +26,10 @@ namespace Client.InterfaceFiles
         {
             this.client = client;
             InitializeComponent();
+            if(!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)

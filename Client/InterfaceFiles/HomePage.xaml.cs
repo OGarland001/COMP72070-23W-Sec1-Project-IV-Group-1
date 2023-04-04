@@ -24,11 +24,15 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class HomePage : Page
     {
-        private ProgramClient client;
-        public HomePage(ref ProgramClient client)
+        ProgramClient client;
+        public HomePage(ProgramClient client)
         {
-            InitializeComponent();
             this.client = client;
+            InitializeComponent();
+            if (!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
         }
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)
