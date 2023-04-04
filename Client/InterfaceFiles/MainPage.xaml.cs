@@ -14,7 +14,7 @@ namespace Client.InterfaceFiles
     public partial class MainPage : Page
     {
         public ProgramClient client = new ProgramClient();
-        public MainPage(ProgramClient client)
+        public MainPage( ref ProgramClient client)
         {
             this.client = client;
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace Client.InterfaceFiles
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage(this.client);
+                Main.Content = new HomePage(ref this.client);
             }
             else
             {
@@ -57,7 +57,7 @@ namespace Client.InterfaceFiles
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new CreateAccountPage(this.client);
+            Main.Content = new CreateAccountPage(ref this.client);
         }
 
         private void Main_Navigated(object sender, NavigationEventArgs e)

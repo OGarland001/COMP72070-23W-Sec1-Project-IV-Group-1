@@ -46,7 +46,7 @@ namespace Client.InterfaceFiles
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage(this.client);
+                Main.Content = new HomePage(ref this.client);
             }
             else
             {
@@ -56,7 +56,7 @@ namespace Client.InterfaceFiles
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new CreateAccountPage(this.client);
+            Main.Content = new CreateAccountPage(ref this.client);
         }
 
         private void Main_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)

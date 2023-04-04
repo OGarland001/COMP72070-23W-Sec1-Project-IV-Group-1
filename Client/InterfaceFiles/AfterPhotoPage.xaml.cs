@@ -30,7 +30,7 @@ namespace Client.InterfaceFiles
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new MainPage(this.client);
+            Main.Content = new MainPage(ref this.client);
         }
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)

@@ -25,7 +25,7 @@ namespace Client.InterfaceFiles
     public partial class HomePage : Page
     {
         private ProgramClient client;
-        public HomePage(ProgramClient client)
+        public HomePage(ref ProgramClient client)
         {
             InitializeComponent();
             this.client = client;
@@ -38,14 +38,14 @@ namespace Client.InterfaceFiles
 
         private void logout_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new MainPage(this.client);
+            Main.Content = new MainPage(ref this.client);
 
         }
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog image = new OpenFileDialog();
-            image.Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg|All files (*.*)|*.*";
+            image.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
             image.FilterIndex = 1;
 
             if (image.ShowDialog() == true)
@@ -65,8 +65,15 @@ namespace Client.InterfaceFiles
             
             //imagePicture path
             string path = imagePicture.Source.ToString();
+            path = path.Substring(8);
+            MessageBox.Show(path);
+            try
+            {
+                client.sendImage(@path);
+            }catch (Exception ex) { Console.WriteLine(ex.Message); }
             
-            client.sendImage(path);
+
+            //RECEIVE
 
         }
 

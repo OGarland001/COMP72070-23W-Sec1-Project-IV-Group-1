@@ -36,7 +36,7 @@ namespace Client.InterfaceFiles
 
         private void Return_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new HomePage(this.client);
+            Main.Content = new HomePage(ref this.client);
         }
     }
 }

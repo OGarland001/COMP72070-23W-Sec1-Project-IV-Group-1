@@ -22,7 +22,7 @@ namespace Client.InterfaceFiles
     public partial class CreateAccountPage : Page
     {
         public ProgramClient client = new ProgramClient();
-        public CreateAccountPage(ProgramClient client)
+        public CreateAccountPage(ref ProgramClient client)
         {
             this.client = client;
 
@@ -58,7 +58,7 @@ namespace Client.InterfaceFiles
 
             if (client.authentcated)
             {
-                Main.Content = new HomePage(this.client);
+                Main.Content = new HomePage(ref this.client);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Client.InterfaceFiles
 
         private void Log_In_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new MainPage(this.client);
+            Main.Content = new MainPage(ref this.client);
 
        
         }
