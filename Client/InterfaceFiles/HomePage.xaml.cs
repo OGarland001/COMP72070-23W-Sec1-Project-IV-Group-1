@@ -48,6 +48,10 @@ namespace Client.InterfaceFiles
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
             Microsoft.Win32.OpenFileDialog image = new OpenFileDialog();
             image.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
             image.FilterIndex = 1;
@@ -65,8 +69,12 @@ namespace Client.InterfaceFiles
 
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
             //take the image that is uploaded to the screen imagePicture, and then convert to a byte array and setup the packet structure and send 100 bytes at a time to the server
-            
+
             //imagePicture path
             string path = imagePicture.Source.ToString();
             path = path.Substring(8);
@@ -74,10 +82,18 @@ namespace Client.InterfaceFiles
             try
             {
                 client.sendImage(@path);
-            }catch (Exception ex) { Console.WriteLine(ex.Message); }
-            
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-            //RECEIVE
+
+
+            client.receiveImage();
+
+            //// create a new BitmapImage object with the image file as the source
+            BitmapImage bitmap = new BitmapImage(new Uri("../UserImage/Output.jpg", UriKind.Relative));
+
+            // set the bitmap as the source of the outputPicture object
+            outputPicture.Source = bitmap;
 
         }
 
@@ -89,5 +105,12 @@ namespace Client.InterfaceFiles
             Analyze.IsEnabled = false;
         }
 
+        private void refresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (!this.client.checkConnection())
+            {
+                Main.Content = new MainPage(ref this.client);
+            }
+        }
     }
 }

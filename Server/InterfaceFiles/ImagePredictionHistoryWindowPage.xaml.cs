@@ -69,5 +69,10 @@ namespace Server.InterfaceFiles
         {
             Predicition.Content = new ImagePredictionHistoryWindowPage(this.server);
         }
+
+        private void refresh_Click(object sender, RoutedEventArgs e)
+        {
+            Predicition.Content = new ImagePredictionHistoryWindowPage(this.server);
+        }
     }
 }
