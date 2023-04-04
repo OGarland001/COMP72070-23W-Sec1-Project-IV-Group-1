@@ -82,19 +82,19 @@ namespace Server
             }
         }
 
-        public void disconnectClient()
-        {
-            try
-            {
-                if (storePacket != null && storeClient != null) { sendReAuthAckPacket(storePacket, storeClient); }
-                if (storeStream != null) { storeStream.Close(); }
-                if (storeClient != null) { storeClient.Close(); }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error disconnecting client: " + ex.Message);
-            }
-        }
+        //public void disconnectClient()
+        //{
+        //    try
+        //    {
+        //        if (storePacket != null && storeClient != null) { sendReAuthAckPacket(storePacket, storeClient); }
+        //        if (storeStream != null) { storeStream.Close(); }
+        //        if (storeClient != null) { storeClient.Close(); }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error disconnecting client: " + ex.Message);
+        //    }
+        //}
 
         void AuthenticateUser(Packet recvPacket, byte[] buffer, ref bool connectedUser, TcpClient client, NetworkStream stream)
         {
