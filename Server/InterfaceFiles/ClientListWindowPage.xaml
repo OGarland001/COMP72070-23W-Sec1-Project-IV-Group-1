@@ -29,7 +29,7 @@
         <TextBlock x:Name="ConStatus" HorizontalAlignment="Left" Margin="388,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="10"><Run Language="en-ca"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="242,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FF6A6868" FontSize="10"><Run Text="Recently Sent "/><Run Language="en-ca" Text="C"/><Run Text="omm"/><Run Text="an"/><Run Text="d"/><Run Text="s"/></TextBlock>
         <Ellipse x:Name="ConCircle" HorizontalAlignment="Left" Height="9" Margin="374,115,0,0" VerticalAlignment="Top" Width="9"/>
-        <Button Content="Manually Disconnect" HorizontalAlignment="Left" Margin="273,280,0,0" VerticalAlignment="Top" Click="Button_Click_4" BorderBrush="{x:Null}" Background="Red" Height="23" Width="133" Foreground="White"/>
+        <Button Content="Manually Logout Client" HorizontalAlignment="Left" Margin="271,280,0,0" VerticalAlignment="Top" Click="Button_Click_4" BorderBrush="{x:Null}" Background="Red" Height="23" Width="133" Foreground="White"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>
