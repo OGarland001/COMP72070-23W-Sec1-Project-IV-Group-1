@@ -32,6 +32,7 @@ namespace Server
         Packet? storePacket;
         private readonly object streamLock = new object();
         userLoginData blankUser = new userLoginData();
+        bool disconnect = false;
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -56,8 +57,19 @@ namespace Server
                 Array.Copy(buffer, data, i);
 
                 Packet recvPacket = new Packet(data);
-
-                if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
+                if (recvPacket.GetHead().getState() == states.Discon)
+                {
+                    if (disconnect == true)
+                    {
+                        sendDisconectPacket(packet, client, stream, states.Discon);
+                        disconnect = false;
+                    }
+                    else
+                    {
+                        sendDisconectPacket(packet, client, stream, states.Idle);
+                    }
+                }
+                else if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
                 {
                     AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
                 }
@@ -82,7 +94,7 @@ namespace Server
 
         public void disconnectClient()
         {
-            if (storePacket != null && storeClient != null && storeStream != null) { sendDisconectPacket(storePacket, storeClient, storeStream); }
+            disconnect = true;
             userData = blankUser;
         }
 
@@ -180,10 +192,10 @@ namespace Server
             stream.Write(sendbuf, 0, sendbuf.Length);
         }
 
-        private static void sendDisconectPacket(Packet packet, TcpClient client, NetworkStream stream)
+        private static void sendDisconectPacket(Packet packet, TcpClient client, NetworkStream stream, states state)
         {
             //sends it back if it failed and needs to be reauthed.
-            packet.setHead('2', '1', states.Discon);
+            packet.setHead('2', '1', state);
 
             packet.SerializeData();
 
