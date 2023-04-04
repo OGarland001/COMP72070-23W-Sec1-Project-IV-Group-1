@@ -101,11 +101,6 @@ namespace Server
                     
                     sendReAuthAckPacket(packet, client, stream);
                 }
-
-                storeStream = stream;
-                storeClient = client;
-                storeServer = server;
-                storePacket = packet;
                 stream.Flush();
                 buffer = null;
                 //Stack.Clear();
