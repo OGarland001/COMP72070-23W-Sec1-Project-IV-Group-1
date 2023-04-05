@@ -19,6 +19,7 @@ namespace Server
     public class ProgramServer
     {
         //Store the current state of the server - by default it should be idle
+        
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
@@ -32,6 +33,8 @@ namespace Server
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
+            System.IO.File.WriteAllText(@"../../../ServerLog.txt", string.Empty);
+
             Packet packet = new Packet();
             Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
@@ -765,7 +768,7 @@ namespace Server
             //log for a specific user
             string path = currentClientUsername + "Log.txt";
             string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
-
+            
             //write to general program file
             using (StreamWriter writer = new StreamWriter(@"../../../ServerLog.txt", append: true))
             {

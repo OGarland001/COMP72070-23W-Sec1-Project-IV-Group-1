@@ -12,7 +12,11 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_001_RequestandRecieveLogFilesFromServer()
         {
-           //Test 1 and 3
+            //Test 1 and 3
+            //string userName = "tester";
+            //string password = "password";
+
+            //Client.userLoginData userLoginData = new Client.userLoginData();
           
         }
         [TestMethod]
