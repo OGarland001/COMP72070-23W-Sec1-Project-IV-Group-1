@@ -275,8 +275,11 @@ namespace Server
                         }
 
                         byte[] imageData = receivedPacket.GetBody().getData();
-
-                        file.Write(imageData, 0, imageData.Length);
+                        if(imageData != null)
+                        {
+                            file.Write(imageData, 0, imageData.Length);
+                        }
+                        
                        
                     }
                     stream.Flush();
