@@ -88,7 +88,15 @@ namespace Server
                     else
                     {
                         currentAnalyzedImage = @"MLNET\assets\images\output\NoAnalyzedImage.png";
-                        sendDisconectPacket(packet, client, stream, states.Discon);
+                        //sets up a packet with nothing just to say that it was recived and passed
+                        packet.setHead('2', '1', states.Idle);
+
+                        packet.SerializeData();
+                        byte[] sendbuf = packet.getTailBuffer();
+
+
+                        stream.Write(sendbuf, 0, sendbuf.Length);
+                        stream.Flush();
                     }
                     setCurrentAnalyzedImage(fileName);
 
@@ -229,8 +237,7 @@ namespace Server
              
             try 
             {
-                byte[] receiveBuffer = new byte[1000];
-                //byte[] sendbuf = new byte[1000];
+               
 
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
@@ -241,10 +248,11 @@ namespace Server
                     byte[] sendbuf = firstPacket.getTailBuffer();
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
-                    //stream.Flush();
-                   
+                    stream.Flush();
+
                     while (true)
                     {
+                        byte[] receiveBuffer = new byte[1000];
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                         //stream.Flush();
                         byte[] data = new byte[bytesRead];
@@ -252,6 +260,21 @@ namespace Server
 
                         Packet receivedPacket = new Packet(data);
                         
+                        
+                        stream.Flush();
+
+                        if (receivedPacket.GetHead().getState() == states.Analyze)
+                        {
+                            //Packet lastPacket = new Packet();
+                            //lastPacket.setHead('2', '1', states.Recv);
+                            //lastPacket.setData(noData.Length, noData);
+                            //lastPacket.SerializeData();
+                            //byte[] newbuf = lastPacket.getTailBuffer();
+                            //stream.Write(newbuf, 0, newbuf.Length);
+                            //stream.Flush();
+                            break;
+                        }
+
                         Packet ackPacket = new Packet();
                         ackPacket.setHead('2', '1', states.Saving);
                         byte[] noData = new byte[0];
@@ -260,19 +283,6 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
-                        //stream.Flush();
-
-                        if (receivedPacket.GetHead().getState() == states.Analyze)
-                        {
-                            Packet lastPacket = new Packet();
-                            lastPacket.setHead('2', '1', states.Saving);
-                            lastPacket.setData(noData.Length, noData);
-                            lastPacket.SerializeData();
-                            byte[] newbuf = lastPacket.getTailBuffer();
-                            stream.Write(newbuf, 0, newbuf.Length);
-                            //stream.Flush();
-                            break;
-                        }
 
                         byte[] imageData = receivedPacket.GetBody().getData();
                         if(imageData != null)
@@ -305,6 +315,7 @@ namespace Server
 
                 
                     byte[] imageBuffer = File.ReadAllBytes(path);
+                    
 
                     int index = 0;
                     bool lastPacketSent = false;
@@ -355,14 +366,14 @@ namespace Server
                                 return true;
                             }
                         }
-                        else
-                        {
-                            if (recvPacket.GetHead().getState() != states.Saving)
-                            {
-                                Exception e = new Exception();
-                                throw e;
-                            }
-                        }
+                        //else
+                        //{
+                        //    if (recvPacket.GetHead().getState() != states.Saving)
+                        //    {
+                        //        Exception e = new Exception();
+                        //        throw e;
+                        //    }
+                        //}
                     }
                     return false;
                 }

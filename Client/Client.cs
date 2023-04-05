@@ -19,7 +19,7 @@ namespace Client
         private userLoginData clientData;
         public DateTime loginDate;
         private TcpClient tcpClient;
-        
+        private NetworkStream stream;
         public bool authentcated { get; set; }
 
         public ProgramClient()
@@ -32,13 +32,14 @@ namespace Client
 
             this.tcpClient = new TcpClient();
             this.tcpClient.Connect(IPAddress.Loopback, 11002);
+            this.stream = this.tcpClient.GetStream();
             
 
         }
 
         public bool authenticateUser(Packet sendPacket)
         {
-            NetworkStream stream = this.tcpClient.GetStream();
+            
             //connect the client to the server
             sendPacket.SerializeData();
 
@@ -61,6 +62,7 @@ namespace Client
             {
                 this.authentcated = true;
                 this.loginDate = DateTime.Now;
+                stream.Flush();
                 return true;
             }
             else
@@ -75,7 +77,7 @@ namespace Client
         {
             Packet sendPacket = new Packet();
 
-            NetworkStream stream = this.tcpClient.GetStream();
+           
 
             sendPacket.setHead('1', '2', states.Discon);
 
@@ -102,6 +104,7 @@ namespace Client
             }
             else
             {
+                stream.Flush();
                 return true;
             }
         }
@@ -110,7 +113,7 @@ namespace Client
         { 
                 try
                 {
-                NetworkStream stream = this.tcpClient.GetStream();
+               
 
                     byte[] imageBuffer = File.ReadAllBytes(filepath);
 
@@ -160,17 +163,18 @@ namespace Client
                             }
                             else
                             {
+                                stream.Flush();
                                 return true;
                             }
                         }
-                        else
-                        {
-                            if (recvPacket.GetHead().getState() != states.Saving)
-                            {
-                                Exception e = new Exception();
-                                throw e;
-                            }
-                        }
+                        //else
+                        //{
+                        //    if (recvPacket.GetHead().getState() != states.Saving)
+                        //    {
+                        //        Exception e = new Exception();
+                        //        throw e;
+                        //    }
+                        //}
                     }
                     return false;
                 }
@@ -189,8 +193,8 @@ namespace Client
 
             try
             {
-                NetworkStream stream = this.tcpClient.GetStream();
-                byte[] receiveBuffer = new byte[4096];
+                
+
 
                 if (File.Exists(path))
                 {
@@ -201,14 +205,29 @@ namespace Client
 
                     while (true)
                     {
+
+                        byte[] receiveBuffer = new byte[4096];
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
 
                         Packet receivedPacket = new Packet(data);
-                        if(receivedPacket.GetHead().getState() == states.Discon)
+                        if(receivedPacket.GetHead().getState() == states.Idle)
                         {
                             return false;
+                        }
+                      
+
+                        if (receivedPacket.GetHead().getState() == states.Analyze)
+                        {
+                            //Packet lastPacket = new Packet();
+                            //lastPacket.setHead('1', '2', states.Recv);
+                            //lastPacket.setData(noData.Length, noData);
+                            //lastPacket.SerializeData();
+                            //byte[] newbuf = lastPacket.getTailBuffer();
+
+                            //stream.Write(newbuf, 0, newbuf.Length);
+                            break;
                         }
                         Packet ackPacket = new Packet();
                         ackPacket.setHead('1', '2', states.Saving);
@@ -218,26 +237,19 @@ namespace Client
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
-
-                        if (receivedPacket.GetHead().getState() == states.Analyze)
-                        {
-                            Packet lastPacket = new Packet();
-                            lastPacket.setHead('1', '2', states.Saving);
-                            lastPacket.setData(noData.Length, noData);
-                            lastPacket.SerializeData();
-                            byte[] newbuf = lastPacket.getTailBuffer();
-
-                            stream.Write(newbuf, 0, newbuf.Length);
-                            break;
-                        }
+                        
 
                         byte[] imageData = receivedPacket.GetBody().getData();
-
-                        file.Write(imageData, 0, imageData.Length);
+                        if(imageData != null)
+                        {
+                            file.Write(imageData, 0, imageData.Length);
+                        }
+                        
                     }
                     file.Close();
-                    return true;
                 }
+                stream.Flush();
+                return true;
             }
             catch (Exception e)
             {
@@ -248,12 +260,7 @@ namespace Client
            
         }
 
-        ~ProgramClient()
-        {
-            
-            this.tcpClient.Close();
-
-        }
+       
 
 
 

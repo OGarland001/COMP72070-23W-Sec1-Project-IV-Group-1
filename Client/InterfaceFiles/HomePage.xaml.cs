@@ -73,6 +73,10 @@ namespace Client.InterfaceFiles
 
         private void Analyze_Click(object sender, RoutedEventArgs e)
         {
+            //dispose the previous bitmapImage and set it to the loading image
+            outputPicture.Source = null;
+            outputPicture.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\loading.jpg")));
+            
             if (!this.client.checkConnection())
             {
                 Main.Content = new MainPage(ref this.client);
@@ -85,14 +89,24 @@ namespace Client.InterfaceFiles
             MessageBox.Show(path);
             try
             {
-                client.sendImage(@path);
+                this.client.sendImage(@path);
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-            if (client.receiveImage())
+            if (this.client.receiveImage())
             {
+                outputPicture.Source = null;
                 // set the bitmap as the source of the outputPicture object
-                outputPicture.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\Output.jpg")));
+                BitmapImage image = new BitmapImage();
+                using (var stream = new FileStream(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\Output.jpg"), FileMode.Open, FileAccess.Read))
+                {
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+                }
+                outputPicture.Source = image;
+
                 //pop up saying it set it to the image
                 MessageBox.Show("Image has been set to the output image");
             }
