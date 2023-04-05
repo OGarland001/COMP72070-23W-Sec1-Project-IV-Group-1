@@ -190,7 +190,7 @@ namespace Client
             try
             {
                 NetworkStream stream = this.tcpClient.GetStream();
-                byte[] receiveBuffer = new byte[1000];
+                byte[] receiveBuffer = new byte[4096];
 
                 if (File.Exists(path))
                 {
