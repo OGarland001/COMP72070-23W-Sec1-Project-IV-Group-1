@@ -38,7 +38,19 @@ namespace Client.InterfaceFiles
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)
         {
+            
+            if (this.client.receiveUserlogs())
+            {
+                //pop up saying it set it to the image
+                MessageBox.Show("User Log Received!");
+            }
+            else
+            {
+                MessageBox.Show("No User Log Found");
+            }
+
             Main.Content = new RequestLogsPage(this.client);
+
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)
