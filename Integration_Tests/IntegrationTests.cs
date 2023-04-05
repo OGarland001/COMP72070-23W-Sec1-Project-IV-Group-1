@@ -10,6 +10,12 @@ namespace Integration_Tests
         private ProgramServer server;
 
         [TestMethod]
+        public void INT_TEST_001_RequestandRecieveLogFilesFromServer()
+        {
+           //Test 1 and 3
+          
+        }
+        [TestMethod]
         public void INT_TEST_002_AuthenticateandVerifyTheUser()
         {
 
@@ -53,6 +59,91 @@ namespace Integration_Tests
 
             //Checks the username within the text file in integration test project
             Assert.IsTrue(server.checkUsername("../Users.txt"));
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_004_VerifySerlization_Deserialization_Client_Server()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void INT_TEST_006_ServerStatesAreRecievedAndSaved()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void INT_TEST_007_ServerCanReturnAnalyzedImage()
+        {
+            
+
+        }
+        [TestMethod]
+        public void INT_TEST_008_ClientLogIsRecordedandFormattedProperly()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void INT_TEST_009_EachLogHasAnAccurateTimeStamp()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void INT_TEST_010_ClientCanConnectToServer()
+        {
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_011_SucessfulTransmissionOfClientLoginPacket()
+        {
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_012_SucessfulTransmissionOfClientSignupPacket()
+        {
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_013_ServerAccuratleyLogsImageRequestsAndTransmissions()
+        {
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_014_ServerCanSucessfullySignupAndSaveUserSignUpRequest()
+        {
+
+
+        }
+        [TestMethod]
+        public void INT_TEST_017_PacketHeaderShowsProperSenderAndReciverIDBetweenSends()
+        {
+
+
+        }
+
+        [TestMethod]
+        public void INT_TEST_018_EnsureThatServerStaysInOneState()
+        {
+
+
+        }
+
+
+        [TestMethod]
+        public void INT_TEST_023_ServerCanManuallyDisconnectAClient()
+        {
 
 
         }

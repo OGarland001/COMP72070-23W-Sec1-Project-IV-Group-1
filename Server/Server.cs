@@ -113,7 +113,7 @@ namespace Server
                         saveServerEventToFile("Packet sent to client confirming " + fileName + " was received");
                         stream.Flush();
                     }
-                    
+                    setCurrentAnalyzedImage(fileName);
 
                     
                     

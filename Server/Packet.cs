@@ -2,10 +2,8 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows;
 using System.Windows.Shapes;
 
 #pragma warning disable SYSLIB0011
@@ -192,7 +190,6 @@ namespace Server
         //byte array for data
         [ProtoMember(1)]
         public byte[] data;
-        
 
         public void setData(byte[] buffer)
         {
@@ -415,7 +412,7 @@ namespace Server
             }
             catch (IOException e)
             {
-                message = "Error Signing in user";
+                Console.WriteLine( e.Message + "Error Signing in user");
             }
 
             return message;

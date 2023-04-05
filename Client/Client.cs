@@ -11,6 +11,8 @@ using System.Windows.Ink;
 using ProtoBuf;
 using System.Windows.Media;
 using System.Reflection;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Client
 {
@@ -113,9 +115,19 @@ namespace Client
         { 
                 try
                 {
-               
+                //Resizes the image to 640x457
+               System.Drawing.Image img = System.Drawing.Image.FromFile(filepath);
 
-                    byte[] imageBuffer = File.ReadAllBytes(filepath);
+                Bitmap b = new Bitmap(img);
+                byte[] imageBuffer2 = ImageToByteArray(img);
+
+                System.Drawing.Image i = resizeImage(b, new Size(640,457));
+
+                //converts image to byte array
+                byte[] imageBuffer = ImageToByteArray(i);
+                i.Dispose();
+                img.Dispose();
+                b.Dispose();
 
                     int index = 0;
                     bool lastPacketSent = false;
@@ -259,6 +271,35 @@ namespace Client
 
            
         }
+        private static System.Drawing.Image resizeImage(System.Drawing.Image imgToResize, Size size)
+        {
+            //Get the image current width  
+            int sourceWidth = imgToResize.Width;
+            //Get the image current height  
+            int sourceHeight = imgToResize.Height;
+            float nPercent = 0;
+            float nPercentW = 0;
+            float nPercentH = 0;
+            //Calulate  width with new desired size  
+            nPercentW = ((float)size.Width / (float)sourceWidth);
+            //Calculate height with new desired size  
+            nPercentH = ((float)size.Height / (float)sourceHeight);
+            if (nPercentH < nPercentW)
+                nPercent = nPercentH;
+            else
+                nPercent = nPercentW;
+            //New Width  
+            int destWidth = (int)(sourceWidth * nPercent);
+            //New Height  
+            int destHeight = (int)(sourceHeight * nPercent);
+            Bitmap b = new Bitmap(destWidth, destHeight);
+            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            // Draw image with new width and height  
+            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+            g.Dispose();
+            return (System.Drawing.Image)b;
+        }
 
         public bool receiveUserlogs()
         {
@@ -344,6 +385,12 @@ namespace Client
 
 
 
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            ImageConverter _imageConverter = new ImageConverter();
+            byte[] xByte = (byte[])_imageConverter.ConvertTo(imageIn, typeof(byte[]));
+            return xByte;
+        }
 
     }
 }

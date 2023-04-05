@@ -412,7 +412,7 @@ namespace Client
             }
             catch (IOException e)
             {
-                message = "Error Signing in user";
+                Console.WriteLine( e.Message + "Error Signing in user");
             }
 
             return message;
