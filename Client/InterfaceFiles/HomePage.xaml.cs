@@ -66,6 +66,9 @@ namespace Client.InterfaceFiles
                 Analyze.IsEnabled = true;
                 Analyze.Opacity = 0.66;
             }
+
+            //if image uploaded allow analyze click
+            Analyze.IsEnabled = true;
         }
 
         private void Analyze_Click(object sender, RoutedEventArgs e)
