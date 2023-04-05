@@ -360,7 +360,7 @@ namespace Server
         private bool sendUserLogs(NetworkStream stream)
         {
             //bool error = false;
-            string path = @"../../../Users/" + currentClientUsername + "/" + currentClientUsername + "Log.txt";
+            string path = @"../../../Users/" + userData.getUserName() + "/" + userData.getUserName() + "Log.txt";
 
             try
             {

@@ -1,7 +1,1 @@
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-05 5:14:06 PM
-Username: ServerCurrent State set to: Auth: Time of day 2023-04-05 5:14:25 PM
-Username: ServerUser signed in: Time of day 2023-04-05 5:14:25 PM
-Username: adminCurrent State set to: Idle: Time of day 2023-04-05 5:14:25 PM
-Username: adminCurrent State set to: Discon: Time of day 2023-04-05 5:14:26 PM
-Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-05 5:14:26 PM
-Username: adminCurrent State set to: Idle: Time of day 2023-04-05 5:14:26 PM
+Username: ServerCurrent State set to: Idle: Time of day 2023-04-05 7:43:47 PM
