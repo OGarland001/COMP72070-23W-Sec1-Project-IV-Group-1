@@ -29,7 +29,7 @@
         <Button x:Name="requestlogs" Content="Request Logs" HorizontalAlignment="Left" Margin="98,10,0,0" VerticalAlignment="Top" Height="26" Width="82" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="requestlogs_Click"/>
         <Button x:Name="logout" Content="Logout" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="82" BorderBrush="#FF00CAFF" Opacity="0.66" FontWeight="Bold" Click="logout_Click"/>
         <Button x:Name="Upload_an_Image" Content="Upload an Image" HorizontalAlignment="Left" Margin="78,372,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Opacity="0.66" FontWeight="Bold" Click="Upload_an_Image_Click"/>
-        <Button x:Name="Analyze" Content="Analyze!!" HorizontalAlignment="Left" Margin="511,372,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Click="Analyze_Click" Opacity="0.23" FontWeight="Bold"/>
+        <Button x:Name="Analyze" Content="Analyze!!" HorizontalAlignment="Left" Margin="511,372,0,0" VerticalAlignment="Top" Height="36" Width="208" BorderBrush="#FF00CAFF" Click="Analyze_Click" IsEnabled="False" Opacity="0.23" FontWeight="Bold"/>
         <Image x:Name="imagePicture" HorizontalAlignment="Left" Margin="19,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
         <Image x:Name="outputPicture" HorizontalAlignment="Left" Margin="428,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
         <Button x:Name="refresh" Content="Refresh" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Height="26" Width="82" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="refresh_Click"/>
