@@ -98,7 +98,7 @@ namespace Server
                         stream.Write(sendbuf, 0, sendbuf.Length);
                         stream.Flush();
                     }
-                    
+                    setCurrentAnalyzedImage(fileName);
 
                     
                     
