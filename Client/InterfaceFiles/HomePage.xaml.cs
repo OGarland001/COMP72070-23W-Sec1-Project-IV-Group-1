@@ -110,5 +110,10 @@ namespace Client.InterfaceFiles
                 Main.Content = new MainPage(ref this.client);
             }
         }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            Main.Content = new ClassificationList(ref this.client);
+        }
     }
 }

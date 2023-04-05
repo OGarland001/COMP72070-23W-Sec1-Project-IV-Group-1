@@ -33,6 +33,7 @@
         <Image x:Name="imagePicture" HorizontalAlignment="Left" Margin="19,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
         <Image x:Name="outputPicture" HorizontalAlignment="Left" Margin="428,127,0,0" VerticalAlignment="Top" Height="235" Width="342"/>
         <Button x:Name="refresh" Content="Refresh" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top" Height="26" Width="82" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="refresh_Click"/>
+        <Button x:Name="List" Content="Classification List" HorizontalAlignment="Left" Margin="273,10,0,0" VerticalAlignment="Top" Height="26" Width="107" FontWeight="Bold" Opacity="0.66" BorderBrush="#FF00CAFF" Click="List_Click"/>
         <Frame x:Name="Main" Margin="0,0,0,0"/>
     </Grid>
 </Page>

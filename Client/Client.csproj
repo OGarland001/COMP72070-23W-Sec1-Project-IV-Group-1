@@ -8,6 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ClassificationImages\Aeroplane.jpg" />
+    <None Remove="ClassificationImages\Bicycle.jpg" />
+    <None Remove="ClassificationImages\Bird.jpg" />
+    <None Remove="ClassificationImages\Boat.jpg" />
+    <None Remove="ClassificationImages\Bottle.jpg" />
+    <None Remove="ClassificationImages\Bus.jpg" />
+    <None Remove="ClassificationImages\Car.jpg" />
+    <None Remove="ClassificationImages\Cat.jpg" />
+    <None Remove="ClassificationImages\Chair.jpg" />
+    <None Remove="ClassificationImages\Cow.jpg" />
+    <None Remove="ClassificationImages\DiningTable.jpg" />
+    <None Remove="ClassificationImages\Dog.jpg" />
+    <None Remove="ClassificationImages\Horse.jpg" />
+    <None Remove="ClassificationImages\MoterBike.jpg" />
+    <None Remove="ClassificationImages\Person.jpg" />
+    <None Remove="ClassificationImages\PotPlant.jpg" />
+    <None Remove="ClassificationImages\Sheep.jpg" />
+    <None Remove="ClassificationImages\Sofa.jpg" />
+    <None Remove="ClassificationImages\Train.jpg" />
+    <None Remove="ClassificationImages\Tv.jpg" />
     <None Remove="InterfaceFiles\arrowForImage.png" />
     <None Remove="InterfaceFiles\LockIcon.png" />
     <None Remove="InterfaceFiles\Screenshot 2022-01-24 143617.png" />
@@ -23,6 +43,66 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="ClassificationImages\Aeroplane.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Bicycle.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Bird.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Boat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Bottle.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Bus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Car.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Cat.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Chair.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Cow.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\DiningTable.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Dog.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Horse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\MoterBike.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Person.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\PotPlant.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Sheep.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Sofa.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Train.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ClassificationImages\Tv.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="InterfaceFiles\Images\usernamePhoto.png" />
     <Resource Include="InterfaceFiles\Images\arrowForImage.png" />
     <Resource Include="InterfaceFiles\Images\LockIcon.png" />
