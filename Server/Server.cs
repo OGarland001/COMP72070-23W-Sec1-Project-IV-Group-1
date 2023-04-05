@@ -278,7 +278,6 @@ namespace Server
                        
                     }
                     stream.Flush();
-                    //stream.Close();
                     file.Close();
                     userData.saveSendCount();
                 }
