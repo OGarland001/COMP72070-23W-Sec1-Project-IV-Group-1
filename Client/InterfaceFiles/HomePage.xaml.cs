@@ -86,12 +86,19 @@ namespace Client.InterfaceFiles
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
 
-            client.receiveImage();
+            if (client.receiveImage())
+            {
+                // set the bitmap as the source of the outputPicture object
+                outputPicture.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\Output.jpg")));
+                //pop up saying it set it to the image
+                MessageBox.Show("Image has been set to the output image");
+            }
+            else
+            {
+                MessageBox.Show("Nothing Found :(");
+            }
 
-            // set the bitmap as the source of the outputPicture object
-            outputPicture.Source = new BitmapImage(new Uri(Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"UserImages\Output.jpg")));
-            //pop up saying it set it to the image
-            MessageBox.Show("Image has been set to the output image");
+            
 
         }
 

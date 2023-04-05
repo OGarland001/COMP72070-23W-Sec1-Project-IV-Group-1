@@ -83,15 +83,17 @@ namespace Server
                     if(!checkObjectsDetected())
                     {
                         setCurrentAnalyzedImage(fileName);
+                        sendImage(stream);
                     }
                     else
                     {
                         currentAnalyzedImage = @"MLNET\assets\images\output\NoAnalyzedImage.png";
+                        sendDisconectPacket(packet, client, stream, states.Discon);
                     }
                     setCurrentAnalyzedImage(fileName);
 
                     
-                    sendImage(client, stream);
+                    
                     
                 }
                 else
@@ -290,7 +292,7 @@ namespace Server
             return fileName;
         }
 
-        private bool sendImage(TcpClient client, NetworkStream stream)
+        private bool sendImage(NetworkStream stream)
         {
                 try
                 {

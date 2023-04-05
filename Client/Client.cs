@@ -206,7 +206,10 @@ namespace Client
                         Array.Copy(receiveBuffer, data, bytesRead);
 
                         Packet receivedPacket = new Packet(data);
-
+                        if(receivedPacket.GetHead().getState() == states.Discon)
+                        {
+                            return false;
+                        }
                         Packet ackPacket = new Packet();
                         ackPacket.setHead('1', '2', states.Saving);
                         byte[] noData = new byte[0];
