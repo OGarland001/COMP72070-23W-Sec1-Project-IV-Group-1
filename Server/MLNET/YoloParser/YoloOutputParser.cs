@@ -27,10 +27,10 @@ namespace Server.ML.NET.YoloParser
 
         private string[] labels = new string[]
         {
-            "aeroplane", "bicycle", "bird", "boat", "bottle",
-            "bus", "car", "cat", "chair", "cow",
-            "diningtable", "dog", "horse", "motorbike", "person",
-            "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+            "Airplane", "Bicycle", "Bird", "Boat", "Bottle",
+            "Bus", "Car", "Cat", "Chair", "Cow",
+            "Diningtable", "Dog", "Horse", "Motorbike", "Person",
+            "Pottedplant", "Sheep", "Sofa", "Train", "Tvmonitor"
         };
 
         private static Color[] classColors = new Color[]

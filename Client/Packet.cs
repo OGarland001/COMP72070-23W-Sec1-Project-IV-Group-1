@@ -128,7 +128,7 @@ namespace Client
     //Enum States
     public enum states
     {
-        Idle, Auth, NewAuth, Recv, Analyze, Saving, Sending, Discon
+        Idle, Auth, NewAuth, Recv, Analyze, Saving, Sending, Discon, RecvLog
     }
     [ProtoContract]
     public struct Head
@@ -412,7 +412,7 @@ namespace Client
             }
             catch (IOException e)
             {
-                message = "Error Signing in user";
+                Console.WriteLine( e.Message + "Error Signing in user");
             }
 
             return message;

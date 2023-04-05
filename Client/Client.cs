@@ -11,6 +11,8 @@ using System.Windows.Ink;
 using ProtoBuf;
 using System.Windows.Media;
 using System.Reflection;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Client
 {
@@ -113,9 +115,19 @@ namespace Client
         { 
                 try
                 {
-               
+                //Resizes the image to 640x457
+               System.Drawing.Image img = System.Drawing.Image.FromFile(filepath);
 
-                    byte[] imageBuffer = File.ReadAllBytes(filepath);
+                Bitmap b = new Bitmap(img);
+                byte[] imageBuffer2 = ImageToByteArray(img);
+
+                System.Drawing.Image i = resizeImage(b, new Size(640,457));
+
+                //converts image to byte array
+                byte[] imageBuffer = ImageToByteArray(i);
+                i.Dispose();
+                img.Dispose();
+                b.Dispose();
 
                     int index = 0;
                     bool lastPacketSent = false;
@@ -259,10 +271,126 @@ namespace Client
 
            
         }
+        private static System.Drawing.Image resizeImage(System.Drawing.Image imgToResize, Size size)
+        {
+            //Get the image current width  
+            int sourceWidth = imgToResize.Width;
+            //Get the image current height  
+            int sourceHeight = imgToResize.Height;
+            float nPercent = 0;
+            float nPercentW = 0;
+            float nPercentH = 0;
+            //Calulate  width with new desired size  
+            nPercentW = ((float)size.Width / (float)sourceWidth);
+            //Calculate height with new desired size  
+            nPercentH = ((float)size.Height / (float)sourceHeight);
+            if (nPercentH < nPercentW)
+                nPercent = nPercentH;
+            else
+                nPercent = nPercentW;
+            //New Width  
+            int destWidth = (int)(sourceWidth * nPercent);
+            //New Height  
+            int destHeight = (int)(sourceHeight * nPercent);
+            Bitmap b = new Bitmap(destWidth, destHeight);
+            Graphics g = Graphics.FromImage((System.Drawing.Image)b);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            // Draw image with new width and height  
+            g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+            g.Dispose();
+            return (System.Drawing.Image)b;
+        }
 
-       
+        public bool receiveUserlogs()
+        {
+            string path = "../../../ClientLog.txt";
+            System.IO.File.WriteAllText(@"../../../ClientLog.txt", string.Empty);
+
+            try
+            {
+                Packet sendPacket = new Packet();
 
 
+
+                sendPacket.setHead('1', '2', states.RecvLog);
+
+                //connect the client to the server
+                sendPacket.SerializeData();
+
+                byte[] buffer = sendPacket.getTailBuffer();
+                stream.Write(buffer, 0, buffer.Length);
+
+
+
+                using (FileStream file = new FileStream(path, FileMode.Append))
+                {
+
+                    while (true)
+                    {
+
+                        byte[] receiveBuffer = new byte[1024];
+                        int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        byte[] data = new byte[bytesRead];
+                        Array.Copy(receiveBuffer, data, bytesRead);
+
+                        Packet receivedPacket = new Packet(data);
+                        if (receivedPacket.GetHead().getState() == states.Idle)
+                        {
+                            return false;
+                        }
+
+
+                        if (receivedPacket.GetHead().getState() == states.Analyze)
+                        {
+                            //Packet lastPacket = new Packet();
+                            //lastPacket.setHead('1', '2', states.Recv);
+                            //lastPacket.setData(noData.Length, noData);
+                            //lastPacket.SerializeData();
+                            //byte[] newbuf = lastPacket.getTailBuffer();
+
+                            //stream.Write(newbuf, 0, newbuf.Length);
+                            break;
+                        }
+                        Packet ackPacket = new Packet();
+                        ackPacket.setHead('1', '2', states.Saving);
+                        byte[] noData = new byte[0];
+                        ackPacket.setData(noData.Length, noData);
+                        ackPacket.SerializeData();
+                        byte[] buf = ackPacket.getTailBuffer();
+
+                        stream.Write(buf, 0, buf.Length);
+
+
+                        byte[] Data = receivedPacket.GetBody().getData();
+                        if (Data != null)
+                        {
+                            file.Write(Data, 0, Data.Length);
+                        }
+
+                    }
+                    file.Close();
+                }
+                stream.Flush();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+
+
+        }
+
+
+
+
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            ImageConverter _imageConverter = new ImageConverter();
+            byte[] xByte = (byte[])_imageConverter.ConvertTo(imageIn, typeof(byte[]));
+            return xByte;
+        }
 
     }
 }
