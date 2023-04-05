@@ -13,10 +13,6 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Collections;
-using Server.InterfaceFiles;
-using System.Windows.Media.Imaging;
 
 namespace Server
 {
@@ -40,7 +36,6 @@ namespace Server
             Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
-            //byte[] buffer = new byte[1026];
                         
             bool connectedUser = true;
 
@@ -94,28 +89,59 @@ namespace Server
                         packet.SerializeData();
                         byte[] sendbuf = packet.getTailBuffer();
 
-
                         stream.Write(sendbuf, 0, sendbuf.Length);
                         stream.Flush();
                     }
-                    setCurrentAnalyzedImage(fileName);
-
-                    
-                    
-                    
+                    setCurrentAnalyzedImage(fileName); 
                 }
                 else
                 {
-                    
                     sendReAuthAckPacket(packet, client, stream);
                 }
                 stream.Flush();
                 buffer = null;
-                //Stack.Clear();
-
             }
         }
 
+        public string getCurStringState()
+        {
+            string stateToReturn = "Idle";
+            switch (currentState)
+            {
+                case states.Idle:
+                    stateToReturn = "Idle";
+                    break;
+                case states.Auth:
+                    stateToReturn = "Auth";
+                    break;
+                case states.NewAuth:
+                    stateToReturn = "NewAuth";
+                    break;
+                case states.Recv:
+                    stateToReturn = "Recv";
+                    break;
+                case states.Analyze:
+                    stateToReturn = "Analyze";
+                    break;
+                case states.Saving:
+                    stateToReturn = "Saving";
+                    break;
+                case states.Sending:
+                    stateToReturn = "Sending";
+                    break;
+                case states.Discon:
+                    stateToReturn = "Discon";
+                    break;
+                case states.RecvLog:
+                    stateToReturn = "RecvLog";
+                    break;
+                default:
+                    // Handle unknown state by doing nothing
+                    break;
+            }
+            return stateToReturn;
+        }
+        
         public void disconnectClient()
         {
             disconnect = true;
@@ -140,15 +166,12 @@ namespace Server
 
                         if (message == "User signed in")
                         {
-
                             //sets up a packet with nothing just to say that it was recived and passed
                             connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
                         }
                         else
                         {
-                          
                             sendReAuthAckPacket(packet, client, stream);
-
                         }
                     }
                     else if (recvPacket.GetHead().getState() == states.NewAuth)
@@ -164,21 +187,16 @@ namespace Server
                         if (message == "User registered")
                         {
                             connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
-
                         }
                         else
                         {
-                            
                             sendReAuthAckPacket(packet, client,stream);
-
                         }
                     }
                 }
                 else
                 {
-                   
                     sendReAuthAckPacket(packet, client, stream);
-
                 }
             }
             catch (Exception exception)
@@ -237,8 +255,6 @@ namespace Server
              
             try 
             {
-               
-
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
                     file.Write(recvPacket.GetBody().getData(), 0, recvPacket.GetBody().getData().Length);
@@ -265,13 +281,6 @@ namespace Server
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                            //Packet lastPacket = new Packet();
-                            //lastPacket.setHead('2', '1', states.Recv);
-                            //lastPacket.setData(noData.Length, noData);
-                            //lastPacket.SerializeData();
-                            //byte[] newbuf = lastPacket.getTailBuffer();
-                            //stream.Write(newbuf, 0, newbuf.Length);
-                            //stream.Flush();
                             break;
                         }
 
@@ -288,9 +297,7 @@ namespace Server
                         if(imageData != null)
                         {
                             file.Write(imageData, 0, imageData.Length);
-                        }
-                        
-                       
+                        }                       
                     }
                     stream.Flush();
                     file.Close();
@@ -309,14 +316,12 @@ namespace Server
         {
                 try
                 {
-                string count = (userData.getSendCount()).ToString();
-                string fileName = userData.getUserName() + count + ".jpg";
-                string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
-
+                    string count = (userData.getSendCount()).ToString();
+                    string fileName = userData.getUserName() + count + ".jpg";
+                    string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
                 
                     byte[] imageBuffer = File.ReadAllBytes(path);
                     
-
                     int index = 0;
                     bool lastPacketSent = false;
                     while (!lastPacketSent)
@@ -366,14 +371,6 @@ namespace Server
                                 return true;
                             }
                         }
-                        //else
-                        //{
-                        //    if (recvPacket.GetHead().getState() != states.Saving)
-                        //    {
-                        //        Exception e = new Exception();
-                        //        throw e;
-                        //    }
-                        //}
                     }
                     return false;
                 }
@@ -382,11 +379,9 @@ namespace Server
                     Console.WriteLine(e.ToString());
                     return false;
                 }
-
-
         }
 
-            public void setDetectedObjects(string[,] objects)
+        public void setDetectedObjects(string[,] objects)
         {
             Array.Copy(objects, detectedObjects, objects.Length);
         }
@@ -395,6 +390,7 @@ namespace Server
         {
             return this.detectedObjects;
         }
+
         public bool checkObjectsDetected()
         {
             bool empty = false;
@@ -441,7 +437,6 @@ namespace Server
         public string[,] RunRecognition(string filename, string username)
         {
             //setAnalyzingImagesState();
-            //string path = @"../../../" + username + "/assets";
             var assetsRelativePath = @"../../../MLNET/assets";
             var UsersassetsRelativePath = @"../../../Users/" + username + "/assets";
             string assetsPath = GetAbsolutePath(UsersassetsRelativePath);
@@ -475,8 +470,6 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                
-
                 // Draw bounding boxes for detected objects in the image
                 string imageFileName = filename;
                 IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
@@ -501,13 +494,11 @@ namespace Server
                     {
                         results[j, 1] = confidence[j];
                     }
-
                 }
                 else
                 {
                     results = new string[1, 2] { { "No Objects", "0" }};
                 }
-               
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
@@ -704,7 +695,6 @@ namespace Server
         {
             return currentState;
         }
-
         public void IntializeUserData(Packet packet)
         {
             userLoginData temp = packet.deserializeUserLoginData();
@@ -779,7 +769,6 @@ namespace Server
 
             return message;
         }
-
 
         public bool checkUsername(string filePath)
         {
