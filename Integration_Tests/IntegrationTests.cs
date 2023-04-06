@@ -43,6 +43,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -123,8 +124,10 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                
-                
+
+                serverThread.Abort();
+
+
 
 
             }
@@ -206,6 +209,7 @@ namespace Integration_Tests
                 clientThread.Start();
          
                 clientThread.Join();
+                serverThread.Abort();
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
@@ -263,8 +267,9 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                
-               
+                serverThread.Abort();
+
+
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
             // Read the text from the file
@@ -313,6 +318,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -366,6 +372,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -445,6 +452,7 @@ namespace Integration_Tests
 
                 Thread serverThread = new Thread(new ThreadStart(() => {
                     ProgramServer server = new ProgramServer();
+                    
                     server.run();
                 }));
 
@@ -483,6 +491,8 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+
+                serverThread.Abort();
 
 
 
@@ -563,6 +573,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
