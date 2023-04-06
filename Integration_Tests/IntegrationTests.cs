@@ -45,6 +45,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -125,8 +126,10 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                
-                
+
+                serverThread.Abort();
+
+
 
 
             }
@@ -208,6 +211,7 @@ namespace Integration_Tests
                 clientThread.Start();
          
                 clientThread.Join();
+                serverThread.Abort();
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
@@ -265,8 +269,9 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                
-               
+                serverThread.Abort();
+
+
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
             // Read the text from the file
@@ -316,6 +321,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -369,6 +375,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
@@ -448,6 +455,7 @@ namespace Integration_Tests
 
                 Thread serverThread = new Thread(new ThreadStart(() => {
                     ProgramServer server = new ProgramServer();
+                    
                     server.run();
                 }));
 
@@ -486,6 +494,8 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+
+                serverThread.Abort();
 
 
 
@@ -624,7 +634,29 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_018_EnsureThatServerStaysInOneState()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
 
+            try
+            {
+                ProgramServer server = new ProgramServer();
+
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+                });
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Assert.AreEqual(Server.states.Idle, server.getCurrentState());
+
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
 
         }
 
@@ -719,6 +751,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
+                serverThread.Abort();
 
 
 
