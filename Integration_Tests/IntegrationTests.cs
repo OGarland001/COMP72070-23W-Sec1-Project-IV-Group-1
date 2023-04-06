@@ -564,7 +564,57 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_017_PacketHeaderShowsProperSenderAndReciverIDBetweenSends()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("Randomtester");
+            userData.setPassword("password");
+            File.WriteAllText("../../../Users/Randomtester/Randomtester.txt", "0");
+            
 
+            try
+            {
+                char clientCA;
+                char ServerSA;
+                char ServerCA;
+                char clientSA;
+
+                ProgramServer server = new ProgramServer();
+                Thread serverThread = new Thread(() =>
+                {
+                    
+                    
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+                });
+                ServerSA = server.getServeraddress();
+                ServerCA = server.getClientaddress();
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Thread clientThread = new Thread(new ThreadStart(() =>
+                {
+
+                    client.sendImage("../../../Tester.jpg");
+                    client.receiveImage();
+                    
+                    //client.receiveUserlogs();
+
+                }));
+                clientCA = client.getClientaddress();
+                clientSA = client.getServeraddress();
+
+
+                clientThread.Start();
+
+                clientThread.Join();
+
+
+                Assert.AreEqual(clientSA, ServerSA);
+                Assert.AreEqual(clientCA, ServerCA);
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+
+            
 
         }
 
@@ -579,7 +629,55 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_023_ServerCanManuallyDisconnectAClient()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            //Client.userLoginData NoUser = new Client.userLoginData();
+            string username;
+            userData.setUserName("Randomtester");
+            userData.setPassword("password");
+           
+           
+            try
+            {
+                ProgramServer server = new ProgramServer();
 
+                Thread serverThread = new Thread(() =>
+                {
+                    
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.disconnectClient();
+                    server.run();
+
+                    
+                    
+                });
+                
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Thread clientThread = new Thread(new ThreadStart(() =>
+                {
+
+                    client.checkConnection();
+
+                }));
+
+
+
+                clientThread.Start();
+
+                clientThread.Join();
+                username = server.GetuserData().getUserName();
+
+                Assert.AreNotEqual("Randomtester", username);
+
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+            string count = (userData.getSendCount()).ToString();
+            
+           
+            
 
         }
 
@@ -587,6 +685,7 @@ namespace Integration_Tests
         public void INT_TEST_024_SendandRecieveImages_ReturnFullySavedImageOnServer()
         {
             Client.userLoginData userData = new Client.userLoginData();
+            
             userData.setUserName("tester");
             userData.setPassword("password");
             try

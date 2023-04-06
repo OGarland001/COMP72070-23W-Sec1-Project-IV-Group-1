@@ -29,6 +29,8 @@ namespace Server
         private readonly object streamLock = new object();
         userLoginData blankUser = new userLoginData();
         bool disconnect = false;
+        private char clientAddress = '1';
+        private char serverAddress = '2';
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
@@ -994,6 +996,16 @@ namespace Server
             }
 
             return error;
+        }
+
+        public char getServeraddress()
+        {
+            return serverAddress;
+        }
+
+        public char getClientaddress()
+        {
+            return clientAddress;
         }
     }
 }

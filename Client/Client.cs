@@ -23,6 +23,8 @@ namespace Client
         private TcpClient tcpClient;
         private NetworkStream stream;
         public bool authentcated { get; set; }
+        private char clientAddress = '1';
+        private char serverAddress = '2';
 
         public ProgramClient()
         {
@@ -390,6 +392,16 @@ namespace Client
             ImageConverter _imageConverter = new ImageConverter();
             byte[] xByte = (byte[])_imageConverter.ConvertTo(imageIn, typeof(byte[]));
             return xByte;
+        }
+
+        public char getServeraddress()
+        {
+            return serverAddress;
+        }
+
+        public char getClientaddress()
+        {
+            return clientAddress;
         }
 
     }
