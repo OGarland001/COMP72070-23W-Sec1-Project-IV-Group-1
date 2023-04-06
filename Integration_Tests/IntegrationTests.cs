@@ -457,12 +457,7 @@ namespace Integration_Tests
 
 
         }
-        [TestMethod]
-        public void INT_TEST_014_ServerCanSucessfullySignupAndSaveUserSignUpRequest()
-        {
-
-
-        }
+        
         [TestMethod]
         public void INT_TEST_017_PacketHeaderShowsProperSenderAndReciverIDBetweenSends()
         {
