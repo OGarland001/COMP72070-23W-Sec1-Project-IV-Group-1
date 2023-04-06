@@ -503,7 +503,61 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_013_ServerAccuratleyLogsImageRequestsAndTransmissions()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("Randomtester");
+            userData.setPassword("password");
+            string Expected = "Username: RandomtesterRandomtester1.jpg Anayzed image has been created:";
+            //string ExpectedAnalyzedImage = "Username: RandomtesterRandomtester1.jpg Anayzed image has been created: Time of day 2023-04-05 3:44:33 PM\""
+            //int lengthExpectedImage = ExpectedImage.Length;
+            //int lengthExpectedAnalyzedImage = ExpectedAnalyzedImage.Length;
+            File.WriteAllText("../../../Users/Randomtester/Randomtester.txt", "0");
+            bool found = false;
 
+            try
+            {
+
+                Thread serverThread = new Thread(() =>
+                {
+                    ProgramServer server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+                });
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Thread clientThread = new Thread(new ThreadStart(() =>
+                {
+
+                    client.sendImage("../../../Tester.jpg");
+                    client.receiveImage();
+                    //client.receiveUserlogs();
+
+                }));
+
+
+
+                clientThread.Start();
+
+                clientThread.Join();
+
+
+
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+            string count = (userData.getSendCount()).ToString();
+            string path = @"../../../ServerLog.txt";
+
+            //int index = fileLine.IndexOf('2');
+            if (System.IO.File.ReadAllText(path).Contains(Expected))
+            {
+                found = true;
+
+            }
+
+
+            Assert.IsTrue(found);
 
         }
         

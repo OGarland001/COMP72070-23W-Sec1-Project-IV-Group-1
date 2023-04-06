@@ -301,14 +301,14 @@ namespace Server
                    
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
-                    saveServerEventToFile("Packet sent confirming Server is in saving state");
+                    //saveServerEventToFile("Packet sent confirming Server is in saving state");
                     stream.Flush();
 
                     while (true)
                     {
                         byte[] receiveBuffer = new byte[1000];
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
-                        saveServerEventToFile("Image data read: " + bytesRead.ToString() + " bytes");
+                        //saveServerEventToFile("Image data read: " + bytesRead.ToString() + " bytes");
                         //stream.Flush();
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
@@ -331,7 +331,7 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
-                        saveServerEventToFile("Acknowledgement Packet sent");
+                        //saveServerEventToFile("Acknowledgement Packet sent");
 
 
                         byte[] imageData = receivedPacket.GetBody().getData();
@@ -400,7 +400,7 @@ namespace Server
                     sendPacket.setData(bytesToCopy, dataBuf);
                     sendPacket.SerializeData();
                     stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
-                    saveServerEventToFile("Packet sent image data");
+                    //saveServerEventToFile("Packet sent image data");
                     stream.Flush();
                     byte[] recvBuf = new byte[1024];
                     int amount = stream.Read(recvBuf, 0, recvBuf.Length);
@@ -420,7 +420,7 @@ namespace Server
                         }
                         else
                         {
-                            saveServerEventToFile("Last Image Packet Sent to Client");
+                            //saveServerEventToFile("Last Image Packet Sent to Client");
                             return true;
 
                         }
@@ -486,7 +486,7 @@ namespace Server
                         sendPacket.setData(bytesToCopy, dataBuf);
                         sendPacket.SerializeData();
                         stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
-                        saveServerEventToFile("Packet sent image data");
+                        //saveServerEventToFile("Packet sent image data");
                         stream.Flush();
                         byte[] recvBuf = new byte[1024];
                         int amount = stream.Read(recvBuf, 0, recvBuf.Length);
