@@ -571,7 +571,29 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_018_EnsureThatServerStaysInOneState()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
 
+            try
+            {
+                ProgramServer server = new ProgramServer();
+
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+                });
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Assert.AreEqual(Server.states.Idle, server.getCurrentState());
+
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
 
         }
 
