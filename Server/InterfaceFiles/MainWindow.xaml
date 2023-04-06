@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="900" ResizeMode="NoResize">
 
+    <Window.DataContext>
+        <local:ProgramServer/>
+    </Window.DataContext>
+
     <Grid>
         <Rectangle HorizontalAlignment="Left" Height="434" Stroke="SteelBlue" Fill="SteelBlue"  VerticalAlignment="Center" Width="173"/>
         <Button Content="Client Accounts" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" BorderBrush="#FF528AB8" Height="53" Width="173" Background="SteelBlue" Foreground="White" Click="Button_Click"/>
@@ -26,75 +30,75 @@
         <Rectangle HorizontalAlignment="Left" Height="434" Margin="784,0,0,0" VerticalAlignment="Center" Width="106" Fill="#FFD7D7D7"/>
         <Rectangle HorizontalAlignment="Center" Height="45" Margin="0,-44,0,0" Stroke="#FF585858" VerticalAlignment="Top" Width="902" Fill="#FF585858"/>
         <Label Content="Server State" HorizontalAlignment="Left" Height="26" Margin="791,14,0,0" VerticalAlignment="Top" Width="93" FontFamily="Tw Cen MT" FontSize="16"/>
-        <Rectangle x:Name="Auth" HorizontalAlignment="Left" Height="28" Margin="794,49,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Idle" HorizontalAlignment="Left" Height="28" Margin="794,49,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding idleColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Recv" HorizontalAlignment="Left" Height="28" Margin="794,84,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Auth" HorizontalAlignment="Left" Height="28" Margin="794,84,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding authColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Saving" HorizontalAlignment="Left" Height="28" Margin="794,120,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="NewAuth" HorizontalAlignment="Left" Height="28" Margin="794,120,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding newAuthColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Sending" HorizontalAlignment="Left" Height="28" Margin="794,154,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Recv" HorizontalAlignment="Left" Height="28" Margin="794,154,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding recvColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Discon" HorizontalAlignment="Left" Height="28" Margin="795,189,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Analyze" HorizontalAlignment="Left" Height="28" Margin="795,189,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding analyzeColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="RecvLog" HorizontalAlignment="Left" Height="28" Margin="795,225,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Saving" HorizontalAlignment="Left" Height="28" Margin="795,225,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding savingColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Idle" HorizontalAlignment="Left" Height="28" Margin="795,261,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Sending" HorizontalAlignment="Left" Height="28" Margin="795,261,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="0.99"/>
+                    <GradientStop Color="{Binding sendingColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="NewAuth" HorizontalAlignment="Left" Height="28" Margin="795,295,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="Discon" HorizontalAlignment="Left" Height="28" Margin="795,295,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding disconColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="Analyze" HorizontalAlignment="Left" Height="28" Margin="795,329,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+        <Rectangle x:Name="RecvLog" HorizontalAlignment="Left" Height="28" Margin="795,329,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="White"/>
-                    <GradientStop Color="#FF515151" Offset="1"/>
+                    <GradientStop Color="{Binding recvLogColour, UpdateSourceTrigger=PropertyChanged}" Offset="1"/>
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
@@ -107,6 +111,6 @@
         <Label Content="Idle" HorizontalAlignment="Left" Margin="819,50,0,0" VerticalAlignment="Top" Width="80"/>
         <Label Content="NewAuth" HorizontalAlignment="Left" Margin="805,120,0,0" VerticalAlignment="Top" Width="80"/>
         <Label Content="Analyze" HorizontalAlignment="Left" Margin="809,189,0,0" VerticalAlignment="Top" Width="80"/>
-        <Frame x:Name="Main" Margin="0,0,0,0" />
+        <Frame x:Name="Main" Margin="0,0,105,0" />
     </Grid>
 </Window>
