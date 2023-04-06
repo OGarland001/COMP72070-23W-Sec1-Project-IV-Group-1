@@ -29,6 +29,8 @@ namespace Server
         private readonly object streamLock = new object();
         userLoginData blankUser = new userLoginData();
         bool disconnect = false;
+        private char clientAddress = '1';
+        private char serverAddress = '2';
 
         private System.Windows.Media.Color _idleColour;
         private System.Windows.Media.Color _authColour;
@@ -1081,6 +1083,16 @@ namespace Server
             }
 
             return error;
+        }
+
+        public char getServeraddress()
+        {
+            return serverAddress;
+        }
+
+        public char getClientaddress()
+        {
+            return clientAddress;
         }
     }
 }
