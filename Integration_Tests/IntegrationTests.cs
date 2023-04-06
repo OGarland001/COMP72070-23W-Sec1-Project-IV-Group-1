@@ -23,7 +23,7 @@ namespace Integration_Tests
                 // Start the server thread
                 Thread serverThread = new Thread(() =>
                 {
-                    server = new ProgramServer();
+                    ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
                     server.run();
 
@@ -33,7 +33,7 @@ namespace Integration_Tests
                 // Start the client thread
                 Thread clientThread = new Thread(() =>
                 {
-                    client = new ProgramClient();
+                    ProgramClient client = new ProgramClient();
 
                     client.receiveUserlogs();
 
