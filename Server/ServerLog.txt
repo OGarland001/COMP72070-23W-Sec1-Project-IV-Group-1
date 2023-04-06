@@ -1,1 +1,6 @@
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-06 10:34:22 AM
+Username: ServerCurrent State set to: Idle: Time of day 2023-04-06 5:01:36 PM
+Username: ServerCurrent State set to: Auth: Time of day 2023-04-06 5:01:44 PM
+Username: ServerUsername or password is incorrect: Time of day 2023-04-06 5:01:45 PM
+Username: sdasddCurrent State set to: Idle: Time of day 2023-04-06 5:02:02 PM
+Username: sdasddCurrent State set to: NewAuth: Time of day 2023-04-06 5:02:38 PM
+Username: sdasddUser registered: Time of day 2023-04-06 5:02:38 PM

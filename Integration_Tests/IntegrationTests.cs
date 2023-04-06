@@ -1,5 +1,6 @@
 using Client;
 using Server;
+using System.Net.Sockets;
 using System.Windows;
 
 namespace Integration_Tests
@@ -26,6 +27,7 @@ namespace Integration_Tests
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
                     server.run();
+                   
 
                 });
 
@@ -293,6 +295,7 @@ namespace Integration_Tests
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
                     server.run();
+                    
                 });
 
 

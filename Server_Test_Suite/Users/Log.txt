@@ -95,3 +95,45 @@ Username:   state changed to receiving packets: Time of day 2023-04-06 10:29:50 
 Username:   state changed to analyzing images: Time of day 2023-04-06 10:29:50 AM
 Username:   state changed to sending analyzed images: Time of day 2023-04-06 10:29:50 AM
 Username:   state changed to saving images: Time of day 2023-04-06 10:29:50 AM
+Username:   state changed to authenticating: Time of day 2023-04-06 11:46:05 AM
+Username:   state changed to receiving packets: Time of day 2023-04-06 11:46:05 AM
+Username:   state changed to analyzing images: Time of day 2023-04-06 11:46:05 AM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 11:46:05 AM
+Username:   state changed to saving images: Time of day 2023-04-06 11:46:05 AM
+Username:   state changed to authenticating: Time of day 2023-04-06 11:46:08 AM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:07:42 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:07:42 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:07:42 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:07:42 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:07:42 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:07:45 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:19:23 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:19:23 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:19:23 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:19:23 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:19:23 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:19:25 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:21:49 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:21:49 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:21:49 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:21:49 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:21:49 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:21:52 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:26:32 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:26:32 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:26:32 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:26:32 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:26:32 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:26:35 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:26:48 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:26:48 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:26:48 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:26:48 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:26:48 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:26:51 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:27:02 PM
+Username:   state changed to receiving packets: Time of day 2023-04-06 12:27:02 PM
+Username:   state changed to analyzing images: Time of day 2023-04-06 12:27:02 PM
+Username:   state changed to sending analyzed images: Time of day 2023-04-06 12:27:02 PM
+Username:   state changed to saving images: Time of day 2023-04-06 12:27:02 PM
+Username:   state changed to authenticating: Time of day 2023-04-06 12:27:04 PM
