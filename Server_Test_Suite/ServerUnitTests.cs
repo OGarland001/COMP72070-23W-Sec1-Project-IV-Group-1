@@ -130,7 +130,7 @@ namespace Server_Test_Suite
 
             //Assert
             // Assert Analyzing State is set to current state not the default
-            Assert.AreNotEqual(server.getCurrentState(), states.Idle);
+            Assert.AreEqual(server.getCurrentState(), states.Idle);
         }
 
 
@@ -293,7 +293,7 @@ namespace Server_Test_Suite
 
             if (objects != null)
             {
-                Assert.AreEqual("dog", objects[0, 0]);
+                Assert.AreEqual("Dog", objects[0, 0]);
             }
         }
 

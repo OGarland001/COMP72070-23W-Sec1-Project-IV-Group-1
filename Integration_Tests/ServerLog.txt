@@ -1,6 +1,0 @@
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-05 7:44:35 PM
-Username: ServerCurrent State set to: RecvLog: Time of day 2023-04-05 7:44:35 PM
-Username: ServerPacket sent image data: Time of day 2023-04-05 7:44:35 PM
-Username: ServerServer recieved last packet changing state to Analyze: Time of day 2023-04-05 7:44:35 PM
-Username: ServerUser log Packet sent: Time of day 2023-04-05 7:44:35 PM
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-05 7:44:35 PM
