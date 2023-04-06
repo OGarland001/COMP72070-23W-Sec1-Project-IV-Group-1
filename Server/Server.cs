@@ -16,10 +16,10 @@ using System.Net.Sockets;
 
 namespace Server
 {
-    public class ProgramServer
+    public class ProgramServer : ObservableObject
     {
         //Store the current state of the server - by default it should be idle
-        Server.states currentState = states.Idle;
+        Server.states currentState;
         String currentClientUsername = "Server";
         private userLoginData userData;
         private string currentOriginalImage = @"MLNET\assets\images\NoImage.png";
@@ -29,14 +29,80 @@ namespace Server
         userLoginData blankUser = new userLoginData();
         bool disconnect = false;
 
+        private System.Windows.Media.Color _idleColour;
+        private System.Windows.Media.Color _authColour;
+        private System.Windows.Media.Color _newAuthColour;
+        private System.Windows.Media.Color _recvColour;
+        private System.Windows.Media.Color _analyzeColour;
+        private System.Windows.Media.Color _savingColour;
+        private System.Windows.Media.Color _sendingColour;
+        private System.Windows.Media.Color _disconColour;
+        private System.Windows.Media.Color _recvLogColour;
+
+        public System.Windows.Media.Color idleColour
+        {
+            get { return _idleColour;  }
+            set { _idleColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color authColour
+        {
+            get { return _authColour; }
+            set { _authColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color newAuthColour
+        {
+            get { return _newAuthColour; }
+            set { _newAuthColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color recvColour
+        {
+            get { return _recvColour; }
+            set { _recvColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color analyzeColour
+        {
+            get { return _analyzeColour; }
+            set { _analyzeColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color savingColour
+        {
+            get { return _savingColour; }
+            set { _savingColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color sendingColour
+        {
+            get { return _sendingColour; }
+            set { _sendingColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color disconColour
+        {
+            get { return _disconColour; }
+            set { _disconColour = value; OnPropertyChanged(); }
+        }
+        public System.Windows.Media.Color recvLogColour
+        {
+            get { return _recvLogColour; }
+            set { _recvLogColour = value; OnPropertyChanged(); }
+        }
+
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
+            idleColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            authColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            newAuthColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            recvColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            analyzeColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            savingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            sendingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            disconColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            recvLogColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+
             Packet packet = new Packet();
             Int32 port = 11002;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
-                        
+
             bool connectedUser = true;
 
             int i = 0;
@@ -46,6 +112,7 @@ namespace Server
             while (connectedUser)
             {
                 currentState = states.Idle;
+                updateStatesOnUI();
                 saveServerEventToFile("Current State set to: " + currentState.ToString());
 
                 NetworkStream stream = client.GetStream();
@@ -57,6 +124,7 @@ namespace Server
 
                 Packet recvPacket = new Packet(data);
                 currentState = recvPacket.GetHead().getState();
+                updateStatesOnUI();
                 saveServerEventToFile("Current State set to: " + currentState.ToString());
 
                 if (recvPacket.GetHead().getState() == states.Discon)
@@ -83,16 +151,31 @@ namespace Server
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
+                    //recv
+                    currentState = states.Recv;
+                    updateStatesOnUI();
+
                     string fileName = receiveImage(recvPacket, buffer, ref connectedUser, client, stream);
                     setCurrentOriginalImage(fileName);
                     setDetectedObjects(RunRecognition(fileName, GetuserData().getUserName()));
-                    
-                    if(!checkObjectsDetected())
+
+                    //saving
+                    currentState = states.Saving;
+                    updateStatesOnUI();
+
+                    //analyze
+                    currentState = states.Analyze;
+                    updateStatesOnUI();
+
+                    if (!checkObjectsDetected())
                     {
                         setCurrentAnalyzedImage(fileName);
                         saveUserSpecificEventToFile(fileName + " Anayzed image has been created");
                         saveServerEventToFile(fileName + " Anayzed image has been created");
                         sendImage(stream);
+                        //sending
+                        currentState = states.Sending;
+                        updateStatesOnUI();
                     }
                     else
                     {
@@ -104,6 +187,11 @@ namespace Server
                         byte[] sendbuf = packet.getTailBuffer();
 
                         stream.Write(sendbuf, 0, sendbuf.Length);
+
+                        //sending
+                        currentState = states.Sending;
+                        updateStatesOnUI();
+
                         saveServerEventToFile("Packet sent to client confirming " + fileName + " was received");
                         stream.Flush();
                     }
@@ -124,46 +212,55 @@ namespace Server
                 buffer = null;
             }
         }
-
-        public string getCurStringState()
+        
+        public void updateStatesOnUI()
         {
-            string stateToReturn = "Idle";
+            idleColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            authColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            newAuthColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            recvColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            analyzeColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            savingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            sendingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            disconColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+            recvLogColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
+
             switch (currentState)
             {
                 case states.Idle:
-                    stateToReturn = "Idle";
+                    idleColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Auth:
-                    stateToReturn = "Auth";
+                    authColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.NewAuth:
-                    stateToReturn = "NewAuth";
+                    newAuthColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Recv:
-                    stateToReturn = "Recv";
+                    recvColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Analyze:
-                    stateToReturn = "Analyze";
+                    analyzeColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Saving:
-                    stateToReturn = "Saving";
+                    savingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Sending:
-                    stateToReturn = "Sending";
+                    sendingColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.Discon:
-                    stateToReturn = "Discon";
+                    disconColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 case states.RecvLog:
-                    stateToReturn = "RecvLog";
+                    recvLogColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF0CFF00");
                     break;
                 default:
                     // Handle unknown state by doing nothing
                     break;
             }
-            return stateToReturn;
+            System.Threading.Thread.Sleep(100);
         }
-        
+
         public void disconnectClient()
         {
             disconnect = true;
@@ -182,7 +279,6 @@ namespace Server
                     if (recvPacket.GetHead().getState() == states.Auth)
                     {
                         //if we are authentcating a user
-                        currentState = states.Auth;
 
                         string message = SignInUser("../../../Users.txt");
 
@@ -203,7 +299,6 @@ namespace Server
                     else if (recvPacket.GetHead().getState() == states.NewAuth)
                     {
                         //If the user is wanting to be registered
-                        currentState = states.NewAuth;
 
                         string message = RegisterUser("../../../Users.txt");
                         CreateUserFolder(userData.getUserName());
@@ -356,7 +451,6 @@ namespace Server
 
         private bool sendUserLogs(NetworkStream stream)
         {
-            //bool error = false;
             string path = @"../../../Users/" + currentClientUsername + "/" + currentClientUsername + "Log.txt";
 
             try
@@ -422,14 +516,6 @@ namespace Server
 
                         }
                     }
-                    //else
-                    //{
-                    //    if (recvPacket.GetHead().getState() != states.Saving)
-                    //    {
-                    //        Exception e = new Exception();
-                    //        throw e;
-                    //    }
-                    //}
                 }
                 return false;
             }
@@ -445,8 +531,8 @@ namespace Server
 
         private bool sendImage(NetworkStream stream)
         {
-                try
-                {
+            try
+            {
                     string count = (userData.getSendCount()).ToString();
                     string fileName = userData.getUserName() + count + ".jpg";
                     string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
@@ -696,11 +782,11 @@ namespace Server
                         // Define Text Options
                         Font drawFont = new Font("Arial", 12, FontStyle.Bold);
                         SizeF size = thumbnailGraphic.MeasureString(text, drawFont);
-                        SolidBrush fontBrush = new SolidBrush(Color.Black);
+                        SolidBrush fontBrush = new SolidBrush(System.Drawing.Color.Black);
                         Point atPoint = new Point((int)x, (int)y - (int)size.Height - 1);
 
                         // Define BoundingBox options
-                        Pen pen = new Pen(box.BoxColor, 3.2f);
+                        System.Drawing.Pen pen = new System.Drawing.Pen(box.BoxColor, 3.2f);
                         SolidBrush colorBrush = new SolidBrush(box.BoxColor);
 
                         // Draw text on image 
