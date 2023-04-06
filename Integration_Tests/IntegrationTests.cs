@@ -269,7 +269,7 @@ namespace Integration_Tests
             catch (Exception ex) { Console.WriteLine(ex.Message); };
             // Read the text from the file
 
-           
+            Assert.IsTrue(File.Exists("../../../UserImages/Output.jpg"));
             
 
         }
@@ -334,19 +334,121 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_010_ClientCanConnectToServer()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
+            
+            try
+            {
 
 
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    ProgramServer server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+                });
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+               
+                Assert.AreNotEqual(null, client);
+
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
+           
+
+            
         }
-        [TestMethod]
-        public void INT_TEST_011_SucessfulTransmissionOfClientLoginPacket()
-        {
-
-
-        }
+       
         [TestMethod]
         public void INT_TEST_012_SucessfulTransmissionOfClientSignupPacket()
         {
+            //MUST DELETE FROM THE FILE BEFORE RUNNING THIS TEST
 
+            string userName = "newUser";
+            string password = "newPassword";
+
+            Client.userLoginData userData = new Client.userLoginData();
+
+            userData.setUserName(userName);
+            userData.setPassword(password);
+
+
+            Client.Packet packet = new Client.Packet();
+
+            packet.setHead('1', '2', Client.states.NewAuth);
+
+            byte[] userDataBuffer = userData.serializeData();
+
+            packet.setData(userDataBuffer.Length, userDataBuffer);
+
+
+            string filePath = @"../../../TestAuth.txt";
+
+
+            try
+            {
+
+
+
+                Thread serverThread = new Thread(new ThreadStart(() => {
+                    ProgramServer server = new ProgramServer();
+                    server.run();
+                }));
+
+                Thread clientThread = new Thread(new ThreadStart(() => {
+                    ProgramClient client = new ProgramClient();
+                    if (client.authenticateUser(packet))
+                    {
+                        //write to a txt file the message "user packet was successfully serialized and deseriailzed"
+
+
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("New User Added");
+                            writer.Close();
+                        }
+
+                    }
+                    else
+                    {
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("Failed");
+                            writer.Close();
+                        }
+
+                    }
+                }));
+
+
+                serverThread.Start();
+
+                clientThread.Start();
+
+                clientThread.Join();
+
+
+
+
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
+
+            // Read the text from the file
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                string text = reader.ReadLine();
+                reader.Close();
+                Assert.AreEqual("New User Added", text);
+
+            }
 
         }
         [TestMethod]

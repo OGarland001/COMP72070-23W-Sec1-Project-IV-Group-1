@@ -6,3 +6,6 @@ Randomtester
 password
 Bob
 bobbyJohn
+
+newUser
+newPassword
