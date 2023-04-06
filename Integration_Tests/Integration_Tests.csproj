@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Server\Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Randomtester\assets\images\output\" />
+  </ItemGroup>
+
 </Project>

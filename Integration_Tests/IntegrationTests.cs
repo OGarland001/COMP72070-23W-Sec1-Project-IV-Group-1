@@ -125,7 +125,51 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_008_ClientLogIsRecordedandFormattedProperly()
         {
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("Randomtester");
+            userData.setPassword("password");
+            string ExpectedImage = "Username: Randomtester Sent Image received:";
+            //string ExpectedAnalyzedImage = "Username: RandomtesterRandomtester1.jpg Anayzed image has been created: Time of day 2023-04-05 3:44:33 PM\""
+            int lengthExpectedImage = ExpectedImage.Length;
+            //int lengthExpectedAnalyzedImage = ExpectedAnalyzedImage.Length;
+            File.WriteAllText("../../../Users/Randomtester/Randomtester.txt", "0");
 
+            try
+            {
+
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+
+                });
+
+
+                // Start the client thread
+                Thread clientThread = new Thread(() =>
+                {
+                    client = new ProgramClient();
+                    client.sendImage("../../../Tester.jpg");
+                    client.receiveUserlogs();
+
+                });
+
+                serverThread.Start();
+                clientThread.Start();
+
+                clientThread.Join();
+
+
+
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+            string count = (userData.getSendCount()).ToString();
+            string path = @"../../../ClientLog.txt";
+            string fileLine = File.ReadLines(path).First();
+
+            Assert.AreEqual(fileLine.Substring(0, lengthExpectedImage), ExpectedImage);
 
         }
 
