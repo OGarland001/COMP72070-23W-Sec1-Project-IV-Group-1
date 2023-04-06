@@ -13,16 +13,13 @@ using Point = System.Drawing.Point;
 using FontStyle = System.Drawing.FontStyle;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Collections;
-using Server.InterfaceFiles;
-using System.Windows.Media.Imaging;
 
 namespace Server
 {
     public class ProgramServer
     {
         //Store the current state of the server - by default it should be idle
+        
         Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
@@ -36,11 +33,12 @@ namespace Server
         //This will act as the servers "main" and any/all connection to client, loading can be done here
         public void run()
         {
+            System.IO.File.WriteAllText(@"../../../ServerLog.txt", string.Empty);
+
             Packet packet = new Packet();
             Int32 port = 11003;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
-            //byte[] buffer = new byte[1026];
                         
             bool connectedUser = true;
 
@@ -50,6 +48,9 @@ namespace Server
 
             while (connectedUser)
             {
+                currentState = states.Idle;
+                saveServerEventToFile("Current State set to: " + currentState.ToString());
+
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[1000];
                 i = stream.Read(buffer, 0, buffer.Length);
@@ -58,21 +59,30 @@ namespace Server
                 Array.Copy(buffer, data, i);
 
                 Packet recvPacket = new Packet(data);
+                currentState = recvPacket.GetHead().getState();
+                saveServerEventToFile("Current State set to: " + currentState.ToString());
+
                 if (recvPacket.GetHead().getState() == states.Discon)
                 {
+                    
                     if (disconnect == true)
                     {
                         sendDisconectPacket(packet, client, stream, states.Discon);
+                        saveUserSpecificEventToFile("Client has disconnected");
+                        saveServerEventToFile("Client has disconnected");
                         disconnect = false;
                     }
                     else
                     {
                         sendDisconectPacket(packet, client, stream, states.Idle);
+                        saveServerEventToFile("Disconnect packet sent with Idle State");
                     }
                 }
                 else if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
                 {
                     AuthenticateUser(recvPacket, buffer, ref connectedUser, client, stream);
+                    //saveUserSpecificEventToFile("Logging in to ClassifAI");
+
                 }
                 else if (recvPacket.GetHead().getState() == states.Sending || recvPacket.GetHead().getState() == states.Analyze)
                 {
@@ -83,6 +93,8 @@ namespace Server
                     if(!checkObjectsDetected())
                     {
                         setCurrentAnalyzedImage(fileName);
+                        saveUserSpecificEventToFile(fileName + " Anayzed image has been created");
+                        saveServerEventToFile(fileName + " Anayzed image has been created");
                         sendImage(stream);
                     }
                     else
@@ -94,28 +106,67 @@ namespace Server
                         packet.SerializeData();
                         byte[] sendbuf = packet.getTailBuffer();
 
-
                         stream.Write(sendbuf, 0, sendbuf.Length);
+                        saveServerEventToFile("Packet sent to client confirming " + fileName + " was received");
                         stream.Flush();
                     }
-                    setCurrentAnalyzedImage(fileName);
-
-                    
-                    
-                    
+                    setCurrentAnalyzedImage(fileName); 
+                }
+                else if(recvPacket.GetHead().getState() == states.RecvLog)
+                {
+                    sendUserLogs(stream);
+                    saveServerEventToFile("User log Packet sent");
                 }
                 else
                 {
-                    
                     sendReAuthAckPacket(packet, client, stream);
+                    saveServerEventToFile("ReAuthentication Packet Sent");
+                    
                 }
                 stream.Flush();
                 buffer = null;
-                //Stack.Clear();
-
             }
         }
 
+        public string getCurStringState()
+        {
+            string stateToReturn = "Idle";
+            switch (currentState)
+            {
+                case states.Idle:
+                    stateToReturn = "Idle";
+                    break;
+                case states.Auth:
+                    stateToReturn = "Auth";
+                    break;
+                case states.NewAuth:
+                    stateToReturn = "NewAuth";
+                    break;
+                case states.Recv:
+                    stateToReturn = "Recv";
+                    break;
+                case states.Analyze:
+                    stateToReturn = "Analyze";
+                    break;
+                case states.Saving:
+                    stateToReturn = "Saving";
+                    break;
+                case states.Sending:
+                    stateToReturn = "Sending";
+                    break;
+                case states.Discon:
+                    stateToReturn = "Discon";
+                    break;
+                case states.RecvLog:
+                    stateToReturn = "RecvLog";
+                    break;
+                default:
+                    // Handle unknown state by doing nothing
+                    break;
+            }
+            return stateToReturn;
+        }
+        
         public void disconnectClient()
         {
             disconnect = true;
@@ -140,16 +191,17 @@ namespace Server
 
                         if (message == "User signed in")
                         {
-
                             //sets up a packet with nothing just to say that it was recived and passed
                             connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
+                            
                         }
                         else
                         {
-                          
                             sendReAuthAckPacket(packet, client, stream);
-
                         }
+
+                        saveServerEventToFile(message);
+                        saveUserSpecificEventToFile(message);
                     }
                     else if (recvPacket.GetHead().getState() == states.NewAuth)
                     {
@@ -164,26 +216,27 @@ namespace Server
                         if (message == "User registered")
                         {
                             connectedUser = sendAuthentcatedAckPacket(packet, client, stream);
-
                         }
                         else
                         {
-                            
                             sendReAuthAckPacket(packet, client,stream);
-
                         }
+                        
+                        saveServerEventToFile(message);
+                        saveUserSpecificEventToFile(message);
                     }
                 }
                 else
                 {
-                   
                     sendReAuthAckPacket(packet, client, stream);
-
                 }
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
+                
+                saveServerEventToFile("Error Thrown Authenticating User: " + exception.Message);
+                saveUserSpecificEventToFile("Error Authenticating User");
             }
         }
 
@@ -198,6 +251,7 @@ namespace Server
        
 
             stream.Write(sendbuf, 0, sendbuf.Length);
+
 
             connectedUser = true;
             return connectedUser;
@@ -237,8 +291,6 @@ namespace Server
              
             try 
             {
-               
-
                 using (FileStream file = new FileStream(path, FileMode.Create))
                 {
                     file.Write(recvPacket.GetBody().getData(), 0, recvPacket.GetBody().getData().Length);
@@ -246,14 +298,17 @@ namespace Server
                     firstPacket.setHead('2', '1', states.Saving);
                     firstPacket.SerializeData();
                     byte[] sendbuf = firstPacket.getTailBuffer();
+                   
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
+                    saveServerEventToFile("Packet sent confirming Server is in saving state");
                     stream.Flush();
 
                     while (true)
                     {
                         byte[] receiveBuffer = new byte[1000];
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                        saveServerEventToFile("Image data read: " + bytesRead.ToString() + " bytes");
                         //stream.Flush();
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
@@ -265,13 +320,6 @@ namespace Server
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                            //Packet lastPacket = new Packet();
-                            //lastPacket.setHead('2', '1', states.Recv);
-                            //lastPacket.setData(noData.Length, noData);
-                            //lastPacket.SerializeData();
-                            //byte[] newbuf = lastPacket.getTailBuffer();
-                            //stream.Write(newbuf, 0, newbuf.Length);
-                            //stream.Flush();
                             break;
                         }
 
@@ -283,40 +331,131 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
+                        saveServerEventToFile("Acknowledgement Packet sent");
+
 
                         byte[] imageData = receivedPacket.GetBody().getData();
                         if(imageData != null)
                         {
                             file.Write(imageData, 0, imageData.Length);
-                        }
-                        
-                       
+                        }                       
                     }
                     stream.Flush();
                     file.Close();
                     userData.saveSendCount();
+                    saveUserSpecificEventToFile(" Sent Image received");
+                    saveServerEventToFile("Image recieved and written to file: " + fileName);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                saveUserSpecificEventToFile("Image could not be received");
+                saveServerEventToFile("Exception Thrown in Receiving image: " + e.ToString());
             }
 
             return fileName;
+        }
+
+        private bool sendUserLogs(NetworkStream stream)
+        {
+            //bool error = false;
+            string path = @"../../../Users/" + userData.getUserName() + "/" + userData.getUserName() + "Log.txt";
+
+            try
+            {
+                
+
+
+                byte[] imageBuffer = File.ReadAllBytes(path);
+
+
+                int index = 0;
+                bool lastPacketSent = false;
+                while (!lastPacketSent)
+                {
+                    Packet sendPacket = new Packet();
+                    sendPacket.setHead('2', '1', states.Sending);
+                    byte[] dataBuf = new byte[500];
+
+                    int bytesToCopy = Math.Min(dataBuf.Length, imageBuffer.Length - index);
+                    Array.Copy(imageBuffer, index, dataBuf, 0, bytesToCopy);
+                    index += bytesToCopy;
+
+                    // Check if this is the last packet
+                    if (bytesToCopy == 0)
+                    {
+                        Packet lastPacket = new Packet();
+                        lastPacketSent = true;
+                        lastPacket.setHead('2', '1', states.Analyze);
+                        byte[] noData = new byte[0];
+                        lastPacket.setData(noData.Length, noData);
+                        lastPacket.SerializeData();
+                        stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
+                        saveServerEventToFile("Server recieved last packet changing state to Analyze");
+                        stream.Flush();
+                        continue;
+                    }
+
+                    sendPacket.setData(bytesToCopy, dataBuf);
+                    sendPacket.SerializeData();
+                    stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
+                    saveServerEventToFile("Packet sent image data");
+                    stream.Flush();
+                    byte[] recvBuf = new byte[1024];
+                    int amount = stream.Read(recvBuf, 0, recvBuf.Length);
+
+                    byte[] array = new byte[amount];
+                    Array.Copy(recvBuf, array, amount);
+                    Packet recvPacket = new Packet(array);
+
+                    if (lastPacketSent)
+                    {
+                        if (recvPacket.GetHead().getState() != states.Recv)
+                        {
+                            Exception e = new Exception();
+                            saveServerEventToFile("Error sending image, Exception Thrown: " + e.ToString());
+                            saveUserSpecificEventToFile("Error Sending Analyzed image");
+                            throw e;
+                        }
+                        else
+                        {
+                            saveServerEventToFile("Last Image Packet Sent to Client");
+                            return true;
+
+                        }
+                    }
+                    //else
+                    //{
+                    //    if (recvPacket.GetHead().getState() != states.Saving)
+                    //    {
+                    //        Exception e = new Exception();
+                    //        throw e;
+                    //    }
+                    //}
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                saveServerEventToFile("Error sending image, Exception Thrown: " + e.ToString());
+                saveUserSpecificEventToFile("Error Sending Analyzed image");
+
+                return false;
+            }
         }
 
         private bool sendImage(NetworkStream stream)
         {
                 try
                 {
-                string count = (userData.getSendCount()).ToString();
-                string fileName = userData.getUserName() + count + ".jpg";
-                string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
-
+                    string count = (userData.getSendCount()).ToString();
+                    string fileName = userData.getUserName() + count + ".jpg";
+                    string path = @"../../../Users/" + userData.getUserName() + "/assets/images/output/" + fileName;
                 
                     byte[] imageBuffer = File.ReadAllBytes(path);
                     
-
                     int index = 0;
                     bool lastPacketSent = false;
                     while (!lastPacketSent)
@@ -339,6 +478,7 @@ namespace Server
                             lastPacket.setData(noData.Length, noData);
                             lastPacket.SerializeData();
                             stream.Write(lastPacket.getTailBuffer(), 0, lastPacket.getTailBuffer().Length);
+                            saveServerEventToFile("Server recieved last packet changing state to Analyze");
                             stream.Flush();
                             continue;
                         }
@@ -346,6 +486,7 @@ namespace Server
                         sendPacket.setData(bytesToCopy, dataBuf);
                         sendPacket.SerializeData();
                         stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
+                        saveServerEventToFile("Packet sent image data");
                         stream.Flush();
                         byte[] recvBuf = new byte[1024];
                         int amount = stream.Read(recvBuf, 0, recvBuf.Length);
@@ -359,34 +500,31 @@ namespace Server
                             if (recvPacket.GetHead().getState() != states.Recv)
                             {
                                 Exception e = new Exception();
+                                saveServerEventToFile("Error sending user logs, Exception Thrown: " + e.ToString());
+                                saveUserSpecificEventToFile("Error Sending users logs");
                                 throw e;
                             }
                             else
                             {
-                                return true;
+                               saveServerEventToFile("Last User log Packet Sent to Client");
+                               return true;
+                                
                             }
                         }
-                        //else
-                        //{
-                        //    if (recvPacket.GetHead().getState() != states.Saving)
-                        //    {
-                        //        Exception e = new Exception();
-                        //        throw e;
-                        //    }
-                        //}
                     }
                     return false;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
+                    saveServerEventToFile("Error sending User logs, Exception Thrown: " + e.ToString());
+                    saveUserSpecificEventToFile("Error Sending User logs");
+
                     return false;
                 }
-
-
         }
 
-            public void setDetectedObjects(string[,] objects)
+        public void setDetectedObjects(string[,] objects)
         {
             Array.Copy(objects, detectedObjects, objects.Length);
         }
@@ -395,6 +533,7 @@ namespace Server
         {
             return this.detectedObjects;
         }
+
         public bool checkObjectsDetected()
         {
             bool empty = false;
@@ -441,7 +580,6 @@ namespace Server
         public string[,] RunRecognition(string filename, string username)
         {
             //setAnalyzingImagesState();
-            //string path = @"../../../" + username + "/assets";
             var assetsRelativePath = @"../../../MLNET/assets";
             var UsersassetsRelativePath = @"../../../Users/" + username + "/assets";
             string assetsPath = GetAbsolutePath(UsersassetsRelativePath);
@@ -475,8 +613,6 @@ namespace Server
                     .Select(probability => parser.ParseOutputs(probability))
                     .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                
-
                 // Draw bounding boxes for detected objects in the image
                 string imageFileName = filename;
                 IList<YoloBoundingBox> detectedObjects = boundingBoxes.First();
@@ -501,13 +637,13 @@ namespace Server
                     {
                         results[j, 1] = confidence[j];
                     }
-
                 }
                 else
                 {
                     results = new string[1, 2] { { "No Objects", "0" }};
+                    saveServerEventToFile(" No Objects detected for image: " + filename);
+                    saveUserSpecificEventToFile(" No Objects detected for image: " + filename);
                 }
-               
 
                 Console.WriteLine("========= End of Process..Hit any Key ========");
                 return results;
@@ -515,6 +651,8 @@ namespace Server
             catch (Exception ex)
             {
                 Console.WriteLine("Error processing file {0}: {1}", filename, ex.Message);
+                saveServerEventToFile("Error Analyzing image, Exception Thrown: " + ex.ToString());
+                saveUserSpecificEventToFile("Error Analyzing sent image");
                 return null;
             }
 
@@ -603,8 +741,9 @@ namespace Server
         public void saveUserSpecificEventToFile(string eventToLog)
         {
             //log for a specific user
-            string path = currentClientUsername + "Log.txt";
-            string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
+            currentClientUsername = GetuserData().getUserName();
+            string path = @"../../../Users/" + currentClientUsername +"/" + currentClientUsername + "Log.txt";
+            string logEntry = "Username: " + currentClientUsername + " " + eventToLog + ": Time of day " + DateTime.Now;
 
             if (!File.Exists(path))
             { // Create a file to write to
@@ -616,7 +755,7 @@ namespace Server
             }
             else
             { //write to general program file
-                using (StreamWriter writer = new StreamWriter("ServerLog.txt", append: true))
+                using (StreamWriter writer = new StreamWriter(path, append: true))
                 {
                     writer.WriteLine(logEntry);
                     writer.Close();
@@ -629,9 +768,9 @@ namespace Server
             //log for a specific user
             string path = currentClientUsername + "Log.txt";
             string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
-
+            
             //write to general program file
-            using (StreamWriter writer = new StreamWriter("ServerLog.txt", append: true))
+            using (StreamWriter writer = new StreamWriter(@"../../../ServerLog.txt", append: true))
             {
                 writer.WriteLine(logEntry);
                 writer.Close();
@@ -704,7 +843,6 @@ namespace Server
         {
             return currentState;
         }
-
         public void IntializeUserData(Packet packet)
         {
             userLoginData temp = packet.deserializeUserLoginData();
@@ -779,7 +917,6 @@ namespace Server
 
             return message;
         }
-
 
         public bool checkUsername(string filePath)
         {

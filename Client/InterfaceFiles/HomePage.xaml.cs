@@ -1,21 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net.Sockets;
 using Path = System.IO.Path;
 
 namespace Client.InterfaceFiles
@@ -38,7 +27,19 @@ namespace Client.InterfaceFiles
 
         private void requestlogs_Click(object sender, RoutedEventArgs e)
         {
+            
+            if (this.client.receiveUserlogs())
+            {
+                //pop up saying it set it to the image
+                MessageBox.Show("User Log Received!");
+            }
+            else
+            {
+                MessageBox.Show("No User Log Found");
+            }
+
             Main.Content = new RequestLogsPage(this.client);
+
         }
 
         private void logout_Click(object sender, RoutedEventArgs e)

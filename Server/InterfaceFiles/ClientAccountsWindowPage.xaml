@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Server.InterfaceFiles"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="900"
       Title="ClientAccountsWindowPage">
 
     <Grid Background="White">
@@ -28,6 +28,90 @@
         <Button Content="Delete Account" HorizontalAlignment="Left" Margin="342,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_5"/>
         <Button Content="Find Account" HorizontalAlignment="Left" Margin="458,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_6"/>
         <Button Content="View Accounts" HorizontalAlignment="Left" Margin="572,111,0,0" VerticalAlignment="Top" Width="98" Height="28" Background="SteelBlue" Foreground="White" BorderBrush="{x:Null}" Click="Button_Click_7"/>
+        <Rectangle HorizontalAlignment="Left" Height="434" Margin="784,0,0,0" VerticalAlignment="Center" Width="106" Fill="#FFD7D7D7"/>
+        <Rectangle HorizontalAlignment="Center" Height="45" Margin="0,-44,0,0" Stroke="#FF585858" VerticalAlignment="Top" Width="902" Fill="#FF585858"/>
+        <Label Content="Server State" HorizontalAlignment="Left" Height="26" Margin="791,14,0,0" VerticalAlignment="Top" Width="93" FontFamily="Tw Cen MT" FontSize="16"/>
+        <Rectangle x:Name="Auth" HorizontalAlignment="Left" Height="28" Margin="794,49,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Recv" HorizontalAlignment="Left" Height="28" Margin="794,84,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Saving" HorizontalAlignment="Left" Height="28" Margin="794,120,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Sending" HorizontalAlignment="Left" Height="28" Margin="794,154,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Discon" HorizontalAlignment="Left" Height="28" Margin="795,189,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="RecvLog" HorizontalAlignment="Left" Height="28" Margin="795,225,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Idle" HorizontalAlignment="Left" Height="28" Margin="795,261,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="0.99"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="NewAuth" HorizontalAlignment="Left" Height="28" Margin="795,295,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="Analyze" HorizontalAlignment="Left" Height="28" Margin="795,329,0,0" VerticalAlignment="Top" Width="82" RadiusX="5" RadiusY="5" Opacity="0.6">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="#FF515151" Offset="1"/>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label Content="Auth" HorizontalAlignment="Left" Margin="816,84,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Recv" HorizontalAlignment="Left" Margin="817,154,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Saving" HorizontalAlignment="Left" Margin="813,225,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Sending" HorizontalAlignment="Left" Margin="809,261,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Discon" HorizontalAlignment="Left" Margin="812,295,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="RecvLog" HorizontalAlignment="Left" Margin="808,329,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Idle" HorizontalAlignment="Left" Margin="819,50,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="NewAuth" HorizontalAlignment="Left" Margin="805,120,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Analyze" HorizontalAlignment="Left" Margin="809,189,0,0" VerticalAlignment="Top" Width="80"/>
         <Frame x:Name="Main" Margin="0,0,0,0" />
     </Grid>
 </Page>

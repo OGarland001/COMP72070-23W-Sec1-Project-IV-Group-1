@@ -11,8 +11,48 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_001_RequestandRecieveLogFilesFromServer()
         {
-            //Test 1 and 3
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
+            string Expected = "Username: testerUser signed in:";
+            int lengthExpected = Expected.Length;
 
+            try
+            {
+
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword());
+                    server.run();
+
+                });
+
+
+                // Start the client thread
+                Thread clientThread = new Thread(() =>
+                {
+                    client = new ProgramClient();
+
+                    client.receiveUserlogs();
+
+                });
+
+                serverThread.Start();
+                clientThread.Start();
+
+                clientThread.Join();
+
+
+
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); Assert.Fail(); };
+            string count = (userData.getSendCount()).ToString();
+            string path = @"../../../ClientLog.txt";
+            string fileLine = File.ReadLines(path).First();
+            
+            Assert.AreEqual(fileLine.Substring(0,lengthExpected), Expected);
         }
         [TestMethod]
         public void INT_TEST_002_AuthenticateandVerifyTheUser()
