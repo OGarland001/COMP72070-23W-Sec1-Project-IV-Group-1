@@ -1,0 +1,3 @@
+Username: newUser User registered: Time of day 2023-04-05 9:57:56 PM
+Username: newUser Username must be unique: Time of day 2023-04-05 9:58:25 PM
+Username: newUser User registered: Time of day 2023-04-05 9:59:08 PM

@@ -19,7 +19,8 @@ namespace Server
     public class ProgramServer : ObservableObject
     {
         //Store the current state of the server - by default it should be idle
-        Server.states currentState;
+        
+        Server.states currentState = states.Idle;
         String currentClientUsername = "Server";
         private userLoginData userData;
         private string currentOriginalImage = @"MLNET\assets\images\NoImage.png";
@@ -98,8 +99,10 @@ namespace Server
             disconColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
             recvLogColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
 
+            System.IO.File.WriteAllText(@"../../../ServerLog.txt", string.Empty);
+
             Packet packet = new Packet();
-            Int32 port = 11002;
+            Int32 port = 11003;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
 
@@ -393,14 +396,14 @@ namespace Server
                    
 
                     stream.Write(sendbuf, 0, sendbuf.Length);
-                    saveServerEventToFile("Packet sent confirming Server is in saving state");
+                    //saveServerEventToFile("Packet sent confirming Server is in saving state");
                     stream.Flush();
 
                     while (true)
                     {
                         byte[] receiveBuffer = new byte[1000];
                         int bytesRead = stream.Read(receiveBuffer, 0, receiveBuffer.Length);
-                        saveServerEventToFile("Image data read: " + bytesRead.ToString() + " bytes");
+                        //saveServerEventToFile("Image data read: " + bytesRead.ToString() + " bytes");
                         //stream.Flush();
                         byte[] data = new byte[bytesRead];
                         Array.Copy(receiveBuffer, data, bytesRead);
@@ -423,7 +426,7 @@ namespace Server
                         byte[] buf = ackPacket.getTailBuffer();
 
                         stream.Write(buf, 0, buf.Length);
-                        saveServerEventToFile("Acknowledgement Packet sent");
+                        //saveServerEventToFile("Acknowledgement Packet sent");
 
 
                         byte[] imageData = receivedPacket.GetBody().getData();
@@ -451,7 +454,8 @@ namespace Server
 
         private bool sendUserLogs(NetworkStream stream)
         {
-            string path = @"../../../Users/" + currentClientUsername + "/" + currentClientUsername + "Log.txt";
+            //bool error = false;
+            string path = @"../../../Users/" + userData.getUserName() + "/" + userData.getUserName() + "Log.txt";
 
             try
             {
@@ -491,7 +495,7 @@ namespace Server
                     sendPacket.setData(bytesToCopy, dataBuf);
                     sendPacket.SerializeData();
                     stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
-                    saveServerEventToFile("Packet sent image data");
+                    //saveServerEventToFile("Packet sent image data");
                     stream.Flush();
                     byte[] recvBuf = new byte[1024];
                     int amount = stream.Read(recvBuf, 0, recvBuf.Length);
@@ -511,7 +515,7 @@ namespace Server
                         }
                         else
                         {
-                            saveServerEventToFile("Last Image Packet Sent to Client");
+                            //saveServerEventToFile("Last Image Packet Sent to Client");
                             return true;
 
                         }
@@ -569,7 +573,7 @@ namespace Server
                         sendPacket.setData(bytesToCopy, dataBuf);
                         sendPacket.SerializeData();
                         stream.Write(sendPacket.getTailBuffer(), 0, sendPacket.getTailBuffer().Length);
-                        saveServerEventToFile("Packet sent image data");
+                        //saveServerEventToFile("Packet sent image data");
                         stream.Flush();
                         byte[] recvBuf = new byte[1024];
                         int amount = stream.Read(recvBuf, 0, recvBuf.Length);
@@ -851,7 +855,7 @@ namespace Server
             //log for a specific user
             string path = currentClientUsername + "Log.txt";
             string logEntry = "Username: " + currentClientUsername + eventToLog + ": Time of day " + DateTime.Now;
-
+            
             //write to general program file
             using (StreamWriter writer = new StreamWriter(@"../../../ServerLog.txt", append: true))
             {
