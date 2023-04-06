@@ -1,13 +1,12 @@
 using Client;
 using Server;
+using System.Windows;
 
 namespace Integration_Tests
 {
     [TestClass]
     public class IntegrationTests
     {
-        private ProgramClient client;
-        private ProgramServer server;
 
         [TestMethod]
         public void INT_TEST_001_RequestandRecieveLogFilesFromServer()
@@ -76,35 +75,148 @@ namespace Integration_Tests
 
             packet.setData(userDataBuffer.Length, userDataBuffer);
 
-
+           
+            string filePath = @"../../../TestAuth.txt";
 
 
             try
             {
-                server = new ProgramServer();
-                client = new ProgramClient();
 
-                Thread[] threads = new Thread[2];
-                threads[0] = new Thread(new ThreadStart(() => { server.run(); }));
+            
 
-                threads[1] = new Thread(new ThreadStart(() => { client.authenticateUser(packet); }));
+                Thread serverThread = new Thread(new ThreadStart(() => {
+                    ProgramServer server = new ProgramServer();
+                    server.run(); 
+                }));
 
-                threads[0].Start();
-                threads[1].Start();
+                Thread clientThread = new Thread(new ThreadStart(() => { ProgramClient client = new ProgramClient();
+                    if (client.authenticateUser(packet))
+                    {
+                        //write to a txt file the message "user packet was successfully serialized and deseriailzed"
 
+
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("Authenicated");
+                            writer.Close();
+                        }
+
+                    }
+                    else
+                    {
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("Failed");
+                            writer.Close();
+                        }
+
+                    }
+                }));
+
+              
+                serverThread.Start();
+
+                clientThread.Start();
+
+                clientThread.Join();
+                
+                
 
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
 
-            //Checks the username within the text file in integration test project
-            Assert.IsTrue(server.checkUsername("../Users.txt"));
+            // Read the text from the file
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                string text = reader.ReadLine();
+                reader.Close();
+                Assert.AreEqual("Authenicated", text);
+
+            }
 
 
         }
         [TestMethod]
         public void INT_TEST_004_VerifySerlization_Deserialization_Client_Server()
         {
+            string userName = "tester";
+            string password = "password";
+
+            Client.userLoginData userData = new Client.userLoginData();
+
+            userData.setUserName(userName);
+            userData.setPassword(password);
+
+            string filePath = @"../../../TestFile.txt";
+            Client.Packet packet = new Client.Packet();
+
+            packet.setHead('1', '2', Client.states.Auth);
+
+            byte[] userDataBuffer = userData.serializeData();
+
+            packet.setData(userDataBuffer.Length, userDataBuffer);
+
+
+
+
+            try
+            {
+                
+                
+
+                Thread serverThread = new Thread(new ThreadStart(() => { ProgramServer server = new ProgramServer(); server.run(); }));
+                
+
+                Thread clientThread = new Thread(new ThreadStart(() =>
+                {
+                   ProgramClient client = new ProgramClient();
+                    if (client.authenticateUser(packet))
+                    {
+                        //write to a txt file the message "user packet was successfully serialized and deseriailzed"
+
+
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("User Login Packet was sucessfully serialized and deserialized");
+                            writer.Close();
+                        }
+
+                    }
+                    else
+                    {
+
+                        // Write some text to the file
+                        using (StreamWriter writer = File.CreateText(filePath))
+                        {
+                            writer.WriteLine("Failed");
+                            writer.Close();
+                        }
+
+                    }
+                }));
+
+               serverThread.Start();
+                clientThread.Start();
+         
+                clientThread.Join();
+
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
+            // Read the text from the file
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                string text = reader.ReadLine();
+                reader.Close();
+                Assert.AreEqual("User Login Packet was sucessfully serialized and deserialized", text);
+
+            }
 
 
         }
@@ -119,6 +231,45 @@ namespace Integration_Tests
         [TestMethod]
         public void INT_TEST_007_ServerCanReturnAnalyzedImage()
         {
+
+            Client.userLoginData userData = new Client.userLoginData();
+            userData.setUserName("tester");
+            userData.setPassword("password");
+            try
+            {
+               
+               
+                // Start the server thread
+                Thread serverThread = new Thread(() =>
+                {
+                    ProgramServer server = new ProgramServer();
+                    server.SetuserData(userData.getUserName(), userData.getPassword()); 
+                    server.run(); });
+
+
+                serverThread.Start();
+                ProgramClient client = new ProgramClient();
+
+                Thread clientThread = new Thread(new ThreadStart(() =>
+                {
+
+                    client.sendImage("../../../Tester.jpg");
+                    
+                    client.receiveImage();
+                    
+                }));
+
+                
+                clientThread.Start();
+
+                clientThread.Join();
+                
+               
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); };
+            // Read the text from the file
+
+           
             
 
         }
@@ -244,7 +395,7 @@ namespace Integration_Tests
                 // Start the server thread
                 Thread serverThread = new Thread(() =>
                 {
-                    server = new ProgramServer();
+                    ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
                     server.run();
 
@@ -254,9 +405,11 @@ namespace Integration_Tests
                 // Start the client thread
                 Thread clientThread = new Thread(() =>
                 {
-                    client = new ProgramClient();
-                   
+                   ProgramClient client = new ProgramClient();
+
                     client.sendImage("../../../Tester.jpg");
+                    
+                    client.receiveImage();
 
                 });
 
@@ -264,7 +417,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                
+
 
 
             }

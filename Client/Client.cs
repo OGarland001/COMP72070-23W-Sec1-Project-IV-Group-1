@@ -33,7 +33,7 @@ namespace Client
             authentcated = false;
 
             this.tcpClient = new TcpClient();
-            this.tcpClient.Connect(IPAddress.Loopback, 11002);
+            this.tcpClient.Connect(IPAddress.Loopback, 11003);
             this.stream = this.tcpClient.GetStream();
             
 

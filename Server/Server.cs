@@ -36,7 +36,7 @@ namespace Server
             System.IO.File.WriteAllText(@"../../../ServerLog.txt", string.Empty);
 
             Packet packet = new Packet();
-            Int32 port = 11002;
+            Int32 port = 11003;
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
                         
