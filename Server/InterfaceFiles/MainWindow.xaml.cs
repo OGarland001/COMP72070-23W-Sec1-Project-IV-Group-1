@@ -24,7 +24,7 @@ namespace Server
                 {
                     this.DataContext = newServer;
                 });
-                newServer.run();
+                newServer.run(11069);
             }));
 
             threads[0].Start();

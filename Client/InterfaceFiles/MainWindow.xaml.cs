@@ -12,7 +12,7 @@ namespace Client.InterfaceFiles
         public ProgramClient client;
         public MainWindow()
         {
-            client = new ProgramClient();
+            client = new ProgramClient(11069);
             InitializeComponent();
         }
 

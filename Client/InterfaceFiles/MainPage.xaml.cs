@@ -13,7 +13,7 @@ namespace Client.InterfaceFiles
    
     public partial class MainPage : Page
     {
-        public ProgramClient client = new ProgramClient();
+        public ProgramClient client = new ProgramClient(11069);
         public MainPage( ref ProgramClient client)
         {
             this.client = client;

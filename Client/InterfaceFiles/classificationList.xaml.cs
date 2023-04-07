@@ -9,7 +9,7 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class ClassificationList : Page
     {
-        public ProgramClient client = new ProgramClient();
+        public ProgramClient client = new ProgramClient(11069);
         public ClassificationList(ref ProgramClient client)
         {
             this.client = client;

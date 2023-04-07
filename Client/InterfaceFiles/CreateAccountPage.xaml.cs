@@ -21,7 +21,7 @@ namespace Client.InterfaceFiles
     /// </summary>
     public partial class CreateAccountPage : Page
     {
-        public ProgramClient client = new ProgramClient();
+        public ProgramClient client = new ProgramClient(11069);
         public CreateAccountPage(ref ProgramClient client)
         {
             this.client = client;

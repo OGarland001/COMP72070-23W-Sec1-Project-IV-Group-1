@@ -89,7 +89,7 @@ namespace Server
         }
 
         //This will act as the servers "main" and any/all connection to client, loading can be done here
-        public void run()
+        public void run(Int32 port)
         {
             idleColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
             authColour = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF515151");
@@ -104,7 +104,7 @@ namespace Server
             System.IO.File.WriteAllText(@"../../../ServerLog.txt", string.Empty);
 
             Packet packet = new Packet();
-            Int32 port = 11003;
+            
             TcpListener server = new TcpListener(IPAddress.Loopback, port);
             server.Start();
 
@@ -121,9 +121,15 @@ namespace Server
                 saveServerEventToFile("Current State set to: " + currentState.ToString());
 
                 NetworkStream stream = client.GetStream();
+                if (stream == null)
+                {
+                    server.Stop();
+                    return;
+                }
                 byte[] buffer = new byte[1000];
+
                 i = stream.Read(buffer, 0, buffer.Length);
-                
+
                 byte[] data = new byte[i];
                 Array.Copy(buffer, data, i);
 

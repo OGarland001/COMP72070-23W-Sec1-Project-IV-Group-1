@@ -25,7 +25,7 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11001);
 
                 });
 
@@ -33,7 +33,7 @@ namespace Integration_Tests
                 // Start the client thread
                 Thread clientThread = new Thread(() =>
                 {
-                    ProgramClient client = new ProgramClient();
+                    ProgramClient client = new ProgramClient(11001);
 
                     client.receiveUserlogs();
 
@@ -43,7 +43,6 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                serverThread.Abort();
 
 
 
@@ -87,10 +86,10 @@ namespace Integration_Tests
 
                 Thread serverThread = new Thread(new ThreadStart(() => {
                     ProgramServer server = new ProgramServer();
-                    server.run(); 
+                    server.run(11002); 
                 }));
 
-                Thread clientThread = new Thread(new ThreadStart(() => { ProgramClient client = new ProgramClient();
+                Thread clientThread = new Thread(new ThreadStart(() => { ProgramClient client = new ProgramClient(11002);
                     if (client.authenticateUser(packet))
                     {
                         //write to a txt file the message "user packet was successfully serialized and deseriailzed"
@@ -125,7 +124,7 @@ namespace Integration_Tests
 
                 clientThread.Join();
 
-                serverThread.Abort();
+                
 
 
 
@@ -172,12 +171,12 @@ namespace Integration_Tests
                 
                 
 
-                Thread serverThread = new Thread(new ThreadStart(() => { ProgramServer server = new ProgramServer(); server.run(); }));
+                Thread serverThread = new Thread(new ThreadStart(() => { ProgramServer server = new ProgramServer(); server.run(11004); }));
                 
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
-                   ProgramClient client = new ProgramClient();
+                   ProgramClient client = new ProgramClient(11004);
                     if (client.authenticateUser(packet))
                     {
                         //write to a txt file the message "user packet was successfully serialized and deseriailzed"
@@ -206,10 +205,10 @@ namespace Integration_Tests
                 }));
 
                serverThread.Start();
-                clientThread.Start();
+               clientThread.Start();
          
-                clientThread.Join();
-                serverThread.Abort();
+               clientThread.Join();
+               
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
@@ -248,11 +247,11 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword()); 
-                    server.run(); });
+                    server.run(11007); });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11007);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -267,8 +266,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                serverThread.Abort();
-
+               
 
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); };
@@ -297,12 +295,12 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11008);
                 });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11008);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -318,7 +316,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                serverThread.Abort();
+               
 
 
 
@@ -351,12 +349,12 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11009);
                 });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11009);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -372,7 +370,6 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                serverThread.Abort();
 
 
 
@@ -403,12 +400,12 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11010);
                 });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11010);
                
                 Assert.AreNotEqual(null, client);
 
@@ -453,11 +450,11 @@ namespace Integration_Tests
                 Thread serverThread = new Thread(new ThreadStart(() => {
                     ProgramServer server = new ProgramServer();
                     
-                    server.run();
+                    server.run(11012);
                 }));
 
                 Thread clientThread = new Thread(new ThreadStart(() => {
-                    ProgramClient client = new ProgramClient();
+                    ProgramClient client = new ProgramClient(11012);
                     if (client.authenticateUser(packet))
                     {
                         //write to a txt file the message "user packet was successfully serialized and deseriailzed"
@@ -491,8 +488,6 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-
-                serverThread.Abort();
 
 
 
@@ -530,12 +525,12 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11013);
                 });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11013);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -551,7 +546,6 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-
 
 
             }
@@ -593,13 +587,13 @@ namespace Integration_Tests
                     
                     
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11017);
                 });
                 ServerSA = server.getServeraddress();
                 ServerCA = server.getClientaddress();
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11017);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -617,7 +611,7 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-
+               
 
                 Assert.AreEqual(clientSA, ServerSA);
                 Assert.AreEqual(clientCA, ServerCA);
@@ -643,13 +637,14 @@ namespace Integration_Tests
                 Thread serverThread = new Thread(() =>
                 {
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11018);
                 });
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11018);
 
+                
                 Assert.AreEqual(Server.states.Idle, server.getCurrentState());
 
             }
@@ -677,7 +672,7 @@ namespace Integration_Tests
                     
                     server.SetuserData(userData.getUserName(), userData.getPassword());
                     server.disconnectClient();
-                    server.run();
+                    server.run(11023);
 
                     
                     
@@ -686,7 +681,7 @@ namespace Integration_Tests
 
 
                 serverThread.Start();
-                ProgramClient client = new ProgramClient();
+                ProgramClient client = new ProgramClient(11023);
 
                 Thread clientThread = new Thread(new ThreadStart(() =>
                 {
@@ -728,7 +723,7 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11024);
 
                 });
 
@@ -736,7 +731,7 @@ namespace Integration_Tests
                 // Start the client thread
                 Thread clientThread = new Thread(() =>
                 {
-                   ProgramClient client = new ProgramClient();
+                   ProgramClient client = new ProgramClient(11024);
 
                     client.sendImage("../../../Tester.jpg");
                     
@@ -748,7 +743,6 @@ namespace Integration_Tests
                 clientThread.Start();
 
                 clientThread.Join();
-                serverThread.Abort();
 
 
 

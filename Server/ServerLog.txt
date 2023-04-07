@@ -1,1 +1,39 @@
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-06 10:34:22 AM
+Username: ServerCurrent State set to: Idle: Time of day 2023-04-07 9:27:11 AM
+Username: ServerCurrent State set to: Auth: Time of day 2023-04-07 9:27:34 AM
+Username: ServerUsername or password is incorrect: Time of day 2023-04-07 9:27:34 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:27:34 AM
+Username: adminCurrent State set to: Auth: Time of day 2023-04-07 9:27:44 AM
+Username: adminUser signed in: Time of day 2023-04-07 9:27:44 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:27:44 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:27:45 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:27:45 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:27:45 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:27:48 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:27:48 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:27:48 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:28:09 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:28:09 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:28:09 AM
+Username: adminCurrent State set to: Sending: Time of day 2023-04-07 9:28:11 AM
+Username: adminImage recieved and written to file: admin2.jpg: Time of day 2023-04-07 9:28:12 AM
+Username: adminadmin2.jpg Anayzed image has been created: Time of day 2023-04-07 9:28:16 AM
+Username: adminServer recieved last packet changing state to Analyze: Time of day 2023-04-07 9:28:16 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:28:17 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:29:23 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:29:23 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:29:23 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:29:28 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:29:28 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:29:28 AM
+Username: adminCurrent State set to: Sending: Time of day 2023-04-07 9:29:29 AM
+Username: adminImage recieved and written to file: admin3.jpg: Time of day 2023-04-07 9:29:30 AM
+Username: adminadmin3.jpg Anayzed image has been created: Time of day 2023-04-07 9:29:32 AM
+Username: adminServer recieved last packet changing state to Analyze: Time of day 2023-04-07 9:29:32 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:29:32 AM
+Username: adminCurrent State set to: RecvLog: Time of day 2023-04-07 9:30:15 AM
+Username: adminServer recieved last packet changing state to Analyze: Time of day 2023-04-07 9:30:15 AM
+Username: adminUser log Packet sent: Time of day 2023-04-07 9:30:15 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:30:15 AM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 9:30:17 AM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 9:30:17 AM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 9:30:17 AM

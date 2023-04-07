@@ -26,7 +26,7 @@ namespace Client
         private char clientAddress = '1';
         private char serverAddress = '2';
 
-        public ProgramClient()
+        public ProgramClient(Int32 port)
         {
 
             clientData.setUserName(string.Empty);
@@ -35,7 +35,7 @@ namespace Client
             authentcated = false;
 
             this.tcpClient = new TcpClient();
-            this.tcpClient.Connect(IPAddress.Loopback, 11003);
+            this.tcpClient.Connect(IPAddress.Loopback, port);
             this.stream = this.tcpClient.GetStream();
             
 
@@ -181,14 +181,7 @@ namespace Client
                                 return true;
                             }
                         }
-                        //else
-                        //{
-                        //    if (recvPacket.GetHead().getState() != states.Saving)
-                        //    {
-                        //        Exception e = new Exception();
-                        //        throw e;
-                        //    }
-                        //}
+                    
                     }
                     return false;
                 }
@@ -234,13 +227,7 @@ namespace Client
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                            //Packet lastPacket = new Packet();
-                            //lastPacket.setHead('1', '2', states.Recv);
-                            //lastPacket.setData(noData.Length, noData);
-                            //lastPacket.SerializeData();
-                            //byte[] newbuf = lastPacket.getTailBuffer();
-
-                            //stream.Write(newbuf, 0, newbuf.Length);
+                            
                             break;
                         }
                         Packet ackPacket = new Packet();
@@ -344,13 +331,7 @@ namespace Client
 
                         if (receivedPacket.GetHead().getState() == states.Analyze)
                         {
-                            //Packet lastPacket = new Packet();
-                            //lastPacket.setHead('1', '2', states.Recv);
-                            //lastPacket.setData(noData.Length, noData);
-                            //lastPacket.SerializeData();
-                            //byte[] newbuf = lastPacket.getTailBuffer();
-
-                            //stream.Write(newbuf, 0, newbuf.Length);
+                           
                             break;
                         }
                         Packet ackPacket = new Packet();
@@ -404,6 +385,15 @@ namespace Client
             return clientAddress;
         }
 
+        ~ProgramClient()
+        {
+            stream.Close();
+            tcpClient.Close();
+        }
+
+   
     }
+
+   
 }
 
