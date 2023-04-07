@@ -1,3 +1,6 @@
 Username: newUser User registered: Time of day 2023-04-05 9:57:56 PM
 Username: newUser Username must be unique: Time of day 2023-04-05 9:58:25 PM
 Username: newUser User registered: Time of day 2023-04-05 9:59:08 PM
+Username: newUser Username must be unique: Time of day 2023-04-07 2:47:03 PM
+Username: newUser Username must be unique: Time of day 2023-04-07 2:47:49 PM
+Username: newUser User registered: Time of day 2023-04-07 2:48:37 PM

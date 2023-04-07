@@ -79,3 +79,10 @@ Username: admin User signed in: Time of day 2023-04-06 11:07:29 AM
 Username: admin  Sent Image received: Time of day 2023-04-06 11:07:58 AM
 Username: admin admin1.jpg Anayzed image has been created: Time of day 2023-04-06 11:08:01 AM
 Username: admin User signed in: Time of day 2023-04-06 5:00:51 PM
+Username: admin Username or password is incorrect: Time of day 2023-04-07 1:58:03 PM
+Username: admin User signed in: Time of day 2023-04-07 1:58:10 PM
+Username: admin  Sent Image received: Time of day 2023-04-07 1:58:24 PM
+Username: admin admin2.jpg Anayzed image has been created: Time of day 2023-04-07 1:58:28 PM
+Username: admin User signed in: Time of day 2023-04-07 2:35:38 PM
+Username: admin Client has disconnected: Time of day 2023-04-07 2:35:39 PM
+Username: admin User signed in: Time of day 2023-04-07 2:35:55 PM

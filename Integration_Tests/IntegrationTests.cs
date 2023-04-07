@@ -296,7 +296,7 @@ namespace Integration_Tests
                 {
                     ProgramServer server = new ProgramServer();
                     server.SetuserData(userData.getUserName(), userData.getPassword());
-                    server.run();
+                    server.run(11008);
                 });
 
 
