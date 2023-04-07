@@ -1,4 +1,10 @@
-Username: testerCurrent State set to: Idle: Time of day 2023-04-07 1:09:18 PM
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-07 1:09:19 PM
-Username: ServerCurrent State set to: Sending: Time of day 2023-04-07 1:09:19 PM
-Username: testerImage recieved and written to file: tester33.jpg: Time of day 2023-04-07 1:09:19 PM
+Username: ServerCurrent State set to: Idle: Time of day 2023-04-06 12:38:24 PM
+Username: ServerCurrent State set to: Sending: Time of day 2023-04-06 12:38:24 PM
+Username: RandomtesterImage recieved and written to file: Randomtester1.jpg: Time of day 2023-04-06 12:38:24 PM
+Username: RandomtesterRandomtester1.jpg Anayzed image has been created: Time of day 2023-04-06 12:38:26 PM
+Username: RandomtesterServer recieved last packet changing state to Analyze: Time of day 2023-04-06 12:38:26 PM
+Username: RandomtesterCurrent State set to: Idle: Time of day 2023-04-06 12:38:26 PM
+Username: RandomtesterCurrent State set to: RecvLog: Time of day 2023-04-06 12:38:27 PM
+Username: RandomtesterServer recieved last packet changing state to Analyze: Time of day 2023-04-06 12:38:27 PM
+Username: RandomtesterUser log Packet sent: Time of day 2023-04-06 12:38:27 PM
+Username: RandomtesterCurrent State set to: Idle: Time of day 2023-04-06 12:38:27 PM

@@ -837,25 +837,31 @@ namespace Server
         {
             //log for a specific user
             currentClientUsername = GetuserData().getUserName();
+            string directory = @"../../../Users/" + currentClientUsername;
             string path = @"../../../Users/" + currentClientUsername +"/" + currentClientUsername + "Log.txt";
             string logEntry = "Username: " + currentClientUsername + " " + eventToLog + ": Time of day " + DateTime.Now;
 
-            if (!File.Exists(path))
-            { // Create a file to write to
-                using (StreamWriter Writer = new StreamWriter(File.Create(path)))
-                {
-                    Writer.WriteLine(logEntry);
-                    Writer.Close();
+
+            if(Directory.Exists(directory))
+            {
+                if (!File.Exists(path))
+                { // Create a file to write to
+                    using (StreamWriter Writer = new StreamWriter(File.Create(path)))
+                    {
+                        Writer.WriteLine(logEntry);
+                        Writer.Close();
+                    }
+                }
+                else
+                { //write to general program file
+                    using (StreamWriter writer = new StreamWriter(path, append: true))
+                    {
+                        writer.WriteLine(logEntry);
+                        writer.Close();
+                    }
                 }
             }
-            else
-            { //write to general program file
-                using (StreamWriter writer = new StreamWriter(path, append: true))
-                {
-                    writer.WriteLine(logEntry);
-                    writer.Close();
-                }
-            }
+            
         }
 
         public void saveServerEventToFile(string eventToLog)
