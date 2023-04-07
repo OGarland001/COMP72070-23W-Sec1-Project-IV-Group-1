@@ -138,7 +138,7 @@ namespace Server
                 updateStatesOnUI();
                 saveServerEventToFile("Current State set to: " + currentState.ToString());
 
-                if (recvPacket.GetHead().getState() == states.Discon)
+                if (recvPacket.GetHead().getState() == states.Discon && recvPacket.GetHead().getSenderID() == '0')
                 {
                     
                     if (disconnect == true)
@@ -153,6 +153,14 @@ namespace Server
                         sendDisconectPacket(packet, client, stream, states.Idle);
                         saveServerEventToFile("Disconnect packet sent with Idle State");
                     }
+                }
+                else if (recvPacket.GetHead().getState() == states.Discon && recvPacket.GetHead().getSenderID() == '1')
+                {
+                    disconnectClient();
+                    sendDisconectPacket(packet, client, stream, states.Discon);
+                    saveUserSpecificEventToFile("Client has disconnected");
+                    saveServerEventToFile("Client has disconnected");
+                    disconnect = false;
                 }
                 else if (recvPacket.GetHead().getState() == states.Auth || recvPacket.GetHead().getState() == states.NewAuth)
                 {

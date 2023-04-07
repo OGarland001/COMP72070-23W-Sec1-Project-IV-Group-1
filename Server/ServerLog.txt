@@ -1,1 +1,46 @@
-Username: ServerCurrent State set to: Idle: Time of day 2023-04-07 2:36:46 PM
+Username: ServerCurrent State set to: Idle: Time of day 2023-04-07 5:02:16 PM
+Username: ServerCurrent State set to: Auth: Time of day 2023-04-07 5:02:25 PM
+Username: ServerUser signed in: Time of day 2023-04-07 5:02:25 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:25 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:25 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:25 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:26 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:28 PM
+Username: Client has disconnected: Time of day 2023-04-07 5:02:28 PM
+Username: Current State set to: Idle: Time of day 2023-04-07 5:02:28 PM
+Username: Current State set to: Auth: Time of day 2023-04-07 5:02:37 PM
+Username: User signed in: Time of day 2023-04-07 5:02:37 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:37 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:38 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:38 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:38 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:42 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:42 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:43 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:44 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:44 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:44 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:44 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:44 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:44 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:45 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:45 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:45 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:45 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:45 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:47 PM
+Username: Client has disconnected: Time of day 2023-04-07 5:02:47 PM
+Username: Current State set to: Idle: Time of day 2023-04-07 5:02:48 PM
+Username: Current State set to: Auth: Time of day 2023-04-07 5:02:59 PM
+Username: User signed in: Time of day 2023-04-07 5:02:59 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:02:59 PM
+Username: adminCurrent State set to: Discon: Time of day 2023-04-07 5:02:59 PM
+Username: adminDisconnect packet sent with Idle State: Time of day 2023-04-07 5:02:59 PM
+Username: adminCurrent State set to: Idle: Time of day 2023-04-07 5:03:00 PM

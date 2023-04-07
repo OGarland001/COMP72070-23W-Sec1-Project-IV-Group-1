@@ -1,3 +1,17 @@
 Username:  Client has disconnected: Time of day 2023-04-05 8:58:31 PM
 Username:  Client has disconnected: Time of day 2023-04-05 9:08:06 PM
 Username:  Client has disconnected: Time of day 2023-04-06 9:23:40 AM
+Username:  Client has disconnected: Time of day 2023-04-07 4:42:55 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:44:51 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:45:57 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:47:08 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:49:29 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:51:02 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:53:42 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:54:59 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:55:10 PM
+Username:  Username or password is incorrect: Time of day 2023-04-07 4:55:27 PM
+Username:  Client has disconnected: Time of day 2023-04-07 4:59:58 PM
+Username:  Username or password is incorrect: Time of day 2023-04-07 5:00:12 PM
+Username:  Client has disconnected: Time of day 2023-04-07 5:02:28 PM
+Username:  Client has disconnected: Time of day 2023-04-07 5:02:47 PM

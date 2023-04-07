@@ -45,7 +45,7 @@ namespace Client.InterfaceFiles
         private void logout_Click(object sender, RoutedEventArgs e)
         {
             Main.Content = new MainPage(ref this.client);
-
+            this.client.logoutAndDisconnect();
         }
 
         private void Upload_an_Image_Click(object sender, RoutedEventArgs e)

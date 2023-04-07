@@ -81,9 +81,7 @@ namespace Client
         {
             Packet sendPacket = new Packet();
 
-           
-
-            sendPacket.setHead('1', '2', states.Discon);
+            sendPacket.setHead('0', '2', states.Discon);
 
             //connect the client to the server
             sendPacket.SerializeData();
@@ -110,6 +108,38 @@ namespace Client
             {
                 stream.Flush();
                 return true;
+            }
+        }
+
+        public void logoutAndDisconnect()
+        {
+            Packet sendPacket = new Packet();
+
+            sendPacket.setHead('1', '2', states.Discon);
+
+            //connect the client to the server
+            sendPacket.SerializeData();
+
+            byte[] buffer = sendPacket.getTailBuffer();
+
+            stream.Write(buffer, 0, buffer.Length);
+
+            buffer = new byte[1024];
+
+            int i;
+            // Loop to receive all the data sent by the client.
+            i = stream.Read(buffer, 0, buffer.Length);
+            byte[] data = new byte[i];
+            Array.Copy(buffer, data, i);
+            Packet responsePacket = new Packet(data);
+
+            if (responsePacket.GetHead().getState() == states.Discon)
+            {
+                this.loginDate = DateTime.Now;
+            }
+            else
+            {
+                stream.Flush();
             }
         }
 
